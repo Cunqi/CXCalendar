@@ -51,6 +51,6 @@ extension Calendar {
             return (weeksInYear - startWeek + 1) + endWeek
         }
 
-        return endWeek - startWeek
+        return endWeek - startWeek + 1
     }
 }
