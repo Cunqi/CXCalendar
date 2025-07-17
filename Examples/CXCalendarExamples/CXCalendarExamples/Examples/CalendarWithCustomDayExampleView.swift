@@ -9,6 +9,8 @@ import CXCalendar
 import CXUICore
 import SwiftUI
 
+// MARK: - CalendarWithCustomDayExampleView
+
 struct CalendarWithCustomDayExampleView: View {
     var body: some View {
         let context = CXCalendarContext.paged.builder
@@ -24,6 +26,8 @@ struct CalendarWithCustomDayExampleView: View {
     }
 }
 
+// MARK: - CustomDayView
+
 struct CustomDayView: CXDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
@@ -31,7 +35,7 @@ struct CustomDayView: CXDayViewRepresentable {
 
     let day: Date
 
-    let isInCurrentMonth: Bool = true
+    let isInCurrentMonth = true
 
     var isToday: Bool {
         calendar.isDateInToday(day)
@@ -58,11 +62,11 @@ struct CustomDayView: CXDayViewRepresentable {
 
     var backgroundColor: Color {
         if isSelected {
-            return .accentColor.opacity(0.5)
+            .accentColor.opacity(0.5)
         } else if isToday {
-            return .green.opacity(0.2)
+            .green.opacity(0.2)
         } else {
-            return .clear
+            .clear
         }
     }
 

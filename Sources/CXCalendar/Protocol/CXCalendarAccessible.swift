@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - CXCalendarAccessible
+
 @MainActor
 public protocol CXCalendarAccessible {
     var manager: CXCalendarManager { get }
@@ -20,20 +22,20 @@ public protocol CXCalendarAccessible {
     var selectedDate: Date? { get }
 }
 
-public extension CXCalendarAccessible {
-    var calendar: Calendar {
+extension CXCalendarAccessible {
+    public var calendar: Calendar {
         manager.context.calendar
     }
 
-    var startDate: Date {
+    public var startDate: Date {
         manager.startDate
     }
 
-    var currentDate: Date {
+    public var currentDate: Date {
         manager.currentDate
     }
 
-    var selectedDate: Date? {
+    public var selectedDate: Date? {
         manager.selectedDate
     }
 }

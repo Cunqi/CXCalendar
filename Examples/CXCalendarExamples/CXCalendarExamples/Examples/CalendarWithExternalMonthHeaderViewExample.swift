@@ -9,9 +9,11 @@ import CXCalendar
 import CXFoundation
 import SwiftUI
 
+// MARK: - CalendarWithExternalMonthHeaderViewExampleView
+
 struct CalendarWithExternalMonthHeaderViewExampleView: View {
-    @State private var currentMonth: Date = Date()
-    @State private var resetToday: Bool = false
+
+    // MARK: Internal
 
     var body: some View {
         let context = CXCalendarContext.paged.builder
@@ -39,7 +41,15 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
                 }
             }
     }
+
+    // MARK: Private
+
+    @State private var currentMonth = Date()
+    @State private var resetToday = false
+
 }
+
+// MARK: - WeekdayOnlyHeaderView
 
 struct WeekdayOnlyHeaderView: CXCalendarHeaderViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
@@ -59,7 +69,12 @@ struct WeekdayOnlyHeaderView: CXCalendarHeaderViewRepresentable {
     }
 }
 
+// MARK: - CustomNavHeaderView
+
 struct CustomNavHeaderView: View {
+
+    // MARK: Internal
+
     @Binding var month: Date
 
     var body: some View {
@@ -68,6 +83,8 @@ struct CustomNavHeaderView: View {
             yearText
         }
     }
+
+    // MARK: Private
 
     private var monthText: some View {
         Text(month.fullMonth)

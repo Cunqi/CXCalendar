@@ -9,20 +9,25 @@ import CXLazyPage
 import SwiftUI
 
 public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessible {
-    @State public var manager: CXCalendarManager
 
-    @Binding var backToToday: Bool
-    
+    // MARK: Lifecycle
+
     /// A scrollable calendar view that displays months in a paginated format.
     /// - Parameters:
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
     ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes. This gives
     ///   the ability to reset the calendar view to today's date externally.
-    public init(context: CXCalendarContext = .paged,
-                backToToday: Binding<Bool> = .constant(false)) {
+    public init(
+        context: CXCalendarContext = .paged,
+        backToToday: Binding<Bool> = .constant(false)
+    ) {
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }
+
+    // MARK: Public
+
+    @State public var manager: CXCalendarManager
 
     public var body: some View {
         VStack {
@@ -37,8 +42,13 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
             }
         }
         .environment(manager)
-        .onChange(of: backToToday) { oldValue, newValue in
+        .onChange(of: backToToday) { _, _ in
             manager.selectedDate = .now
         }
     }
+
+    // MARK: Internal
+
+    @Binding var backToToday: Bool
+
 }

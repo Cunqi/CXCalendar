@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - CXCalendarLayoutProtocol
+
 public protocol CXCalendarLayoutProtocol {
     /// Orientation of the calendar axis (horizontal or vertical).
     var axis: Axis { get }
@@ -20,6 +22,8 @@ public protocol CXCalendarLayoutProtocol {
     /// Height of each row of month view. it is only used for scrollable calendar.
     var rowHeight: CGFloat { get }
 }
+
+// MARK: - CalendarLayout
 
 struct CalendarLayout: CXCalendarLayoutProtocol {
     let axis: Axis

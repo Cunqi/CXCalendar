@@ -10,8 +10,7 @@ import Foundation
 
 extension Calendar {
 
-    /// Fix generated grid into 6 rows × 7 columns (42 cells)
-    private static let gridRange = 0 ..< 42
+    // MARK: Internal
 
     /// Generate month grid dates with leading and trailing dates in fix 42 cells.
     /// - Parameter monthInterval: month interval for current month
@@ -29,17 +28,19 @@ extension Calendar {
             return IdentifiableDate(value: day, id: index)
         }
     }
-    
+
     /// Generates a dynamic month grid of dates based on the provided month interval. the size of the grid
     /// is determined by the number of weeks in the month, which can vary.
     /// - Parameter monthInterval: The date interval representing the month for which to generate the grid.
     /// - Returns: An array of `IdentifiableDate` representing the dates in the month grid.
     func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
         let firstDay = monthInterval.start
-        let lastDay = self.date(byAdding: .day, value: -1, to: monthInterval.end)!
+        let lastDay = date(byAdding: .day, value: -1, to: monthInterval.end)!
 
-        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: firstDay),
-              let endWeekInterval = dateInterval(of: .weekOfMonth, for: lastDay) else {
+        guard
+            let startWeekInterval = dateInterval(of: .weekOfMonth, for: firstDay),
+            let endWeekInterval = dateInterval(of: .weekOfMonth, for: lastDay)
+        else {
             return []
         }
 
@@ -53,7 +54,7 @@ extension Calendar {
         while current < endDate {
             result.append(IdentifiableDate(value: current, id: index))
 
-            guard let next = self.date(byAdding: .day, value: 1, to: current) else {
+            guard let next = date(byAdding: .day, value: 1, to: current) else {
                 break
             }
             index += 1
@@ -86,4 +87,10 @@ extension Calendar {
 
         return endWeek - startWeek + 1
     }
+
+    // MARK: Private
+
+    /// Fix generated grid into 6 rows × 7 columns (42 cells)
+    private static let gridRange = 0 ..< 42
+
 }

@@ -9,9 +9,11 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func ifElse<IfContent: View, ElseContent: View>(_ condition: Bool,
-                                                    `if` ifTransform: (Self) -> IfContent,
-                                                    `else` elseTransform: (Self) -> ElseContent) -> some View {
+    func ifElse(
+        _ condition: Bool,
+        `if` ifTransform: (Self) -> some View,
+        `else` elseTransform: (Self) -> some View
+    ) -> some View {
         if condition {
             ifTransform(self)
         } else {
@@ -19,4 +21,3 @@ extension View {
         }
     }
 }
-

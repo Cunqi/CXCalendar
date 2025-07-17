@@ -6,12 +6,26 @@
 //
 
 import CXFoundation
-import SwiftUI
 import Observation
+import SwiftUI
 
 @Observable
 @MainActor
 public class CXCalendarManager {
+
+    // MARK: Lifecycle
+
+    // MARK: - Initializer
+
+    init(context: CXCalendarContext) {
+        self.context = context
+        columns = Array(repeating: GridItem(.flexible(), spacing: context.layout.columnPadding), count: 7)
+
+        startDate = context.startDate
+        selectedDate = context.selectedDate
+    }
+
+    // MARK: Public
 
     // MARK: - Public properties
 
@@ -25,22 +39,8 @@ public class CXCalendarManager {
         makeMonthFromStart(offset: currentPage)
     }
 
-    let columns: [GridItem]
-
-    var currentPage: Int = 0
-
-    // MARK: - Initializer
-
-    init(context: CXCalendarContext) {
-        self.context = context
-        self.columns = Array(repeating: GridItem(.flexible(), spacing: context.layout.columnPadding), count: 7)
-
-        self.startDate = context.startDate
-        self.selectedDate = context.selectedDate
-    }
-
     // MARK: - Public Methods
-    
+
     /// Determines whether the reset to today button should be displayed for a given month.
     /// - This method checks if the given month has the same month and year as the start date,
     ///  and whether the selected date is today.
@@ -52,11 +52,12 @@ public class CXCalendarManager {
     /// - Returns: A Boolean value indicating whether the reset to today button should be displayed.
     public func shouldDisplayResetToTodayButton(month: Date) -> Bool {
         let isInStartMonthAndYear = context.calendar.isSameMonthInYear(startDate, month)
-        let isTodaySelected = if let selectedDate {
-            context.calendar.isSameDay(selectedDate, startDate)
-        } else {
-            true
-        }
+        let isTodaySelected =
+            if let selectedDate {
+                context.calendar.isSameDay(selectedDate, startDate)
+            } else {
+                true
+            }
         return !isInStartMonthAndYear || !isTodaySelected
     }
 
@@ -66,6 +67,12 @@ public class CXCalendarManager {
             selectedDate = startDate
         }
     }
+
+    // MARK: Internal
+
+    let columns: [GridItem]
+
+    var currentPage = 0
 
     // MARK: - Internal Methods
 
@@ -90,4 +97,3 @@ public class CXCalendarManager {
         context.calendar.numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index)) + 1 // +1 for month header
     }
 }
-

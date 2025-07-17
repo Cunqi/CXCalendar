@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - CXCalendarInteractionProtocol
+
 public protocol CXCalendarInteractionProtocol {
     /// Closure to tell if given date can be selected
     var canSelect: (Date, Date, Calendar) -> Bool { get }
@@ -23,6 +25,8 @@ public protocol CXCalendarInteractionProtocol {
     /// Callback triggered when the month is changed.
     var onMonthChanged: ((Date) -> Void)? { get }
 }
+
+// MARK: - CalendarInteraction
 
 struct CalendarInteraction: CXCalendarInteractionProtocol {
 

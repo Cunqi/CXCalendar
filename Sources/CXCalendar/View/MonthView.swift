@@ -9,13 +9,12 @@ import CXFoundation
 import SwiftUI
 
 struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
+
+    // MARK: Internal
+
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date
-
-    private var days: [IdentifiableDate] {
-        manager.makeMonthGridDates(for: month)
-    }
 
     // MARK: - Initializer
 
@@ -34,12 +33,20 @@ struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
                 }
             }
 
-            if let accessoryView = compose.accessoryView,
-               let selectedDate = manager.selectedDate {
+            if
+                let accessoryView = compose.accessoryView,
+                let selectedDate = manager.selectedDate
+            {
                 accessoryView(selectedDate).erased
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
     }
-}
 
+    // MARK: Private
+
+    private var days: [IdentifiableDate] {
+        manager.makeMonthGridDates(for: month)
+    }
+
+}

@@ -9,6 +9,9 @@ import CXUICore
 import SwiftUI
 
 struct DayView: View, CXDayViewRepresentable {
+
+    // MARK: Internal
+
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date
@@ -23,7 +26,7 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     var body: some View {
-        if interaction.shouldHideNonCurrentMonthDays && !isInCurrentMonth {
+        if interaction.shouldHideNonCurrentMonthDays, !isInCurrentMonth {
             Color.clear
         } else {
             Text(numericDay)
@@ -54,6 +57,8 @@ struct DayView: View, CXDayViewRepresentable {
                 }
         }
     }
+
+    // MARK: Private
 
     private var numericDay: String {
         String(manager.context.calendar.component(.day, from: day))

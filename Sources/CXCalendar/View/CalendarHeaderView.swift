@@ -9,6 +9,9 @@ import CXFoundation
 import SwiftUI
 
 struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
+
+    // MARK: Internal
+
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date
@@ -29,6 +32,8 @@ struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
             compose.weekHeader(month).erased
         }
     }
+
+    // MARK: Private
 
     private var monthText: some View {
         Text(month.fullMonth)
