@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CXCalendarStyle.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/16/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CalendarStyle {
+public enum CXCalendarStyle {
     case paged
 
     case scrollable

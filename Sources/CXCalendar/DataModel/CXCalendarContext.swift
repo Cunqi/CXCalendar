@@ -2,27 +2,15 @@
 //  CXCalendarContext.swift
 //  CXCalendar
 //
-//  Created by Cunqi Xiao on 7/13/25.
+//  Created by Cunqi Xiao on 7/16/25.
 //
-
-/// Context object containing layout, appearance, and behavioral information for a calendar view. Use in conjunction with CXCalendar for customization.
 
 import CXUICore
 import SwiftUI
 
-/// Encapsulates configuration for a calendar's layout, appearance, and user interaction.
 public struct CXCalendarContext {
-    /// Orientation of the calendar axis (horizontal or vertical).
-    public let axis: Axis
-
-    /// Padding between each column of days.
-    public let columnPadding: CGFloat
-
-    /// Padding between each row of days.
-    public let rowPadding: CGFloat
-
-    /// Height of each row of month view. it is only used for scrollable calendar.
-    public let rowHeight: CGFloat
+    /// Style of the calendar (paged or scrollable)
+    public let style: CXCalendarStyle
 
     /// Calendar used for all date and calculation logic.
     public let calendar: Calendar
@@ -33,298 +21,122 @@ public struct CXCalendarContext {
     /// The date initially selected by the calendar, if any.
     public let selectedDate: Date?
 
-    /// Closure returning a SwiftUI View for the calendar header, given the current month date.
-    public let calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable
+    public let layout: CXCalendarLayoutProtocol
 
-    /// Closure returning a SwiftUI View for the month header, given the current month date.
-    /// This is used to display the month title along with the month view.
-    public let monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+    public let compose: CXCalendarComposeProtocol
 
-    /// Closure returning a SwiftUI View for the week header, given the current month date.
-    /// This is used to display the week title of calendar view.
-    public let weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable
-
-    /// Closure returning a SwiftUI View for individual days, given the month and day dates.
-    public let dayView: (Date, Date) -> any CXDayViewRepresentable
-
-    /// Closure to tell if given date can be selected
-    public let canSelect: (Date, Date, Calendar) -> Bool
-
-    /// Closure to tell if given date is selected
-    public let isSelected: (Date, Date?, Calendar) -> Bool
-
-    /// Callback triggered when a date is selected or deselected.
-    public let onSelected: ((Date?) -> Void)?
-
-    /// Callback triggered when the month is changed.
-    public let onMonthChanged: ((Date) -> Void)?
-
-    /// Optional closure returning a SwiftUI View to overlay when a day is selected.
-    public let accessoryView: ((Date) -> any View)?
-
-    // MARK: - Internal properties
-
-    /// Style of the calendar (paged or scrollable)
-    let style: CalendarStyle
-
-    /// Flag indicating whether to ignore days that are not in the current month.
-    let shouldHideNonCurrentMonthDays: Bool
-
-    // MARK: - Initializer
-
-    init(axis: Axis,
-         columnPadding: CGFloat,
-         rowPadding: CGFloat,
-         rowHeight: CGFloat,
-         style: CalendarStyle,
-         calendar: Calendar,
-         startDate: Date,
-         selectedDate: Date?,
-         calendarHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable,
-         monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?,
-         weekHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable,
-         dayView: @escaping (Date, Date) -> any CXDayViewRepresentable,
-         canSelect: @escaping (Date, Date, Calendar) -> Bool,
-         isSelected: @escaping (Date, Date?, Calendar) -> Bool,
-         onSelected: ((Date?) -> Void)?,
-         onMonthChanged: ((Date) -> Void)?,
-         accessoryView: ((Date) -> any View)?,
-         shouldHideNonCurrentMonthDays: Bool)
-    {
-        self.axis = axis
-        self.columnPadding = columnPadding
-        self.rowPadding = rowPadding
-        self.rowHeight = rowHeight
-        self.style = style
-        self.calendar = calendar
-        self.startDate = startDate
-        self.selectedDate = selectedDate
-        self.calendarHeader = calendarHeader
-        self.monthHeader = monthHeader
-        self.weekHeader = weekHeader
-        self.dayView = dayView
-        self.canSelect = canSelect
-        self.isSelected = isSelected
-        self.onSelected = onSelected
-        self.onMonthChanged = onMonthChanged
-        self.accessoryView = accessoryView
-        self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
-    }
+    public let interaction: CXCalendarInteractionProtocol
 }
 
-// Builder
-
 public extension CXCalendarContext {
-    /// Builder for configuring CXCalendarContext properties incrementally.
-    class Builder {
-        private var columnPadding: CGFloat = CXSpacing.oneX
-        private var rowPadding: CGFloat = CXSpacing.oneX
-        private var rowHeight: CGFloat = CXSpacing.sixX
-        private var axis: Axis = .horizontal
-        private var style: CalendarStyle = .paged
+    class Builder: CXCalendarLayoutProtocol, CXCalendarComposeProtocol, CXCalendarInteractionProtocol {
+        // MARK: - Basic
 
-        private var calendar: Calendar = .current
-        private var startDate: Date = .now
-        private var selectedDate: Date?
+        /// Style of the calendar (paged or scrollable)
+        public private(set) var style: CXCalendarStyle = .paged
 
-        private var calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
+        /// Calendar used for all date and calculation logic.
+        public private(set) var calendar: Calendar = .current
+
+        /// The calendar's starting display date.
+        public private(set) var startDate: Date = .now
+
+        /// The date initially selected by the calendar, if any.
+        public private(set) var selectedDate: Date?
+
+        // MARK: - CXCalendarLayoutProtocol
+
+        public private(set) var axis: Axis = .horizontal
+
+        public private(set) var columnPadding: CGFloat = CXSpacing.oneX
+
+        public private(set) var rowPadding: CGFloat = CXSpacing.oneX
+
+        public private(set) var rowHeight: CGFloat = CXSpacing.sixX
+
+        // MARK: - CXCalendarComposeProtocol
+
+        public private(set) var calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
             CalendarHeaderView(month: month)
         }
 
-        private var monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+        public private(set) var monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
 
-        private var weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
+        public private(set) var weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
             WeekHeaderView(month: month)
         }
 
-        private var dayView: (Date, Date) -> any CXDayViewRepresentable = { month, day in
+        public private(set) var dayView: (Date, Date) -> any CXDayViewRepresentable = { month, day in
             DayView(month: month, day: day)
         }
 
-        private var canSelect: (Date, Date, Calendar) -> Bool = { _, _, _ in true }
+        public private(set) var accessoryView: ((Date) -> any View)?
 
-        private var isSelected: (Date, Date?, Calendar) -> Bool = { day, selectedDate, calendar in
+        // MARK: - CXCalendarInteractionProtocol
+
+        public private(set) var canSelect: (Date, Date, Calendar) -> Bool = { _, _, _ in true }
+
+        public private(set) var isSelected: (Date, Date?, Calendar) -> Bool = { day, selectedDate, calendar in
             selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
         }
 
-        private var onSelected: ((Date?) -> Void)?
+        public private(set) var shouldHideNonCurrentMonthDays: Bool = false
 
-        private var onMonthChanged: ((Date) -> Void)?
+        public private(set) var onSelected: ((Date?) -> Void)?
 
-        private var accessoryView: ((Date) -> any View)?
+        public private(set) var onMonthChanged: ((Date) -> Void)?
 
-        private var shouldHideNonCurrentMonthDays: Bool = false
-
-        // MARK: - Initializer
+        // MARK: - Initializers
 
         init() {}
 
-        init(with context: CXCalendarContext) {
-            axis = context.axis
-            columnPadding = context.columnPadding
-            rowPadding = context.rowPadding
-            rowHeight = context.rowHeight
+        init(from context: CXCalendarContext) {
+            // Basic
+            style = context.style
             calendar = context.calendar
             startDate = context.startDate
             selectedDate = context.selectedDate
-            calendarHeader = context.calendarHeader
-            monthHeader = context.monthHeader
-            dayView = context.dayView
-            canSelect = context.canSelect
-            isSelected = context.isSelected
-            onSelected = context.onSelected
-            onMonthChanged = context.onMonthChanged
-            accessoryView = context.accessoryView
-            shouldHideNonCurrentMonthDays = context.shouldHideNonCurrentMonthDays
-            style = context.style
-        }
 
-        // MARK: - Public methods
+            // CXCalendarLayoutProtocol
+            axis = context.layout.axis
+            columnPadding = context.layout.columnPadding
+            rowPadding = context.layout.rowPadding
+            rowHeight = context.layout.rowHeight
 
-        /// Sets the orientation axis for the calendar layout.
-        public func axis(_ axis: Axis) -> Builder {
-            self.axis = axis
-            return self
-        }
+            // CXCalendarComposeProtocol
+            calendarHeader = context.compose.calendarHeader
+            monthHeader = context.compose.monthHeader
+            weekHeader = context.compose.weekHeader
+            dayView = context.compose.dayView
+            accessoryView = context.compose.accessoryView
 
-        /// Sets the padding between columns of days.
-        public func columnPadding(_ columnPadding: CGFloat) -> Builder {
-            self.columnPadding = columnPadding
-            return self
-        }
-
-        /// Sets the padding between rows of days.
-        public func rowPadding(_ rowPadding: CGFloat) -> Builder {
-            self.rowPadding = rowPadding
-            return self
-        }
-
-        /// Sets the height of each row of month view. it is only used for scrollable calendar.
-        public func rowHeight(_ rowHeight: CGFloat) -> Builder {
-            self.rowHeight = rowHeight
-            return self
-        }
-
-        /// Sets the calendar used for date calculations.
-        public func calendar(_ calendar: Calendar) -> Builder {
-            self.calendar = calendar
-            return self
-        }
-
-        /// Sets the start date of the calendar display.
-        public func startDate(_ startDate: Date) -> Builder {
-            self.startDate = startDate
-            return self
-        }
-
-        /// Sets the initially selected date.
-        public func selectedDate(_ selectedDate: Date) -> Builder {
-            self.selectedDate = selectedDate
-            return self
-        }
-
-        /// Sets the calendar header view closure for the calendar.
-        public func calendarHeader(_ calendarHeader: @escaping (Date) -> some CXCalendarHeaderViewRepresentable) -> Builder {
-            self.calendarHeader = calendarHeader
-            return self
-        }
-
-        /// Sets the month header view closure for the month header.
-        public func monthHeader(_ monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?) -> Builder {
-            self.monthHeader = monthHeader
-            return self
-        }
-
-        /// Sets the week header view closure for the week header.
-        public func weekHeader(_ weekHeader: @escaping (Date) -> some CXCalendarHeaderViewRepresentable) -> Builder {
-            self.weekHeader = weekHeader
-            return self
-        }
-
-        /// Sets the day view closure for individual day cells.
-        public func dayView(_ dayView: @escaping (Date, Date) -> some CXDayViewRepresentable) -> Builder {
-            self.dayView = dayView
-            return self
-        }
-
-        /// Sets the canSelect closure for individual day cells.
-        public func canSelect(_ canSelect: @escaping (Date, Date, Calendar) -> Bool) -> Builder {
-            self.canSelect = canSelect
-            return self
-        }
-
-        /// Sets the isSelected closure for individual day cells.
-        public func isSelected(_ isSelected: @escaping (Date, Date?, Calendar) -> Bool) -> Builder {
-            self.isSelected = isSelected
-            return self
-        }
-
-        /// Sets the callback for when a date is selected or deselected.
-        public func onSelected(_ onSelected: @escaping (Date?) -> Void) -> Builder {
-            self.onSelected = onSelected
-            return self
-        }
-
-        /// Sets the callback for when the month is changed.
-        public func onMonthChanged(_ onMonthChanged: @escaping (Date) -> Void) -> Builder {
-            self.onMonthChanged = onMonthChanged
-            return self
-        }
-
-        /// Sets the accessory view closure displayed when a date is selected.
-        public func accessoryView(_ accessoryView: @escaping (Date) -> some View) -> Builder {
-            self.accessoryView = accessoryView
-            return self
-        }
-
-        // MARK: - Internal methods
-
-        func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool) -> Builder {
-            self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
-            return self
-        }
-
-        func style(_ style: CalendarStyle) -> Builder {
-            self.style = style
-            return self
-        }
-
-        /// Produces a fully configured CXCalendarContext with the given properties.
-        public func build() -> CXCalendarContext {
-            return CXCalendarContext(
-                axis: axis,
-                columnPadding: columnPadding,
-                rowPadding: rowPadding,
-                rowHeight: rowHeight,
-                style: style,
-                calendar: calendar,
-                startDate: startDate,
-                selectedDate: selectedDate,
-                calendarHeader: calendarHeader,
-                monthHeader: monthHeader,
-                weekHeader: weekHeader,
-                dayView: dayView,
-                canSelect: canSelect,
-                isSelected: isSelected,
-                onSelected: onSelected,
-                onMonthChanged: onMonthChanged,
-                accessoryView: accessoryView,
-                shouldHideNonCurrentMonthDays: shouldHideNonCurrentMonthDays
-            )
+            // CXCalendarInteractionProtocol
+            canSelect = context.interaction.canSelect
+            isSelected = context.interaction.isSelected
+            shouldHideNonCurrentMonthDays = context.interaction.shouldHideNonCurrentMonthDays
+            onSelected = context.interaction.onSelected
+            onMonthChanged = context.interaction.onMonthChanged
         }
     }
 }
 
+// MARK: - Convenience accessors
+
 public extension CXCalendarContext {
-    /// Returns a default CXCalendarContext instance with standard configuration.
+    /// Returns a pre-configured CXCalendarContext instance for `CXCalendarStyle.paged`
+    /// this context is targetting to serve `CXPagedCalendar` ONLY
     static var paged: CXCalendarContext {
         CXCalendarContext.Builder()
+            .style(.paged)
             .monthHeader(nil)
             .build()
     }
 
+    /// Returns a pre-configured CXCalendarContext instance for `CXCalendarStyle.scrollable`
+    /// this context is targetting to serve `CXScrollableCalendar` ONLY
     static var scrollable: CXCalendarContext {
         CXCalendarContext.Builder()
+            .style(.scrollable)
             .axis(.vertical)
             .calendarHeader { month in
                 WeekHeaderView(month: month)
@@ -332,12 +144,146 @@ public extension CXCalendarContext {
             .monthHeader { month in
                 MonthHeaderView(month: month)
             }
-            .shouldHideNonCurrentMonthDays(true)
-            .style(.scrollable)
             .build()
     }
 
-    var builder: Builder {
-        Builder(with: self)
+    /// Returns a builder instance initialized with the current context.
+    var builder: CXCalendarContext.Builder {
+        CXCalendarContext.Builder(from: self)
+    }
+}
+
+// MARK: - Builder Methods
+
+public extension CXCalendarContext.Builder {
+    // MARK: - Basic
+
+    func style(_ style: CXCalendarStyle) -> CXCalendarContext.Builder {
+        self.style = style
+        return self
+    }
+
+    func calendar(_ calendar: Calendar) -> CXCalendarContext.Builder {
+        self.calendar = calendar
+        return self
+    }
+
+    func startDate(_ startDate: Date) -> CXCalendarContext.Builder {
+        self.startDate = startDate
+        return self
+    }
+
+    func selectedDate(_ selectedDate: Date?) -> CXCalendarContext.Builder {
+        self.selectedDate = selectedDate
+        return self
+    }
+
+    // MARK: - CXCalendarLayoutProtocol
+
+    func axis(_ axis: Axis) -> CXCalendarContext.Builder {
+        self.axis = axis
+        return self
+    }
+
+    func columnPadding(_ columnPadding: CGFloat) -> CXCalendarContext.Builder {
+        self.columnPadding = columnPadding
+        return self
+    }
+
+    func rowPadding(_ rowPadding: CGFloat) -> CXCalendarContext.Builder {
+        self.rowPadding = rowPadding
+        return self
+    }
+
+    func rowHeight(_ rowHeight: CGFloat) -> CXCalendarContext.Builder {
+        self.rowHeight = rowHeight
+        return self
+    }
+
+    // MARK: - CXCalendarComposeProtocol
+
+    func calendarHeader(_ calendarHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable) -> CXCalendarContext.Builder {
+        self.calendarHeader = calendarHeader
+        return self
+    }
+
+    func monthHeader(_ monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?) -> CXCalendarContext.Builder {
+        self.monthHeader = monthHeader
+        return self
+    }
+
+    func weekHeader(_ weekHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable) -> CXCalendarContext.Builder {
+        self.weekHeader = weekHeader
+        return self
+    }
+
+    func dayView(_ dayView: @escaping (Date, Date) -> any CXDayViewRepresentable) -> CXCalendarContext.Builder {
+        self.dayView = dayView
+        return self
+    }
+
+    func accessoryView(_ accessoryView: ((Date) -> any View)?) -> CXCalendarContext.Builder {
+        self.accessoryView = accessoryView
+        return self
+    }
+
+    // MARK: - CXCalendarInteractionProtocol
+
+    func canSelect(_ canSelect: @escaping (Date, Date, Calendar) -> Bool) -> CXCalendarContext.Builder {
+        self.canSelect = canSelect
+        return self
+    }
+
+    func isSelected(_ isSelected: @escaping (Date, Date?, Calendar) -> Bool) -> CXCalendarContext.Builder {
+        self.isSelected = isSelected
+        return self
+    }
+
+    func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool) -> CXCalendarContext.Builder {
+        self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
+        return self
+    }
+
+    func onSelected(_ onSelected: ((Date?) -> Void)?) -> CXCalendarContext.Builder {
+        self.onSelected = onSelected
+        return self
+    }
+
+    func onMonthChanged(_ onMonthChanged: ((Date) -> Void)?) -> CXCalendarContext.Builder {
+        self.onMonthChanged = onMonthChanged
+        return self
+    }
+
+    func build() -> CXCalendarContext {
+        let layout = CalendarLayout(
+            axis: axis,
+            columnPadding: columnPadding,
+            rowPadding: rowPadding,
+            rowHeight: rowHeight
+        )
+        let compose = CalendarCompose(
+            calendarHeader: calendarHeader,
+            monthHeader: monthHeader,
+            weekHeader: weekHeader,
+            dayView: dayView,
+            accessoryView: accessoryView
+        )
+        let interaction = CalendarInteraction(
+            canSelect: canSelect,
+            isSelected: isSelected,
+            shouldHideNonCurrentMonthDays: shouldHideNonCurrentMonthDays,
+            onSelected: onSelected,
+            onMonthChanged: onMonthChanged
+        )
+
+        return CXCalendarContext(
+            style: style,
+            calendar: calendar,
+            startDate: startDate,
+            selectedDate: selectedDate,
+            layout: layout,
+            compose: compose,
+            interaction: interaction
+        )
     }
 }

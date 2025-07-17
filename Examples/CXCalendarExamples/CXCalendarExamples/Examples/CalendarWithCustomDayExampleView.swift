@@ -47,7 +47,7 @@ struct CustomDayView: CXDayViewRepresentable {
                     .fill(backgroundColor)
             )
             .onTapGesture {
-                guard manager.context.canSelect(month, day, calendar) else {
+                guard interaction.canSelect(month, day, calendar) else {
                     return
                 }
                 withAnimation {
@@ -67,6 +67,6 @@ struct CustomDayView: CXDayViewRepresentable {
     }
 
     var isSelected: Bool {
-        manager.context.isSelected(day, selectedDate, calendar)
+        interaction.isSelected(day, selectedDate, calendar)
     }
 }

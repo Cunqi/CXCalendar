@@ -9,7 +9,7 @@ import CXUICore
 import CXLazyPage
 import SwiftUI
 
-public struct CXPagedCalendar: View, CXCalendarAccessible {
+public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
 
     // MARK: - Properties
 
@@ -35,17 +35,17 @@ public struct CXPagedCalendar: View, CXCalendarAccessible {
     }
 
     public var body: some View {
-        VStack(spacing: manager.context.rowPadding) {
-            manager.context.calendarHeader(currentDate).erased
+        VStack(spacing: layout.rowPadding) {
+            compose.calendarHeader(currentDate).erased
 
-            CXLazyPage(axis: manager.context.axis, currentPage: $manager.currentPage) { index in
+            CXLazyPage(axis: layout.axis, currentPage: $manager.currentPage) { index in
                 MonthView(month: manager.makeMonthFromStart(offset: index))
                 Spacer()
             }
         }
         .environment(manager)
         .onChange(of: selectedDate) { oldValue, newValue in
-            manager.context.onSelected?(newValue)
+            interaction.onSelected?(newValue)
         }
         .onChange(of: currentDate) { oldValue, newValue in
             withAnimation {
@@ -53,7 +53,7 @@ public struct CXPagedCalendar: View, CXCalendarAccessible {
             }
         }
         .onChange(of: currentDate) { oldValue, newValue in
-            manager.context.onMonthChanged?(newValue)
+            interaction.onMonthChanged?(newValue)
         }
         .onChange(of: backToToday) { oldValue, newValue in
             manager.resetToToday()

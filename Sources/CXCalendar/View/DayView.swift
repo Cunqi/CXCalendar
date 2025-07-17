@@ -23,7 +23,7 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     var body: some View {
-        if manager.context.shouldHideNonCurrentMonthDays && !isInCurrentMonth {
+        if interaction.shouldHideNonCurrentMonthDays && !isInCurrentMonth {
             Color.clear
         } else {
             Text(numericDay)
@@ -33,7 +33,7 @@ struct DayView: View, CXDayViewRepresentable {
                 .ifElse(manager.context.style == .paged) {
                     $0.aspectRatio(1, contentMode: .fit)
                 } else: {
-                    $0.frame(height: manager.context.rowHeight)
+                    $0.frame(height: layout.rowHeight)
                 }
                 .background(
                     RoundedRectangle(cornerRadius: CXSpacing.halfX)
@@ -45,7 +45,7 @@ struct DayView: View, CXDayViewRepresentable {
                         .padding(1)
                 )
                 .onTapGesture {
-                    guard manager.context.canSelect(month, day, calendar) else {
+                    guard interaction.canSelect(month, day, calendar) else {
                         return
                     }
                     withAnimation {
@@ -71,6 +71,6 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     private var isSelected: Bool {
-        manager.context.isSelected(day, manager.selectedDate, calendar)
+        interaction.isSelected(day, manager.selectedDate, calendar)
     }
 }

@@ -8,7 +8,7 @@
 import CXFoundation
 import SwiftUI
 
-struct MonthView: View, CXCalendarAccessible {
+struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date
@@ -23,21 +23,21 @@ struct MonthView: View, CXCalendarAccessible {
     // MARK: - Initializer
 
     var body: some View {
-        VStack(spacing: manager.context.rowPadding) {
-            if let monthHeader = manager.context.monthHeader {
+        VStack(spacing: layout.rowPadding) {
+            if let monthHeader = compose.monthHeader {
                 monthHeader(month)
-                    .frame(height: manager.context.rowHeight)
+                    .frame(height: layout.rowHeight)
                     .frame(maxWidth: .infinity)
                     .erased
             }
 
-            LazyVGrid(columns: manager.columns, spacing: manager.context.rowPadding) {
+            LazyVGrid(columns: manager.columns, spacing: layout.rowPadding) {
                 ForEach(days) { day in
-                    manager.context.dayView(month, day.value).erased
+                    compose.dayView(month, day.value).erased
                 }
             }
 
-            if let accessoryView = manager.context.accessoryView,
+            if let accessoryView = compose.accessoryView,
                let selectedDate = manager.selectedDate {
                 accessoryView(selectedDate).erased
                     .transition(.move(edge: .bottom).combined(with: .opacity))

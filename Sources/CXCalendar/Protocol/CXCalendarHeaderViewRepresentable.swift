@@ -7,5 +7,5 @@
 
 import SwiftUI
 
-public protocol CXCalendarHeaderViewRepresentable: View, CXCalendarAccessible {
+public protocol CXCalendarHeaderViewRepresentable: View, CXCalendarAccessible, CXContextAccessible {
 }
