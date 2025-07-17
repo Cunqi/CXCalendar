@@ -37,5 +37,8 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
             }
         }
         .environment(manager)
+        .onChange(of: backToToday) { oldValue, newValue in
+            manager.selectedDate = .now
+        }
     }
 }
