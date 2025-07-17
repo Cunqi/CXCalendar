@@ -24,7 +24,7 @@ public struct CXCalendarView: View, CXCalendarAccessible {
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
     ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes. this gives
     ///   the ability to reset the calendar view to today's date externally.
-    public init(context: CXCalendarContext = .standard,
+    public init(context: CXCalendarContext = .paged,
                 backToToday: Binding<Bool> = .constant(false)) {
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
@@ -32,7 +32,7 @@ public struct CXCalendarView: View, CXCalendarAccessible {
 
     public var body: some View {
         VStack {
-            manager.context.headerView(currentDate).erased
+            manager.context.calendarHeader(currentDate).erased
 
             CXLazyPage(axis: manager.context.axis, currentPage: $manager.currentPage) { index in
                 MonthView(month: manager.makeMonthFromStart(offset: index))

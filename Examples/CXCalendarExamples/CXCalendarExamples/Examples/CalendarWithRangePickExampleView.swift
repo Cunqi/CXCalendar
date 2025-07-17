@@ -14,7 +14,7 @@ struct CalendarWithRangePickExampleView: View {
     @State private var viewModel = ViewModel()
 
     var body: some View {
-        let context = CXCalendarContext.Builder()
+        let context = CXCalendarContext.paged.builder
             .columnPadding(.zero)
             .dayView { month, day in
                 RangeDay(month: month, day: day, range: $viewModel.range)

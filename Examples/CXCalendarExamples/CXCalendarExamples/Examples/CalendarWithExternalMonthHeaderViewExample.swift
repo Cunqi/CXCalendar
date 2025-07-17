@@ -14,8 +14,8 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
     @State private var resetToday: Bool = false
 
     var body: some View {
-        let context = CXCalendarContext.Builder()
-            .headerView { month in
+        let context = CXCalendarContext.paged.builder
+            .calendarHeader { month in
                 WeekdayOnlyHeaderView(month: month)
             }
             .onMonthChanged { month in
@@ -41,7 +41,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
     }
 }
 
-struct WeekdayOnlyHeaderView: CXMonthHeaderViewRepresentable {
+struct WeekdayOnlyHeaderView: CXCalendarHeaderViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date

@@ -1,5 +1,5 @@
 //
-//  MonthHeaderView.swift
+//  CalendarHeaderView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/13/25.
@@ -8,7 +8,7 @@
 import CXFoundation
 import SwiftUI
 
-struct MonthHeaderView: CXMonthHeaderViewRepresentable {
+struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date
