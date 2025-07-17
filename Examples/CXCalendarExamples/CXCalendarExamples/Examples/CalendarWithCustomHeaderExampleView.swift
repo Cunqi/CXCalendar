@@ -17,7 +17,7 @@ struct CalendarWithCustomHeaderExampleView: View {
             }
             .build()
 
-        CXCalendarView(context: context)
+        CXPagedCalendar(context: context)
             .padding(.horizontal)
             .padding(.horizontal)
             .navigationTitle("Calendar with Custom Header")

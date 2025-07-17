@@ -23,7 +23,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
             }
             .build()
 
-        CXCalendarView(context: context, backToToday: $resetToday)
+        CXPagedCalendar(context: context, backToToday: $resetToday)
             .padding(.horizontal)
             .toolbar {
                 ToolbarItem(placement: .title) {

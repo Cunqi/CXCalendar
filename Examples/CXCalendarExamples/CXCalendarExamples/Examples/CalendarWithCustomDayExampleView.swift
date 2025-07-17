@@ -17,7 +17,7 @@ struct CalendarWithCustomDayExampleView: View {
             }
             .build()
 
-        CXCalendarView(context: context)
+        CXPagedCalendar(context: context)
             .padding(.horizontal)
             .navigationTitle("Custom Day View")
             .navigationBarTitleDisplayMode(.inline)

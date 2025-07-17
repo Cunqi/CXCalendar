@@ -28,7 +28,7 @@ struct CalendarWithRangePickExampleView: View {
             .build()
 
         VStack {
-            CXCalendarView(context: context)
+            CXPagedCalendar(context: context)
                 .navigationTitle("Calendar with Range Pick")
                 .navigationBarTitleDisplayMode(.inline)
 

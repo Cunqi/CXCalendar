@@ -1,5 +1,5 @@
 //
-//  CXCalendarView.swift
+//  CXPagedCalendar.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/13/25.
@@ -9,7 +9,7 @@ import CXUICore
 import CXLazyPage
 import SwiftUI
 
-public struct CXCalendarView: View, CXCalendarAccessible {
+public struct CXPagedCalendar: View, CXCalendarAccessible {
 
     // MARK: - Properties
 
@@ -26,6 +26,10 @@ public struct CXCalendarView: View, CXCalendarAccessible {
     ///   the ability to reset the calendar view to today's date externally.
     public init(context: CXCalendarContext = .paged,
                 backToToday: Binding<Bool> = .constant(false)) {
+        if context.style != .paged {
+            assertionFailure("CXPagedCalendar only supports paged style.")
+        }
+
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }
@@ -58,6 +62,6 @@ public struct CXCalendarView: View, CXCalendarAccessible {
 }
 
 #Preview {
-    CXCalendarView()
+    CXPagedCalendar()
 }
 

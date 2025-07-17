@@ -26,7 +26,7 @@ struct CalendarWithAccessoryViewExampleView: View {
             }
             .build()
 
-        CXCalendarView(context: context)
+        CXPagedCalendar(context: context)
             .padding(.horizontal)
             .navigationTitle("Calendar with Accessory View")
             .navigationBarTitleDisplayMode(.inline)
