@@ -16,7 +16,7 @@ extension Calendar {
     /// Generate month grid dates with leading and trailing dates in fix 42 cells.
     /// - Parameter monthInterval: month interval for current month
     /// - Returns: an array of `IdentifiableDate` representing the month grid with fixed 42 cells.
-    func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
+    func makeFixedMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
         let firstDay = monthInterval.start
 
         let lead = (component(.weekday, from: firstDay) - firstWeekday + 7) % 7
@@ -28,6 +28,39 @@ extension Calendar {
             }
             return IdentifiableDate(value: day, id: index)
         }
+    }
+    
+    /// Generates a dynamic month grid of dates based on the provided month interval. the size of the grid
+    /// is determined by the number of weeks in the month, which can vary.
+    /// - Parameter monthInterval: The date interval representing the month for which to generate the grid.
+    /// - Returns: An array of `IdentifiableDate` representing the dates in the month grid.
+    func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
+        let firstDay = monthInterval.start
+        let lastDay = self.date(byAdding: .day, value: -1, to: monthInterval.end)!
+
+        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: firstDay),
+              let endWeekInterval = dateInterval(of: .weekOfMonth, for: lastDay) else {
+            return []
+        }
+
+        let startDate = startWeekInterval.start
+        let endDate = endWeekInterval.end
+
+        var result = [IdentifiableDate]()
+        var current = startDate
+        var index = 0
+
+        while current < endDate {
+            result.append(IdentifiableDate(value: current, id: index))
+
+            guard let next = self.date(byAdding: .day, value: 1, to: current) else {
+                break
+            }
+            index += 1
+            current = next
+        }
+
+        return result
     }
 
     /// Calculates the number of weeks in the month of a given date.

@@ -14,10 +14,7 @@ struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
     let month: Date
 
     private var days: [IdentifiableDate] {
-        guard let monthInterval = calendar.dateInterval(of: .month, for: month) else {
-            return []
-        }
-        return calendar.makeMonthGridDates(from: monthInterval)
+        manager.makeMonthGridDates(for: month)
     }
 
     // MARK: - Initializer
