@@ -23,16 +23,25 @@ struct MonthView: View, CXCalendarAccessible {
     // MARK: - Initializer
 
     var body: some View {
-        LazyVGrid(columns: manager.columns, spacing: manager.context.rowPadding) {
-            ForEach(days) { day in
-                manager.context.dayView(month, day.value).erased
+        VStack(spacing: manager.context.rowPadding) {
+            if let monthHeader = manager.context.monthHeader {
+                monthHeader(month)
+                    .frame(height: manager.context.rowHeight)
+                    .frame(maxWidth: .infinity)
+                    .erased
             }
-        }
 
-        if let accessoryView = manager.context.accessoryView,
-           let selectedDate = manager.selectedDate {
-            accessoryView(selectedDate).erased
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+            LazyVGrid(columns: manager.columns, spacing: manager.context.rowPadding) {
+                ForEach(days) { day in
+                    manager.context.dayView(month, day.value).erased
+                }
+            }
+
+            if let accessoryView = manager.context.accessoryView,
+               let selectedDate = manager.selectedDate {
+                accessoryView(selectedDate).erased
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
     }
 }

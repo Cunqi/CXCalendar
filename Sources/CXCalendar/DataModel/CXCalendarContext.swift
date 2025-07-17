@@ -324,6 +324,12 @@ public extension CXCalendarContext {
     static var scrollable: CXCalendarContext {
         CXCalendarContext.Builder()
             .axis(.vertical)
+            .calendarHeader { month in
+                WeekHeaderView(month: month)
+            }
+            .monthHeader { month in
+                MonthHeaderView(month: month)
+            }
             .shouldIgnoreNonCurrentMonthDays(true)
             .style(.scrollable)
             .build()
