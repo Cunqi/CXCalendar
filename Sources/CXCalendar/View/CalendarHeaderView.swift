@@ -26,7 +26,7 @@ struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
                 }
             }
             Divider()
-            manager.context.weekHeader(month).erased
+            compose.weekHeader(month).erased
         }
     }
 

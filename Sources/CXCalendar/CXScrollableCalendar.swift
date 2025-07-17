@@ -8,7 +8,7 @@
 import CXLazyPage
 import SwiftUI
 
-public struct CXScrollableCalendar: View, CXCalendarAccessible {
+public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessible {
     @State public var manager: CXCalendarManager
 
     @Binding var backToToday: Bool
@@ -26,12 +26,12 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible {
 
     public var body: some View {
         VStack {
-            manager.context.calendarHeader(currentDate).erased
+            compose.calendarHeader(currentDate).erased
             CXLazyList { index in
                 MonthView(month: manager.makeMonthFromStart(offset: index))
             } heightOf: { index in
-                let rowHeight = Int(manager.context.rowHeight)
-                let rowPadding = Int(manager.context.rowPadding)
+                let rowHeight = Int(layout.rowHeight)
+                let rowPadding = Int(layout.rowPadding)
                 let numberOfWeeks = manager.numberOfWeeks(for: index) + 1 // month header
                 return numberOfWeeks * (rowHeight + rowPadding) - rowPadding
             }

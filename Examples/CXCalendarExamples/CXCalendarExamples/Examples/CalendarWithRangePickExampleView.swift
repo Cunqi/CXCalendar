@@ -140,7 +140,7 @@ struct RangeDay: CXDayViewRepresentable {
             }
             .onTapGesture {
                 withAnimation {
-                    manager.context.onSelected?(day)
+                    interaction.onSelected?(day)
                 }
             }
     }

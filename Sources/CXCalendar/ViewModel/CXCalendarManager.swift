@@ -33,7 +33,7 @@ public class CXCalendarManager {
 
     init(context: CXCalendarContext) {
         self.context = context
-        self.columns = Array(repeating: GridItem(.flexible(), spacing: context.columnPadding), count: 7)
+        self.columns = Array(repeating: GridItem(.flexible(), spacing: context.layout.columnPadding), count: 7)
 
         self.startDate = context.startDate
         self.selectedDate = context.selectedDate

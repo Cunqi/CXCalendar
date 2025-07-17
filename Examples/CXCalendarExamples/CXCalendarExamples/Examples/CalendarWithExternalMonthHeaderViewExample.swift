@@ -47,7 +47,7 @@ struct WeekdayOnlyHeaderView: CXCalendarHeaderViewRepresentable {
     let month: Date
 
     var body: some View {
-        HStack(spacing: manager.context.columnPadding) {
+        HStack(spacing: layout.columnPadding) {
             let titles = calendar.veryShortWeekdaySymbols
             ForEach(titles.indices, id: \.self) { index in
                 Text(titles[index])

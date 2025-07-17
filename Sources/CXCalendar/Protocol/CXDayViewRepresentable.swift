@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public protocol CXDayViewRepresentable: View, CXCalendarAccessible {
+public protocol CXDayViewRepresentable: View, CXCalendarAccessible, CXContextAccessible {
 
     var month: Date { get }
 
