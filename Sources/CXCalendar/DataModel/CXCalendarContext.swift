@@ -67,7 +67,7 @@ public struct CXCalendarContext {
     let style: CalendarStyle
 
     /// Flag indicating whether to ignore days that are not in the current month.
-    let shouldIgnoreNonCurrentMonthDays: Bool
+    let shouldHideNonCurrentMonthDays: Bool
 
     // MARK: - Initializer
 
@@ -88,7 +88,7 @@ public struct CXCalendarContext {
          onSelected: ((Date?) -> Void)?,
          onMonthChanged: ((Date) -> Void)?,
          accessoryView: ((Date) -> any View)?,
-         shouldIgnoreNonCurrentMonthDays: Bool)
+         shouldHideNonCurrentMonthDays: Bool)
     {
         self.axis = axis
         self.columnPadding = columnPadding
@@ -107,7 +107,7 @@ public struct CXCalendarContext {
         self.onSelected = onSelected
         self.onMonthChanged = onMonthChanged
         self.accessoryView = accessoryView
-        self.shouldIgnoreNonCurrentMonthDays = shouldIgnoreNonCurrentMonthDays
+        self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
     }
 }
 
@@ -150,7 +150,7 @@ public extension CXCalendarContext {
 
         private var accessoryView: ((Date) -> any View)?
 
-        private var shouldIgnoreNonCurrentMonthDays: Bool = false
+        private var shouldHideNonCurrentMonthDays: Bool = false
 
         // MARK: - Initializer
 
@@ -173,7 +173,7 @@ public extension CXCalendarContext {
             onSelected = context.onSelected
             onMonthChanged = context.onMonthChanged
             accessoryView = context.accessoryView
-            shouldIgnoreNonCurrentMonthDays = context.shouldIgnoreNonCurrentMonthDays
+            shouldHideNonCurrentMonthDays = context.shouldHideNonCurrentMonthDays
             style = context.style
         }
 
@@ -277,8 +277,8 @@ public extension CXCalendarContext {
 
         // MARK: - Internal methods
 
-        func shouldIgnoreNonCurrentMonthDays(_ shouldIgnoreNonCurrentMonthDays: Bool) -> Builder {
-            self.shouldIgnoreNonCurrentMonthDays = shouldIgnoreNonCurrentMonthDays
+        func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool) -> Builder {
+            self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
             return self
         }
 
@@ -307,7 +307,7 @@ public extension CXCalendarContext {
                 onSelected: onSelected,
                 onMonthChanged: onMonthChanged,
                 accessoryView: accessoryView,
-                shouldIgnoreNonCurrentMonthDays: shouldIgnoreNonCurrentMonthDays
+                shouldHideNonCurrentMonthDays: shouldHideNonCurrentMonthDays
             )
         }
     }
@@ -330,7 +330,7 @@ public extension CXCalendarContext {
             .monthHeader { month in
                 MonthHeaderView(month: month)
             }
-            .shouldIgnoreNonCurrentMonthDays(true)
+            .shouldHideNonCurrentMonthDays(true)
             .style(.scrollable)
             .build()
     }

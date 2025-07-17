@@ -5,7 +5,7 @@
 //  Created by Cunqi Xiao on 7/13/25.
 //
 
-import CXFoundation
+import CXUICore
 import SwiftUI
 
 struct DayView: View, CXDayViewRepresentable {
@@ -18,33 +18,41 @@ struct DayView: View, CXDayViewRepresentable {
         calendar.isSameMonthInYear(day, month)
     }
 
-    public var isToday: Bool {
+    var isToday: Bool {
         calendar.isDateInToday(day)
     }
 
-    public var body: some View {
-        Text(numericDay)
-            .font(.footnote)
-            .foregroundColor(foregroundColor)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .aspectRatio(1, contentMode: .fit)
-            .background(
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(backgroundColor)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(isSelected ? Color.primary : Color.clear, lineWidth: 2)
-                    .padding(1)
-            )
-            .onTapGesture {
-                guard manager.context.canSelect(month, day, calendar) else {
-                    return
+    var body: some View {
+        if manager.context.shouldHideNonCurrentMonthDays && !isInCurrentMonth {
+            Color.clear
+        } else {
+            Text(numericDay)
+                .font(.footnote)
+                .foregroundColor(foregroundColor)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ifElse(manager.context.style == .paged) {
+                    $0.aspectRatio(1, contentMode: .fit)
+                } else: {
+                    $0.frame(height: manager.context.rowHeight)
                 }
-                withAnimation {
-                    manager.selectedDate = isSelected ? nil : day
+                .background(
+                    RoundedRectangle(cornerRadius: CXSpacing.halfX)
+                        .fill(backgroundColor)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: CXSpacing.halfX)
+                        .stroke(isSelected ? Color.primary : Color.clear, lineWidth: CXSpacing.quarterX)
+                        .padding(1)
+                )
+                .onTapGesture {
+                    guard manager.context.canSelect(month, day, calendar) else {
+                        return
+                    }
+                    withAnimation {
+                        manager.selectedDate = isSelected ? nil : day
+                    }
                 }
-            }
+        }
     }
 
     private var numericDay: String {

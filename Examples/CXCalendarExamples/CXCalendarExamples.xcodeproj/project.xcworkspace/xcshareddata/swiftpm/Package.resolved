@@ -1,5 +1,5 @@
 {
-  "originHash" : "5d991e121379b35df4a46c61b1c09bf04222b193121689a6084203f1ae381219",
+  "originHash" : "bbf6ae9cfb7c79fd90291949a54c249355e108724423710a9e0fcb90db911975",
   "pins" : [
     {
       "identity" : "cxfoundation",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/Cunqi/CXLazyPage.git",
       "state" : {
         "branch" : "master",
-        "revision" : "df58ff0f12ae4a0c630a22a546c85ccdb8c68109"
+        "revision" : "ca7c7d70e8ada28d6895db04e6c2f344afedf2d3"
       }
     },
     {

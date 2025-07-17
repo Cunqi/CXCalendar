@@ -11,6 +11,7 @@ import SwiftUI
 enum Examples: String, CaseIterable {
     case horizontal = "Horizontal"
     case vertical = "Vertical"
+    case verticalScrollable = "Vertical Scrollable"
     case calendarWithCustomHeader = "Calendar with Custom Header"
     case calendarWithExternalMonthHeader = "Calendar with External Month Header"
     case calendarWithCustomDay = "Calendar with Custom Day"
@@ -38,6 +39,8 @@ struct ContentView: View {
             HorizontalCalendarExampleView()
         case .vertical:
             VerticalCalendarExampleView()
+        case .verticalScrollable:
+            VerticalScrollableCalendarExampleView()
         case .calendarWithCustomHeader:
             CalendarWithCustomHeaderExampleView()
         case .calendarWithExternalMonthHeader:

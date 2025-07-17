@@ -29,4 +29,28 @@ extension Calendar {
             return IdentifiableDate(value: day, id: index)
         }
     }
+
+    /// Calculates the number of weeks in the month of a given date.
+    /// - Parameter date: The date for which to calculate the number of weeks in its month.
+    /// - Returns: The number of weeks in the month of the specified date.
+    func numberOfWeeks(inMonthOf date: Date) -> Int {
+        guard let monthInterval = dateInterval(of: .month, for: date) else {
+            return 0
+        }
+
+        let startOfMonth = monthInterval.start
+        let endOfMonth = self.date(byAdding: .day, value: -1, to: monthInterval.end)!
+
+        let startWeek = component(.weekOfYear, from: startOfMonth)
+        let endWeek = component(.weekOfYear, from: endOfMonth)
+
+        // If the start week is greater than the end week, it means the month spans across two years.
+        if endWeek < startWeek {
+            let year = component(.yearForWeekOfYear, from: startOfMonth)
+            let weeksInYear = range(of: .weekOfYear, in: .yearForWeekOfYear, for: self.date(from: DateComponents(year: year))!)?.count ?? 52
+            return (weeksInYear - startWeek + 1) + endWeek
+        }
+
+        return endWeek - startWeek
+    }
 }

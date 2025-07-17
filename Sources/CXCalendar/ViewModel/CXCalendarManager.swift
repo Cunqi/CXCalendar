@@ -70,7 +70,11 @@ public class CXCalendarManager {
     // MARK: - Internal Methods
 
     func makeMonthFromStart(offset: Int) -> Date {
-        return context.calendar.date(byAdding: .month, value: offset, to: startDate)!
+        context.calendar.date(byAdding: .month, value: offset, to: startDate)!
+    }
+
+    func numberOfWeeks(for index: Int) -> Int {
+        context.calendar.numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index))
     }
 }
 
