@@ -32,8 +32,8 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
             } heightOf: { index in
                 let rowHeight = Int(layout.rowHeight)
                 let rowPadding = Int(layout.rowPadding)
-                let numberOfWeeks = manager.numberOfWeeks(for: index) + 1 // month header
-                return numberOfWeeks * (rowHeight + rowPadding) - rowPadding
+                let numberOfRows = manager.numberOfRows(for: index)
+                return numberOfRows * (rowHeight + rowPadding) - rowPadding
             }
         }
         .environment(manager)

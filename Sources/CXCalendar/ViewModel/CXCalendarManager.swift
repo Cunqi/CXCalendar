@@ -5,7 +5,7 @@
 //  Created by Cunqi Xiao on 7/13/25.
 //
 
-import Foundation
+import CXFoundation
 import SwiftUI
 import Observation
 
@@ -73,8 +73,21 @@ public class CXCalendarManager {
         context.calendar.date(byAdding: .month, value: offset, to: startDate)!
     }
 
-    func numberOfWeeks(for index: Int) -> Int {
-        context.calendar.numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index))
+    func makeMonthGridDates(for month: Date) -> [IdentifiableDate] {
+        guard let monthInterval = context.calendar.dateInterval(of: .month, for: month) else {
+            return []
+        }
+
+        switch context.style {
+        case .paged:
+            return context.calendar.makeFixedMonthGridDates(from: monthInterval)
+        case .scrollable:
+            return context.calendar.makeDynamicMonthGridDates(from: monthInterval)
+        }
+    }
+
+    func numberOfRows(for index: Int) -> Int {
+        context.calendar.numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index)) + 1 // +1 for month header
     }
 }
 
