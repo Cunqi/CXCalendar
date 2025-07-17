@@ -8,5 +8,4 @@
 import SwiftUI
 
 public protocol CXCalendarHeaderViewRepresentable: View, CXCalendarAccessible {
-    var month: Date { get }
 }
