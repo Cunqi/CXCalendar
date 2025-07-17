@@ -14,7 +14,7 @@ struct WeekHeaderView: CXCalendarHeaderViewRepresentable {
 
     var body: some View {
         LazyVGrid(columns: manager.columns, spacing: manager.context.rowPadding) {
-            let titles = manager.context.weekdayTitles
+            let titles = calendar.veryShortWeekdaySymbols
             ForEach(titles.indices, id: \.self) { index in
                 Text(titles[index])
                     .font(.caption)

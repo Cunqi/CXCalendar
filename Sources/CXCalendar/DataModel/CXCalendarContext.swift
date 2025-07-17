@@ -27,9 +27,6 @@ public struct CXCalendarContext {
     /// Calendar used for all date and calculation logic.
     public let calendar: Calendar
 
-    /// Titles representing the days of the week.
-    public let weekdayTitles: [String]
-
     /// The calendar's starting display date.
     public let startDate: Date
 
@@ -42,6 +39,10 @@ public struct CXCalendarContext {
     /// Closure returning a SwiftUI View for the month header, given the current month date.
     /// This is used to display the month title along with the month view.
     public let monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+
+    /// Closure returning a SwiftUI View for the week header, given the current month date.
+    /// This is used to display the week title of calendar view.
+    public let weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable
 
     /// Closure returning a SwiftUI View for individual days, given the month and day dates.
     public let dayView: (Date, Date) -> any CXDayViewRepresentable
@@ -77,11 +78,11 @@ public struct CXCalendarContext {
          rowHeight: CGFloat,
          style: CalendarStyle,
          calendar: Calendar,
-         weekdayTitles: [String],
          startDate: Date,
          selectedDate: Date?,
          calendarHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable,
          monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?,
+         weekHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable,
          dayView: @escaping (Date, Date) -> any CXDayViewRepresentable,
          canSelect: @escaping (Date, Date, Calendar) -> Bool,
          isSelected: @escaping (Date, Date?, Calendar) -> Bool,
@@ -96,11 +97,11 @@ public struct CXCalendarContext {
         self.rowHeight = rowHeight
         self.style = style
         self.calendar = calendar
-        self.weekdayTitles = weekdayTitles
         self.startDate = startDate
         self.selectedDate = selectedDate
         self.calendarHeader = calendarHeader
         self.monthHeader = monthHeader
+        self.weekHeader = weekHeader
         self.dayView = dayView
         self.canSelect = canSelect
         self.isSelected = isSelected
@@ -126,13 +127,15 @@ public extension CXCalendarContext {
         private var startDate: Date = .now
         private var selectedDate: Date?
 
-        private var weekdayTitles: [String] = Calendar.current.veryShortWeekdaySymbols
-
         private var calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
             CalendarHeaderView(month: month)
         }
 
         private var monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+
+        private var weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
+            WeekHeaderView(month: month)
+        }
 
         private var dayView: (Date, Date) -> any CXDayViewRepresentable = { month, day in
             DayView(month: month, day: day)
@@ -162,7 +165,6 @@ public extension CXCalendarContext {
             rowPadding = context.rowPadding
             rowHeight = context.rowHeight
             calendar = context.calendar
-            weekdayTitles = context.weekdayTitles
             startDate = context.startDate
             selectedDate = context.selectedDate
             calendarHeader = context.calendarHeader
@@ -221,12 +223,6 @@ public extension CXCalendarContext {
             return self
         }
 
-        /// Sets the titles for the weekdays.
-        public func weekdayTitles(_ weekdayTitles: [String]) -> Builder {
-            self.weekdayTitles = weekdayTitles
-            return self
-        }
-
         /// Sets the calendar header view closure for the calendar.
         public func calendarHeader(_ calendarHeader: @escaping (Date) -> some CXCalendarHeaderViewRepresentable) -> Builder {
             self.calendarHeader = calendarHeader
@@ -236,6 +232,12 @@ public extension CXCalendarContext {
         /// Sets the month header view closure for the month header.
         public func monthHeader(_ monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?) -> Builder {
             self.monthHeader = monthHeader
+            return self
+        }
+
+        /// Sets the week header view closure for the week header.
+        public func weekHeader(_ weekHeader: @escaping (Date) -> some CXCalendarHeaderViewRepresentable) -> Builder {
+            self.weekHeader = weekHeader
             return self
         }
 
@@ -296,11 +298,11 @@ public extension CXCalendarContext {
                 rowHeight: rowHeight,
                 style: style,
                 calendar: calendar,
-                weekdayTitles: weekdayTitles,
                 startDate: startDate,
                 selectedDate: selectedDate,
                 calendarHeader: calendarHeader,
                 monthHeader: monthHeader,
+                weekHeader: weekHeader,
                 dayView: dayView,
                 canSelect: canSelect,
                 isSelected: isSelected,
