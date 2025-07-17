@@ -10,8 +10,11 @@ import CXUICore
 import Observation
 import SwiftUI
 
+// MARK: - CalendarWithAccessoryViewExampleView
+
 struct CalendarWithAccessoryViewExampleView: View {
-    @State private var viewModel = ViewModel()
+
+    // MARK: Internal
 
     var body: some View {
         let context = CXCalendarContext.paged.builder
@@ -20,7 +23,7 @@ struct CalendarWithAccessoryViewExampleView: View {
                     .onAppear {
                         viewModel.updateItems(for: day)
                     }
-                    .onChange(of: day) { oldValue, newValue in
+                    .onChange(of: day) { _, _ in
                         viewModel.updateItems(for: day)
                     }
             }
@@ -31,7 +34,14 @@ struct CalendarWithAccessoryViewExampleView: View {
             .navigationTitle("Calendar with Accessory View")
             .navigationBarTitleDisplayMode(.inline)
     }
+
+    // MARK: Private
+
+    @State private var viewModel = ViewModel()
+
 }
+
+// MARK: - AccessoryView
 
 struct AccessoryView: View {
     let day: Date
@@ -66,6 +76,8 @@ struct AccessoryView: View {
     }
 }
 
+// MARK: - CalendarWithAccessoryViewExampleView.ViewModel
+
 extension CalendarWithAccessoryViewExampleView {
     @Observable
     class ViewModel {
@@ -82,6 +94,8 @@ extension CalendarWithAccessoryViewExampleView {
         }
     }
 }
+
+// MARK: - ActionItem
 
 struct ActionItem: Identifiable {
     let id = UUID()

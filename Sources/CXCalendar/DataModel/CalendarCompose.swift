@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - CXCalendarComposeProtocol
+
 public protocol CXCalendarComposeProtocol {
     /// Closure returning a SwiftUI View for the calendar header, given the current month date.
     var calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable { get }
@@ -25,6 +27,8 @@ public protocol CXCalendarComposeProtocol {
     /// Optional closure returning a SwiftUI View to overlay when a day is selected.
     var accessoryView: ((Date) -> any View)? { get }
 }
+
+// MARK: - CalendarCompose
 
 struct CalendarCompose: CXCalendarComposeProtocol {
     let calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable

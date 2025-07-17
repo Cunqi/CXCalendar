@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - CXContextAccessible
+
 @MainActor
 public protocol CXContextAccessible {
     var manager: CXCalendarManager { get }
@@ -20,20 +22,20 @@ public protocol CXContextAccessible {
     var interaction: CXCalendarInteractionProtocol { get }
 }
 
-public extension CXContextAccessible {
-    var context: CXCalendarContext {
+extension CXContextAccessible {
+    public var context: CXCalendarContext {
         manager.context
     }
 
-    var layout: CXCalendarLayoutProtocol {
+    public var layout: CXCalendarLayoutProtocol {
         context.layout
     }
 
-    var compose: CXCalendarComposeProtocol {
+    public var compose: CXCalendarComposeProtocol {
         context.compose
     }
 
-    var interaction: CXCalendarInteractionProtocol {
+    public var interaction: CXCalendarInteractionProtocol {
         context.interaction
     }
 }

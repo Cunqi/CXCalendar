@@ -7,11 +7,14 @@
 
 import CXCalendar
 import CXUICore
-import SwiftUI
 import Observation
+import SwiftUI
+
+// MARK: - CalendarWithRangePickExampleView
 
 struct CalendarWithRangePickExampleView: View {
-    @State private var viewModel = ViewModel()
+
+    // MARK: Internal
 
     var body: some View {
         let context = CXCalendarContext.paged.builder
@@ -19,12 +22,12 @@ struct CalendarWithRangePickExampleView: View {
             .dayView { month, day in
                 RangeDay(month: month, day: day, range: $viewModel.range)
             }
-            .onSelected({ date in
+            .onSelected { date in
                 guard let date else {
                     return
                 }
                 viewModel.pick(date: date)
-            })
+            }
             .build()
 
         VStack {
@@ -41,6 +44,24 @@ struct CalendarWithRangePickExampleView: View {
             Spacer()
         }
         .padding(.horizontal)
+    }
+
+    @ViewBuilder
+    var fromDateCard: some View {
+        if let start = viewModel.range?.start {
+            makeTimeCard(for: start, title: "From")
+        } else {
+            makePlaceholderCard(title: "From")
+        }
+    }
+
+    @ViewBuilder
+    var toDateCard: some View {
+        if let end = viewModel.range?.end {
+            makeTimeCard(for: end, title: "To")
+        } else {
+            makePlaceholderCard(title: "To")
+        }
     }
 
     @ViewBuilder
@@ -83,24 +104,13 @@ struct CalendarWithRangePickExampleView: View {
         }
     }
 
-    @ViewBuilder
-    var fromDateCard: some View {
-        if let start = viewModel.range?.start {
-            makeTimeCard(for: start, title: "From")
-        } else {
-            makePlaceholderCard(title: "From")
-        }
-    }
+    // MARK: Private
 
-    @ViewBuilder
-    var toDateCard: some View {
-        if let end = viewModel.range?.end {
-            makeTimeCard(for: end, title: "To")
-        } else {
-            makePlaceholderCard(title: "To")
-        }
-    }
+    @State private var viewModel = ViewModel()
+
 }
+
+// MARK: - RangeDay
 
 struct RangeDay: CXDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
@@ -109,7 +119,7 @@ struct RangeDay: CXDayViewRepresentable {
     let day: Date
     @Binding var range: DateInterval?
 
-    let isInCurrentMonth: Bool = true
+    let isInCurrentMonth = true
 
     var isToday: Bool {
         calendar.isDateInToday(day)
@@ -146,7 +156,7 @@ struct RangeDay: CXDayViewRepresentable {
     }
 
     var background: some View {
-        if isLeadingDay && isTrailingDay {
+        if isLeadingDay, isTrailingDay {
             MaskedRoundedRectangle(radius: CXSpacing.oneX)
                 .fill(Color.accentColor.opacity(0.5))
         } else if isLeadingDay {
@@ -165,9 +175,11 @@ struct RangeDay: CXDayViewRepresentable {
     }
 }
 
+// MARK: - MaskedRoundedRectangle
+
 struct MaskedRoundedRectangle: Shape {
     var radius: CGFloat = CXSpacing.oneX
-    var corners: UIRectCorner = .allCorners
+    var corners = UIRectCorner.allCorners
 
     func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(
@@ -178,6 +190,8 @@ struct MaskedRoundedRectangle: Shape {
         return Path(path.cgPath)
     }
 }
+
+// MARK: - CalendarWithRangePickExampleView.ViewModel
 
 extension CalendarWithRangePickExampleView {
     @Observable

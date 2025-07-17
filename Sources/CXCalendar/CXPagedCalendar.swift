@@ -5,27 +5,25 @@
 //  Created by Cunqi Xiao on 7/13/25.
 //
 
-import CXUICore
 import CXLazyPage
+import CXUICore
 import SwiftUI
 
 public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
 
-    // MARK: - Properties
-
-    @State public var manager: CXCalendarManager
-
-    @Binding var backToToday: Bool
+    // MARK: Lifecycle
 
     // MARK: - Initializer
-    
+
     /// A SwiftUI view that represents a calendar view.
     /// - Parameters:
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
     ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes. this gives
     ///   the ability to reset the calendar view to today's date externally.
-    public init(context: CXCalendarContext = .paged,
-                backToToday: Binding<Bool> = .constant(false)) {
+    public init(
+        context: CXCalendarContext = .paged,
+        backToToday: Binding<Bool> = .constant(false)
+    ) {
         if context.style != .paged {
             assertionFailure("CXPagedCalendar only supports paged style.")
         }
@@ -33,6 +31,10 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }
+
+    // MARK: Public
+
+    @State public var manager: CXCalendarManager
 
     public var body: some View {
         VStack(spacing: layout.rowPadding) {
@@ -44,24 +46,28 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
             }
         }
         .environment(manager)
-        .onChange(of: selectedDate) { oldValue, newValue in
+        .onChange(of: selectedDate) { _, newValue in
             interaction.onSelected?(newValue)
         }
-        .onChange(of: currentDate) { oldValue, newValue in
+        .onChange(of: currentDate) { _, _ in
             withAnimation {
                 manager.selectedDate = nil
             }
         }
-        .onChange(of: currentDate) { oldValue, newValue in
+        .onChange(of: currentDate) { _, newValue in
             interaction.onMonthChanged?(newValue)
         }
-        .onChange(of: backToToday) { oldValue, newValue in
+        .onChange(of: backToToday) { _, _ in
             manager.resetToToday()
         }
     }
+
+    // MARK: Internal
+
+    @Binding var backToToday: Bool
+
 }
 
 #Preview {
     CXPagedCalendar()
 }
-

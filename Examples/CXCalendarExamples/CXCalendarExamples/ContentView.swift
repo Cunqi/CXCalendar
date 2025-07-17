@@ -8,6 +8,8 @@
 import CXCalendar
 import SwiftUI
 
+// MARK: - Examples
+
 enum Examples: String, CaseIterable {
     case horizontal = "Horizontal"
     case vertical = "Vertical"
@@ -20,7 +22,12 @@ enum Examples: String, CaseIterable {
     case calendarWithAccessoryView = "Calendar with Accessory View"
 }
 
+// MARK: - ContentView
+
 struct ContentView: View {
+
+    // MARK: Internal
+
     var body: some View {
         NavigationStack {
             List(Examples.allCases, id: \.self) { example in
@@ -31,6 +38,8 @@ struct ContentView: View {
             .navigationTitle("CXCalendar Examples")
         }
     }
+
+    // MARK: Private
 
     @ViewBuilder
     private func destination(for example: Examples) -> some View {

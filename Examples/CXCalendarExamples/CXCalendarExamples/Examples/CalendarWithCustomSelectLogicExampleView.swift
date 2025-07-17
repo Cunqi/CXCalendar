@@ -20,8 +20,8 @@ struct CalendarWithCustomSelectLogicExampleView: View {
             .build()
 
         CXPagedCalendar(context: context)
-        .padding(.horizontal)
-        .navigationTitle("Custom Select Logic Calendar")
-        .navigationBarTitleDisplayMode(.inline)
+            .padding(.horizontal)
+            .navigationTitle("Custom Select Logic Calendar")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }

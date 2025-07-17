@@ -8,7 +8,7 @@ let package = Package(
     platforms: [
         // Platforms define the platforms that this package supports.
         // .iOS(.v17, // Minimum iOS version
-        .iOS(.v17)
+        .iOS(.v17),
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -28,7 +28,7 @@ let package = Package(
             name: "CXCalendar",
             dependencies: [
                 .product(name: "CXLazyPage", package: "CXLazyPage"),
-                .product(name: "CXUICore", package: "CXUICore")
+                .product(name: "CXUICore", package: "CXUICore"),
             ]
         ),
         .testTarget(
