@@ -14,7 +14,7 @@ struct VerticalCalendarExampleView: View {
             .axis(.vertical)
             .build()
 
-        CXCalendarView(context: context)
+        CXPagedCalendar(context: context)
             .padding(.horizontal)
             .navigationTitle("Vertical Calendar")
             .navigationBarTitleDisplayMode(.inline)
