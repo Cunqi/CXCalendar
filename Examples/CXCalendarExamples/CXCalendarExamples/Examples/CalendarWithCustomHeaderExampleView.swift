@@ -11,8 +11,8 @@ import SwiftUI
 
 struct CalendarWithCustomHeaderExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.Builder()
-            .headerView { month in
+        let context = CXCalendarContext.paged.builder
+            .calendarHeader { month in
                 CustomMonthHeaderView(month: month)
             }
             .build()
@@ -25,7 +25,7 @@ struct CalendarWithCustomHeaderExampleView: View {
     }
 }
 
-struct CustomMonthHeaderView: CXMonthHeaderViewRepresentable {
+struct CustomMonthHeaderView: CXCalendarHeaderViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date

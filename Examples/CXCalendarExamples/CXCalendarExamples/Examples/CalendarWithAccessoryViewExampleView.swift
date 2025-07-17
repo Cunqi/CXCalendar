@@ -14,7 +14,7 @@ struct CalendarWithAccessoryViewExampleView: View {
     @State private var viewModel = ViewModel()
 
     var body: some View {
-        let context = CXCalendarContext.Builder()
+        let context = CXCalendarContext.paged.builder
             .accessoryView { day in
                 AccessoryView(day: day, items: viewModel.items)
                     .onAppear {

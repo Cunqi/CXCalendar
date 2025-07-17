@@ -11,7 +11,7 @@ import SwiftUI
 
 struct CalendarWithCustomDayExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.Builder()
+        let context = CXCalendarContext.paged.builder
             .dayView { month, day in
                 CustomDayView(month: month, day: day)
             }
