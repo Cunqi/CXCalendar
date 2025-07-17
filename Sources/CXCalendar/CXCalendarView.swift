@@ -31,7 +31,7 @@ public struct CXCalendarView: View, CXCalendarAccessible {
     }
 
     public var body: some View {
-        VStack {
+        VStack(spacing: manager.context.rowPadding) {
             manager.context.calendarHeader(currentDate).erased
 
             CXLazyPage(axis: manager.context.axis, currentPage: $manager.currentPage) { index in

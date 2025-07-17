@@ -26,7 +26,7 @@ struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
                 }
             }
             Divider()
-            weekdaysBar
+            WeekHeaderView(month: month)
         }
     }
 
@@ -52,18 +52,6 @@ struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
             Image(systemName: "arrow.turn.up.left")
                 .font(.title2)
                 .foregroundColor(.accentColor)
-        }
-    }
-
-    private var weekdaysBar: some View {
-        LazyVGrid(columns: manager.columns, spacing: manager.context.rowPadding) {
-            let titles = manager.context.weekdayTitles
-            ForEach(titles.indices, id: \.self) { index in
-                Text(titles[index])
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
         }
     }
 }
