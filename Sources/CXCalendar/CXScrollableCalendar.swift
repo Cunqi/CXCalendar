@@ -35,7 +35,7 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
     public var body: some View {
         VStack {
             compose.calendarHeader(currentDate).erased
-            CXLazyList { index in
+            CXLazyList(currentPage: $manager.currentPage) { index in
                 MonthView(month: manager.makeMonthFromStart(offset: index))
             } heightOf: { index in
                 let rowHeight = Int(layout.rowHeight)
@@ -46,7 +46,10 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
         }
         .environment(manager)
         .onChange(of: backToToday) { _, _ in
-            manager.selectedDate = .now
+            manager.resetToToday()
+        }
+        .onChange(of: currentDate) { _, newValue in
+            interaction.onMonthChanged?(newValue)
         }
     }
 
