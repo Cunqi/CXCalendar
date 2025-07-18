@@ -44,7 +44,10 @@ struct DayView: View, CXDayViewRepresentable {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: CXSpacing.halfX)
-                        .stroke(isSelected ? Color.primary : Color.clear, lineWidth: CXSpacing.quarterX)
+                        .stroke(
+                            isSelected ? Color.primary : Color.clear,
+                            lineWidth: CXSpacing.quarterX
+                        )
                         .padding(1)
                 )
                 .onTapGesture {

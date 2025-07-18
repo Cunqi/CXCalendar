@@ -15,12 +15,16 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
     /// A scrollable calendar view that displays months in a paginated format.
     /// - Parameters:
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
-    ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes. This gives
-    ///   the ability to reset the calendar view to today's date externally.
+    ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes.
+    /// This gives the ability to reset the calendar view to today's date externally.
     public init(
         context: CXCalendarContext = .paged,
         backToToday: Binding<Bool> = .constant(false)
     ) {
+        if context.style != .scrollable {
+            assertionFailure("CXScrollableCalendar only supports scrollable style.")
+        }
+
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }
