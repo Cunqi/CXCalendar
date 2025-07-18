@@ -13,11 +13,11 @@ import SwiftUI
 // MARK: - CalendarWithRangePickExampleView
 
 struct CalendarWithRangePickExampleView: View {
-
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.paged.builder
+        let context = CXCalendarContext.paged
+            .builder
             .columnPadding(.zero)
             .dayView { month, day in
                 RangeDay(month: month, day: day, range: $viewModel.range)
@@ -107,7 +107,6 @@ struct CalendarWithRangePickExampleView: View {
     // MARK: Private
 
     @State private var viewModel = ViewModel()
-
 }
 
 // MARK: - RangeDay
@@ -126,17 +125,23 @@ struct RangeDay: CXDayViewRepresentable {
     }
 
     var isSelected: Bool {
-        guard let range else { return false }
+        guard let range else {
+            return false
+        }
         return range.contains(day)
     }
 
     var isLeadingDay: Bool {
-        guard let range else { return false }
+        guard let range else {
+            return false
+        }
         return calendar.isDate(day, inSameDayAs: range.start)
     }
 
     var isTrailingDay: Bool {
-        guard let range else { return false }
+        guard let range else {
+            return false
+        }
         return calendar.isDate(day, inSameDayAs: range.end)
     }
 

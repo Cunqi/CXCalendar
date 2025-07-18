@@ -34,9 +34,7 @@ public struct CXCalendarContext {
 
 extension CXCalendarContext {
     public class Builder: CXCalendarLayoutProtocol, CXCalendarComposeProtocol,
-        CXCalendarInteractionProtocol
-    {
-
+        CXCalendarInteractionProtocol {
         // MARK: Lifecycle
 
         // MARK: - Initializers
@@ -132,7 +130,6 @@ extension CXCalendarContext {
         public private(set) var onSelected: ((Date?) -> Void)?
 
         public private(set) var onMonthChanged: ((Date) -> Void)?
-
     }
 }
 
@@ -227,22 +224,19 @@ extension CXCalendarContext.Builder {
     }
 
     public func monthHeader(_ monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?)
-        -> CXCalendarContext.Builder
-    {
+        -> CXCalendarContext.Builder {
         self.monthHeader = monthHeader
         return self
     }
 
     public func weekHeader(_ weekHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable)
-        -> CXCalendarContext.Builder
-    {
+        -> CXCalendarContext.Builder {
         self.weekHeader = weekHeader
         return self
     }
 
     public func dayView(_ dayView: @escaping (Date, Date) -> any CXDayViewRepresentable)
-        -> CXCalendarContext.Builder
-    {
+        -> CXCalendarContext.Builder {
         self.dayView = dayView
         return self
     }
@@ -255,22 +249,19 @@ extension CXCalendarContext.Builder {
     // MARK: - CXCalendarInteractionProtocol
 
     public func canSelect(_ canSelect: @escaping (Date, Date, Calendar) -> Bool)
-        -> CXCalendarContext.Builder
-    {
+        -> CXCalendarContext.Builder {
         self.canSelect = canSelect
         return self
     }
 
     public func isSelected(_ isSelected: @escaping (Date, Date?, Calendar) -> Bool)
-        -> CXCalendarContext.Builder
-    {
+        -> CXCalendarContext.Builder {
         self.isSelected = isSelected
         return self
     }
 
     public func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool)
-        -> CXCalendarContext.Builder
-    {
+        -> CXCalendarContext.Builder {
         self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
         return self
     }

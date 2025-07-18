@@ -25,7 +25,6 @@ enum Examples: String, CaseIterable {
 // MARK: - ContentView
 
 struct ContentView: View {
-
     // MARK: Internal
 
     var body: some View {

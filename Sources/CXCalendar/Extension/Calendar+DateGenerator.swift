@@ -9,7 +9,6 @@ import CXFoundation
 import Foundation
 
 extension Calendar {
-
     // MARK: Internal
 
     /// Generate month grid dates with leading and trailing dates in fix 42 cells.
@@ -37,9 +36,8 @@ extension Calendar {
         let firstDay = monthInterval.start
         let lastDay = date(byAdding: .day, value: -1, to: monthInterval.end)!
 
-        guard
-            let startWeekInterval = dateInterval(of: .weekOfMonth, for: firstDay),
-            let endWeekInterval = dateInterval(of: .weekOfMonth, for: lastDay)
+        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: firstDay),
+              let endWeekInterval = dateInterval(of: .weekOfMonth, for: lastDay)
         else {
             return []
         }
@@ -96,5 +94,4 @@ extension Calendar {
 
     /// Fix generated grid into 6 rows × 7 columns (42 cells)
     private static let gridRange = 0 ..< 42
-
 }

@@ -10,7 +10,6 @@ import CXUICore
 import SwiftUI
 
 public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
-
     // MARK: Lifecycle
 
     // MARK: - Initializer
@@ -65,7 +64,6 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
     // MARK: Internal
 
     @Binding var backToToday: Bool
-
 }
 
 #Preview {

@@ -9,7 +9,6 @@ import CXLazyPage
 import SwiftUI
 
 public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessible {
-
     // MARK: Lifecycle
 
     /// A scrollable calendar view that displays months in a paginated format.
@@ -54,5 +53,4 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
     // MARK: Internal
 
     @Binding var backToToday: Bool
-
 }

@@ -9,7 +9,6 @@ import CXUICore
 import SwiftUI
 
 struct DayView: View, CXDayViewRepresentable {
-
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager

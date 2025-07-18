@@ -9,7 +9,6 @@ import CXFoundation
 import SwiftUI
 
 struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
-
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager

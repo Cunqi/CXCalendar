@@ -9,7 +9,6 @@ import CXFoundation
 import SwiftUI
 
 struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
-
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager
@@ -33,11 +32,10 @@ struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
                 }
             }
 
-            if
-                let accessoryView = compose.accessoryView,
-                let selectedDate = manager.selectedDate
-            {
-                accessoryView(selectedDate).erased
+            if let accessoryView = compose.accessoryView,
+               let selectedDate = manager.selectedDate {
+                accessoryView(selectedDate)
+                    .erased
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
@@ -48,5 +46,4 @@ struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
     private var days: [IdentifiableDate] {
         manager.makeMonthGridDates(for: month)
     }
-
 }

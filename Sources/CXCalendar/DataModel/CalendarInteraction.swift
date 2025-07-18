@@ -29,7 +29,6 @@ public protocol CXCalendarInteractionProtocol {
 // MARK: - CalendarInteraction
 
 struct CalendarInteraction: CXCalendarInteractionProtocol {
-
     let canSelect: (Date, Date, Calendar) -> Bool
 
     let isSelected: (Date, Date?, Calendar) -> Bool

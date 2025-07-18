@@ -12,11 +12,11 @@ import SwiftUI
 // MARK: - CalendarWithExternalMonthHeaderViewExampleView
 
 struct CalendarWithExternalMonthHeaderViewExampleView: View {
-
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.paged.builder
+        let context = CXCalendarContext.paged
+            .builder
             .calendarHeader { month in
                 WeekdayOnlyHeaderView(month: month)
             }
@@ -46,7 +46,6 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
 
     @State private var currentMonth = Date()
     @State private var resetToday = false
-
 }
 
 // MARK: - WeekdayOnlyHeaderView
@@ -72,7 +71,6 @@ struct WeekdayOnlyHeaderView: CXCalendarHeaderViewRepresentable {
 // MARK: - CustomNavHeaderView
 
 struct CustomNavHeaderView: View {
-
     // MARK: Internal
 
     @Binding var month: Date

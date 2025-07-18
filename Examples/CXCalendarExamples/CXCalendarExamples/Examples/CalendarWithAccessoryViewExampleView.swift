@@ -13,11 +13,11 @@ import SwiftUI
 // MARK: - CalendarWithAccessoryViewExampleView
 
 struct CalendarWithAccessoryViewExampleView: View {
-
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.paged.builder
+        let context = CXCalendarContext.paged
+            .builder
             .accessoryView { day in
                 AccessoryView(day: day, items: viewModel.items)
                     .onAppear {
@@ -38,7 +38,6 @@ struct CalendarWithAccessoryViewExampleView: View {
     // MARK: Private
 
     @State private var viewModel = ViewModel()
-
 }
 
 // MARK: - AccessoryView

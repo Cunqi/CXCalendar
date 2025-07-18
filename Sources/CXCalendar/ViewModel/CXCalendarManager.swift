@@ -12,7 +12,6 @@ import SwiftUI
 @Observable
 @MainActor
 public class CXCalendarManager {
-
     // MARK: Lifecycle
 
     // MARK: - Initializer

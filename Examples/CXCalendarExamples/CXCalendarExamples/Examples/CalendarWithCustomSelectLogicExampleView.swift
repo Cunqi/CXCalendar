@@ -13,7 +13,8 @@ struct CalendarWithCustomSelectLogicExampleView: View {
     @State private var selectedDate: Date? = nil
 
     var body: some View {
-        let context = CXCalendarContext.paged.builder
+        let context = CXCalendarContext.paged
+            .builder
             .canSelect { month, day, calendar in
                 calendar.isSameMonthInYear(month, day)
             }
