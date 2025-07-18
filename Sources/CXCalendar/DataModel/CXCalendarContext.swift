@@ -33,7 +33,9 @@ public struct CXCalendarContext {
 // MARK: CXCalendarContext.Builder
 
 extension CXCalendarContext {
-    public class Builder: CXCalendarLayoutProtocol, CXCalendarComposeProtocol, CXCalendarInteractionProtocol {
+    public class Builder: CXCalendarLayoutProtocol, CXCalendarComposeProtocol,
+        CXCalendarInteractionProtocol
+    {
 
         // MARK: Lifecycle
 
@@ -97,19 +99,22 @@ extension CXCalendarContext {
 
         // MARK: - CXCalendarComposeProtocol
 
-        public private(set) var calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
-            CalendarHeaderView(month: month)
-        }
+        public private(set) var calendarHeader: (Date)
+            -> any CXCalendarHeaderViewRepresentable = { month in
+                CalendarHeaderView(month: month)
+            }
 
         public private(set) var monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
 
-        public private(set) var weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable = { month in
-            WeekHeaderView(month: month)
-        }
+        public private(set) var weekHeader: (Date)
+            -> any CXCalendarHeaderViewRepresentable = { month in
+                WeekHeaderView(month: month)
+            }
 
-        public private(set) var dayView: (Date, Date) -> any CXDayViewRepresentable = { month, day in
-            DayView(month: month, day: day)
-        }
+        public private(set) var dayView: (Date, Date)
+            -> any CXDayViewRepresentable = { month, day in
+                DayView(month: month, day: day)
+            }
 
         public private(set) var accessoryView: ((Date) -> any View)?
 
@@ -117,9 +122,10 @@ extension CXCalendarContext {
 
         public private(set) var canSelect: (Date, Date, Calendar) -> Bool = { _, _, _ in true }
 
-        public private(set) var isSelected: (Date, Date?, Calendar) -> Bool = { day, selectedDate, calendar in
-            selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
-        }
+        public private(set) var isSelected: (Date, Date?, Calendar)
+            -> Bool = { day, selectedDate, calendar in
+                selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
+            }
 
         public private(set) var shouldHideNonCurrentMonthDays = false
 
@@ -148,6 +154,7 @@ extension CXCalendarContext {
         CXCalendarContext.Builder()
             .style(.scrollable)
             .axis(.vertical)
+            .shouldHideNonCurrentMonthDays(true)
             .calendarHeader { month in
                 WeekHeaderView(month: month)
             }
@@ -212,22 +219,30 @@ extension CXCalendarContext.Builder {
 
     // MARK: - CXCalendarComposeProtocol
 
-    public func calendarHeader(_ calendarHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable) -> CXCalendarContext.Builder {
+    public func calendarHeader(_ calendarHeader: @escaping (Date)
+        -> any CXCalendarHeaderViewRepresentable
+    ) -> CXCalendarContext.Builder {
         self.calendarHeader = calendarHeader
         return self
     }
 
-    public func monthHeader(_ monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?) -> CXCalendarContext.Builder {
+    public func monthHeader(_ monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?)
+        -> CXCalendarContext.Builder
+    {
         self.monthHeader = monthHeader
         return self
     }
 
-    public func weekHeader(_ weekHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable) -> CXCalendarContext.Builder {
+    public func weekHeader(_ weekHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable)
+        -> CXCalendarContext.Builder
+    {
         self.weekHeader = weekHeader
         return self
     }
 
-    public func dayView(_ dayView: @escaping (Date, Date) -> any CXDayViewRepresentable) -> CXCalendarContext.Builder {
+    public func dayView(_ dayView: @escaping (Date, Date) -> any CXDayViewRepresentable)
+        -> CXCalendarContext.Builder
+    {
         self.dayView = dayView
         return self
     }
@@ -239,17 +254,23 @@ extension CXCalendarContext.Builder {
 
     // MARK: - CXCalendarInteractionProtocol
 
-    public func canSelect(_ canSelect: @escaping (Date, Date, Calendar) -> Bool) -> CXCalendarContext.Builder {
+    public func canSelect(_ canSelect: @escaping (Date, Date, Calendar) -> Bool)
+        -> CXCalendarContext.Builder
+    {
         self.canSelect = canSelect
         return self
     }
 
-    public func isSelected(_ isSelected: @escaping (Date, Date?, Calendar) -> Bool) -> CXCalendarContext.Builder {
+    public func isSelected(_ isSelected: @escaping (Date, Date?, Calendar) -> Bool)
+        -> CXCalendarContext.Builder
+    {
         self.isSelected = isSelected
         return self
     }
 
-    public func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool) -> CXCalendarContext.Builder {
+    public func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool)
+        -> CXCalendarContext.Builder
+    {
         self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
         return self
     }

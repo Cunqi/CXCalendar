@@ -88,7 +88,11 @@ extension CalendarWithAccessoryViewExampleView {
                 ActionItem(
                     title: "Action \(Int.random(in: 0 ..< abs(date.hashValue) % 100))",
                     time: "\(index + 1) hour(s) ago",
-                    backgroundColor: Color(hue: Double(index) / 10.0, saturation: 0.8, brightness: 0.8)
+                    backgroundColor: Color(
+                        hue: Double(index) / 10.0,
+                        saturation: 0.8,
+                        brightness: 0.8
+                    )
                 )
             }
         }

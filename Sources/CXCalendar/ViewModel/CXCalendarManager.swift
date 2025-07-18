@@ -19,7 +19,10 @@ public class CXCalendarManager {
 
     init(context: CXCalendarContext) {
         self.context = context
-        columns = Array(repeating: GridItem(.flexible(), spacing: context.layout.columnPadding), count: 7)
+        columns = Array(
+            repeating: GridItem(.flexible(), spacing: context.layout.columnPadding),
+            count: 7
+        )
 
         startDate = context.startDate
         selectedDate = context.selectedDate
@@ -94,6 +97,7 @@ public class CXCalendarManager {
     }
 
     func numberOfRows(for index: Int) -> Int {
-        context.calendar.numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index)) + 1 // +1 for month header
+        context.calendar
+            .numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index)) + 1 // +1 for month header
     }
 }

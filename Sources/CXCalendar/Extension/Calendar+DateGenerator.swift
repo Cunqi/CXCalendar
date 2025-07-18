@@ -81,7 +81,11 @@ extension Calendar {
         // If the start week is greater than the end week, it means the month spans across two years.
         if endWeek < startWeek {
             let year = component(.yearForWeekOfYear, from: startOfMonth)
-            let weeksInYear = range(of: .weekOfYear, in: .yearForWeekOfYear, for: self.date(from: DateComponents(year: year))!)?.count ?? 52
+            let weeksInYear = range(
+                of: .weekOfYear,
+                in: .yearForWeekOfYear,
+                for: self.date(from: DateComponents(year: year))!
+            )?.count ?? 52
             return (weeksInYear - startWeek + 1) + endWeek
         }
 
