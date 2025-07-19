@@ -40,8 +40,7 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
             compose.calendarHeader(currentDate).erased
 
             CXLazyPage(axis: layout.axis, currentPage: $manager.currentPage) { index in
-                CalendarBodyView(month: manager.makeDate(for: index))
-                Spacer()
+                CalendarBodyView(date: manager.makeDate(for: index))
             }
         }
         .environment(manager)

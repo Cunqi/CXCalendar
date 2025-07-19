@@ -41,6 +41,10 @@ public class CXCalendarManager {
         makeDate(for: currentPage)
     }
 
+    public var currentDateInterval: DateInterval {
+        makeDateInterval(for: currentPage)
+    }
+
     // MARK: - Public Methods
 
     /// Determines whether the reset to today button should be displayed for a given month.
