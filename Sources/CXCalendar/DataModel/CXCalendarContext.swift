@@ -142,9 +142,6 @@ extension CXCalendarContext {
 
         if scrollBehavior == .scroll {
             builder = builder
-                .calendarHeader { month in
-                    WeekHeaderView(month: month)
-                }
                 .bodyHeader { month in
                     MonthHeaderView(month: month)
                 }
