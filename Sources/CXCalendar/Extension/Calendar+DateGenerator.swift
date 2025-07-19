@@ -62,6 +62,25 @@ extension Calendar {
         return result
     }
 
+    func makeFixedWeekGridDates(for date: Date) -> [IdentifiableDate] {
+        guard let weekInterval = dateInterval(of: .weekOfMonth, for: date) else {
+            return []
+        }
+
+        var day = weekInterval.start
+        var result = [IdentifiableDate]()
+        var index = 0
+        while day < weekInterval.end {
+            result.append(IdentifiableDate(value: day, id: index))
+            guard let nextDay = self.date(byAdding: .day, value: 1, to: day) else {
+                break
+            }
+            index += 1
+            day = nextDay
+        }
+        return result
+    }
+
     /// Calculates the number of weeks in the month of a given date.
     /// - Parameter date: The date for which to calculate the number of weeks in its month.
     /// - Returns: The number of weeks in the month of the specified date.
