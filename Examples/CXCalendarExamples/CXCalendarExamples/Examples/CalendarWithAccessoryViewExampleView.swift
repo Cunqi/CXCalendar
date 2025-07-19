@@ -16,7 +16,7 @@ struct CalendarWithAccessoryViewExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.paged
+        let context = CXCalendarContext.month(.page)
             .builder
             .accessoryView { day in
                 AccessoryView(day: day, items: viewModel.items)
@@ -29,8 +29,7 @@ struct CalendarWithAccessoryViewExampleView: View {
             }
             .build()
 
-        CXPagedCalendar(context: context)
-            .padding(.horizontal)
+        CXCalendar(context: context)
             .navigationTitle("Calendar with Accessory View")
             .navigationBarTitleDisplayMode(.inline)
     }

@@ -135,32 +135,30 @@ extension CXCalendarContext {
 // MARK: - Convenience accessors
 
 extension CXCalendarContext {
-    /// Returns a pre-configured CXCalendarContext instance for `CXCalendarStyle.paged`
-    /// this context is targetting to serve `CXPagedCalendar` ONLY
-    public static var paged: CXCalendarContext {
-        CXCalendarContext.Builder()
-            .bodyHeader(nil)
-            .build()
-    }
-
-    /// Returns a pre-configured CXCalendarContext instance for `CXCalendarStyle.scrollable`
-    /// this context is targetting to serve `CXScrollableCalendar` ONLY
-    public static var scrollable: CXCalendarContext {
-        CXCalendarContext.Builder()
-            .axis(.vertical)
-            .shouldHideWhenOutOfBounds(true)
-            .calendarHeader { month in
-                WeekHeaderView(month: month)
-            }
-            .bodyHeader { month in
-                MonthHeaderView(month: month)
-            }
-            .build()
-    }
-
-    /// Returns a builder instance initialized with the current context.
     public var builder: CXCalendarContext.Builder {
         CXCalendarContext.Builder(from: self)
+    }
+
+    public static func month(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
+        var builder = CXCalendarContext.Builder()
+            .calendarType(.month(scrollBehavior))
+
+        if scrollBehavior == .scroll {
+            builder = builder
+                .calendarHeader { month in
+                    WeekHeaderView(month: month)
+                }
+                .bodyHeader { month in
+                    MonthHeaderView(month: month)
+                }
+        }
+        return builder.build()
+    }
+
+    public static func week() -> CXCalendarContext {
+        CXCalendarContext.Builder()
+            .calendarType(.week)
+            .build()
     }
 }
 
@@ -280,6 +278,11 @@ extension CXCalendarContext.Builder {
     }
 
     public func build() -> CXCalendarContext {
+        if case CXCalendarType.month(.scroll) = calendarType {
+            axis = .vertical
+            shouldHideWhenOutOfBounds = true
+        }
+
         let layout = CalendarLayout(
             axis: axis,
             columnPadding: columnPadding,

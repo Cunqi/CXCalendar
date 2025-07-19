@@ -15,6 +15,8 @@ public protocol CXContextAccessible {
 
     var context: CXCalendarContext { get }
 
+    var calendarType: CXCalendarType { get }
+
     var layout: CXCalendarLayoutProtocol { get }
 
     var compose: CXCalendarComposeProtocol { get }
@@ -25,6 +27,10 @@ public protocol CXContextAccessible {
 extension CXContextAccessible {
     public var context: CXCalendarContext {
         manager.context
+    }
+
+    public var calendarType: CXCalendarType {
+        context.calendarType
     }
 
     public var layout: CXCalendarLayoutProtocol {

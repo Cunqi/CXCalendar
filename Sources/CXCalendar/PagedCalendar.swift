@@ -1,5 +1,5 @@
 //
-//  CXPagedCalendar.swift
+//  PagedCalendar.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/13/25.
@@ -9,7 +9,7 @@ import CXLazyPage
 import CXUICore
 import SwiftUI
 
-public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
+public struct PagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
     // MARK: Lifecycle
 
     // MARK: - Initializer
@@ -19,10 +19,7 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
     ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes.
     /// This gives the ability to reset the calendar view to today's date externally.
-    public init(
-        context: CXCalendarContext = .paged,
-        backToToday: Binding<Bool> = .constant(false)
-    ) {
+    public init(context: CXCalendarContext, backToToday: Binding<Bool>) {
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }
@@ -62,8 +59,4 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
     // MARK: Internal
 
     @Binding var backToToday: Bool
-}
-
-#Preview {
-    CXPagedCalendar()
 }

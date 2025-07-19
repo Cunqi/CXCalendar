@@ -16,7 +16,7 @@ struct CalendarWithRangePickExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.paged
+        let context = CXCalendarContext.month(.page)
             .builder
             .columnPadding(.zero)
             .dayView { dateInterval, day in
@@ -31,7 +31,7 @@ struct CalendarWithRangePickExampleView: View {
             .build()
 
         VStack {
-            CXPagedCalendar(context: context)
+            CXCalendar(context: context)
                 .navigationTitle("Calendar with Range Pick")
                 .navigationBarTitleDisplayMode(.inline)
 
@@ -43,7 +43,6 @@ struct CalendarWithRangePickExampleView: View {
 
             Spacer()
         }
-        .padding(.horizontal)
     }
 
     @ViewBuilder
