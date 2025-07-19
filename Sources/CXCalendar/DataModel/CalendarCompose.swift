@@ -13,9 +13,9 @@ public protocol CXCalendarComposeProtocol {
     /// Closure returning a SwiftUI View for the calendar header, given the current month date.
     var calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable { get }
 
-    /// Closure returning a SwiftUI View for the month header, given the current month date.
+    /// Closure returning a SwiftUI View for the body header, given the current month date.
     /// This is used to display the month title along with the month view.
-    var monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)? { get }
+    var bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)? { get }
 
     /// Closure returning a SwiftUI View for the week header, given the current month date.
     /// This is used to display the week title of calendar view.
@@ -33,7 +33,7 @@ public protocol CXCalendarComposeProtocol {
 struct CalendarCompose: CXCalendarComposeProtocol {
     let calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable
 
-    let monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+    let bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
 
     let weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable
 

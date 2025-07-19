@@ -1,5 +1,5 @@
 //
-//  MonthView.swift
+//  CalendarBodyView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/13/25.
@@ -8,7 +8,7 @@
 import CXFoundation
 import SwiftUI
 
-struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
+struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager
@@ -19,7 +19,7 @@ struct MonthView: View, CXCalendarAccessible, CXContextAccessible {
 
     var body: some View {
         VStack(spacing: layout.rowPadding) {
-            if let monthHeader = compose.monthHeader {
+            if let monthHeader = compose.bodyHeader {
                 monthHeader(month)
                     .frame(height: layout.rowHeight)
                     .frame(maxWidth: .infinity)
