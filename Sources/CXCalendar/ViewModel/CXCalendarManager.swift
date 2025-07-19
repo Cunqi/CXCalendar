@@ -38,7 +38,7 @@ public class CXCalendarManager {
     public var selectedDate: Date?
 
     public var currentDate: Date {
-        makeMonthFromStart(offset: currentPage)
+        makeDate(for: currentPage)
     }
 
     // MARK: - Public Methods
@@ -78,8 +78,12 @@ public class CXCalendarManager {
 
     // MARK: - Internal Methods
 
-    func makeMonthFromStart(offset: Int) -> Date {
+    func makeDate(for offset: Int) -> Date {
         context.calendar.date(byAdding: .month, value: offset, to: startDate)!
+    }
+
+    func makeDateInterval(for offset: Int) -> DateInterval {
+        context.calendar.dateInterval(of: .month, for: makeDate(for: offset))!
     }
 
     func makeMonthGridDates(for month: Date) -> [IdentifiableDate] {
@@ -87,16 +91,23 @@ public class CXCalendarManager {
             return []
         }
 
+        return makeMonthGridDates(from: monthInterval)
+    }
+
+    func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
         switch context.style {
         case .paged:
-            return context.calendar.makeFixedMonthGridDates(from: monthInterval)
+            context.calendar.makeFixedMonthGridDates(from: monthInterval)
         case .scrollable:
-            return context.calendar.makeDynamicMonthGridDates(from: monthInterval)
+            context.calendar.makeDynamicMonthGridDates(from: monthInterval)
         }
     }
 
+    func makeWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
+        context.calendar.makeFixedWeekGridDates(from: weekInterval)
+    }
+
     func numberOfRows(for index: Int) -> Int {
-        context.calendar
-            .numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index)) + 1 // +1 for month header
+        context.calendar.numberOfWeeks(inMonthOf: makeDate(for: index)) + 1 // +1 for month header
     }
 }

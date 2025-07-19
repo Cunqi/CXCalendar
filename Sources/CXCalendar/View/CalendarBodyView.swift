@@ -32,13 +32,13 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
                 }
             }
 
-            if let accessoryView = compose.accessoryView,
-               let selectedDate = manager.selectedDate {
+            if let accessoryView = compose.accessoryView, let selectedDate = manager.selectedDate {
                 accessoryView(selectedDate)
                     .erased
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 
     // MARK: Private
