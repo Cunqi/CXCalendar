@@ -57,6 +57,7 @@ extension CXCalendarContext {
             columnPadding = context.layout.columnPadding
             rowPadding = context.layout.rowPadding
             rowHeight = context.layout.rowHeight
+            calendarHPadding = context.layout.calendarHPadding
 
             // CXCalendarComposeProtocol
             calendarHeader = context.compose.calendarHeader
@@ -101,6 +102,8 @@ extension CXCalendarContext {
         public private(set) var rowPadding: CGFloat = CXSpacing.oneX
 
         public private(set) var rowHeight: CGFloat = CXSpacing.sixX
+
+        public private(set) var calendarHPadding: CGFloat = CXSpacing.oneX
 
         // MARK: - CXCalendarComposeProtocol
 
@@ -222,6 +225,11 @@ extension CXCalendarContext.Builder {
         return self
     }
 
+    public func calendarHPadding(_ calendarHPadding: CGFloat) -> CXCalendarContext.Builder {
+        self.calendarHPadding = calendarHPadding
+        return self
+    }
+
     // MARK: - CXCalendarComposeProtocol
 
     public func calendarHeader(_ calendarHeader: @escaping (Date)
@@ -290,7 +298,8 @@ extension CXCalendarContext.Builder {
             axis: axis,
             columnPadding: columnPadding,
             rowPadding: rowPadding,
-            rowHeight: rowHeight
+            rowHeight: rowHeight,
+            calendarHPadding: calendarHPadding
         )
         let compose = CalendarCompose(
             calendarHeader: calendarHeader,

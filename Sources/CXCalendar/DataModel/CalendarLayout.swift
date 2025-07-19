@@ -21,6 +21,9 @@ public protocol CXCalendarLayoutProtocol {
 
     /// Height of each row of month view. it is only used for scrollable calendar.
     var rowHeight: CGFloat { get }
+
+    /// Horizontal padding between the calendar and the edges of the screen.
+    var calendarHPadding: CGFloat { get }
 }
 
 // MARK: - CalendarLayout
@@ -33,4 +36,6 @@ struct CalendarLayout: CXCalendarLayoutProtocol {
     let rowPadding: CGFloat
 
     let rowHeight: CGFloat
+
+    let calendarHPadding: CGFloat
 }

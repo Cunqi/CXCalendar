@@ -37,10 +37,13 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
 
     public var body: some View {
         VStack(spacing: layout.rowPadding) {
-            compose.calendarHeader(currentDate).erased
+            compose.calendarHeader(currentDate)
+                .erased
+                .padding(.horizontal, layout.calendarHPadding)
 
             CXLazyPage(axis: layout.axis, currentPage: $manager.currentPage) { index in
                 CalendarBodyView(date: manager.makeDate(for: index))
+                    .padding(.horizontal, layout.calendarHPadding)
             }
         }
         .environment(manager)
