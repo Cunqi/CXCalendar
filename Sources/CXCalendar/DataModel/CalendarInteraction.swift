@@ -27,7 +27,7 @@ public protocol CXCalendarInteractionProtocol {
     var isSelected: IsSelectedAction { get }
 
     /// Boolean indicating whether to hide non-current month days in the calendar.
-    var shouldHideNonCurrentMonthDays: Bool { get }
+    var shouldHideWhenOutOfBounds: Bool { get }
 
     /// Callback triggered when a date is selected or deselected.
     var onSelected: OnSelectedAction? { get }
@@ -43,7 +43,7 @@ struct CalendarInteraction: CXCalendarInteractionProtocol {
 
     let isSelected: IsSelectedAction
 
-    let shouldHideNonCurrentMonthDays: Bool
+    let shouldHideWhenOutOfBounds: Bool
 
     let onSelected: OnSelectedAction?
 

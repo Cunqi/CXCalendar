@@ -64,7 +64,7 @@ extension CXCalendarContext {
             // CXCalendarInteractionProtocol
             canSelect = context.interaction.canSelect
             isSelected = context.interaction.isSelected
-            shouldHideNonCurrentMonthDays = context.interaction.shouldHideNonCurrentMonthDays
+            shouldHideWhenOutOfBounds = context.interaction.shouldHideWhenOutOfBounds
             onSelected = context.interaction.onSelected
             onMonthChanged = context.interaction.onMonthChanged
         }
@@ -98,7 +98,7 @@ extension CXCalendarContext {
         // MARK: - CXCalendarComposeProtocol
 
         public private(set) var calendarHeader: CalendarHeaderMaker = { month in
-            CalendarHeaderView(month: month)
+            CalendarHeaderView(date: month)
         }
 
         public private(set) var bodyHeader: BodyHeaderMaker?
@@ -121,7 +121,7 @@ extension CXCalendarContext {
             selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
         }
 
-        public private(set) var shouldHideNonCurrentMonthDays = false
+        public private(set) var shouldHideWhenOutOfBounds = false
 
         public private(set) var onSelected: OnSelectedAction?
 
@@ -147,7 +147,7 @@ extension CXCalendarContext {
         CXCalendarContext.Builder()
             .style(.scrollable)
             .axis(.vertical)
-            .shouldHideNonCurrentMonthDays(true)
+            .shouldHideWhenOutOfBounds(true)
             .calendarHeader { month in
                 WeekHeaderView(month: month)
             }
@@ -256,9 +256,9 @@ extension CXCalendarContext.Builder {
         return self
     }
 
-    public func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool)
+    public func shouldHideWhenOutOfBounds(_ shouldHideWhenOutOfBounds: Bool)
         -> CXCalendarContext.Builder {
-        self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
+        self.shouldHideWhenOutOfBounds = shouldHideWhenOutOfBounds
         return self
     }
 
@@ -290,7 +290,7 @@ extension CXCalendarContext.Builder {
         let interaction = CalendarInteraction(
             canSelect: canSelect,
             isSelected: isSelected,
-            shouldHideNonCurrentMonthDays: shouldHideNonCurrentMonthDays,
+            shouldHideWhenOutOfBounds: shouldHideWhenOutOfBounds,
             onSelected: onSelected,
             onMonthChanged: onMonthChanged
         )

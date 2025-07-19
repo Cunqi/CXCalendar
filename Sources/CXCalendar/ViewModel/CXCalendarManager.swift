@@ -54,17 +54,17 @@ public class CXCalendarManager {
     /// If the month is not the same as the start month and year, or if the selected date is not today,
     /// the button should be displayed.
     ///
-    /// - Parameter month: The month to check, represented as a `Date`.
+    /// - Parameter date: The date to check, represented as a `Date`.
     /// - Returns: A Boolean value indicating whether the reset to today button should be displayed.
-    public func shouldDisplayResetToTodayButton(month: Date) -> Bool {
-        let isInStartMonthAndYear = context.calendar.isSameMonthInYear(startDate, month)
+    public func shouldDisplayResetToTodayButton(date: Date) -> Bool {
+        let isInRange = context.calendar.isSameMonthInYear(startDate, date)
         let isTodaySelected =
             if let selectedDate {
                 context.calendar.isSameDay(selectedDate, startDate)
             } else {
                 true
             }
-        return !isInStartMonthAndYear || !isTodaySelected
+        return !isInRange || !isTodaySelected
     }
 
     public func resetToToday() {

@@ -12,7 +12,7 @@ public protocol CXDayViewRepresentable: View, CXCalendarAccessible, CXContextAcc
 
     var day: Date { get }
 
-    var isInCurrentMonth: Bool { get }
+    var isInRange: Bool { get }
 
     var isToday: Bool { get }
 }

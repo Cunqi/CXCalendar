@@ -16,7 +16,7 @@ struct DayView: View, CXDayViewRepresentable {
     let dateInterval: DateInterval
     let day: Date
 
-    var isInCurrentMonth: Bool {
+    var isInRange: Bool {
         dateInterval.contains(day)
     }
 
@@ -25,7 +25,7 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     var body: some View {
-        if interaction.shouldHideNonCurrentMonthDays, !isInCurrentMonth {
+        if interaction.shouldHideWhenOutOfBounds, !isInRange {
             Color.clear
         } else {
             Text(numericDay)
@@ -67,14 +67,14 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     private var foregroundColor: Color {
-        isInCurrentMonth ? .primary : .secondary
+        isInRange ? .primary : .secondary
     }
 
     private var backgroundColor: Color {
         if isToday {
             return .accentColor.opacity(0.5)
         }
-        return isInCurrentMonth ? Color.green.opacity(0.1) : Color.clear
+        return isInRange ? Color.green.opacity(0.1) : Color.clear
     }
 
     private var isSelected: Bool {
