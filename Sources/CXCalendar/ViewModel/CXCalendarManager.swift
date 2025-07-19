@@ -90,12 +90,8 @@ public class CXCalendarManager {
         context.calendar.dateInterval(of: .month, for: makeDate(for: offset))!
     }
 
-    func makeMonthGridDates(for month: Date) -> [IdentifiableDate] {
-        guard let monthInterval = context.calendar.dateInterval(of: .month, for: month) else {
-            return []
-        }
-
-        return makeMonthGridDates(from: monthInterval)
+    func makeDateInterval(for date: Date) -> DateInterval {
+        context.calendar.dateInterval(of: .month, for: date)!
     }
 
     func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {

@@ -15,6 +15,10 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
 
     let date: Date
 
+    var dateInterval: DateInterval {
+        manager.makeDateInterval(for: date)
+    }
+
     // MARK: - Initializer
 
     var body: some View {
@@ -44,6 +48,6 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
     // MARK: Private
 
     private var days: [IdentifiableDate] {
-        manager.makeMonthGridDates(for: date)
+        manager.makeMonthGridDates(from: dateInterval)
     }
 }
