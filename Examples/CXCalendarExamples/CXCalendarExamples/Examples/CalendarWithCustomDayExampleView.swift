@@ -15,8 +15,8 @@ struct CalendarWithCustomDayExampleView: View {
     var body: some View {
         let context = CXCalendarContext.paged
             .builder
-            .dayView { month, day in
-                CustomDayView(month: month, day: day)
+            .dayView { dateInterval, day in
+                CustomDayView(dateInterval: dateInterval, day: day)
             }
             .build()
 
@@ -32,11 +32,11 @@ struct CalendarWithCustomDayExampleView: View {
 struct CustomDayView: CXDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
-    let month: Date
+    let dateInterval: DateInterval
 
     let day: Date
 
-    let isInCurrentMonth = true
+    let isInRange: Bool = true
 
     var isToday: Bool {
         calendar.isDateInToday(day)
@@ -52,7 +52,7 @@ struct CustomDayView: CXDayViewRepresentable {
                     .fill(backgroundColor)
             )
             .onTapGesture {
-                guard interaction.canSelect(month, day, calendar) else {
+                guard interaction.canSelect(dateInterval, day, calendar) else {
                     return
                 }
                 withAnimation {

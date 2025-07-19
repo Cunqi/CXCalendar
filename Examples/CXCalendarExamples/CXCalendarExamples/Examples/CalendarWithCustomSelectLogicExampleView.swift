@@ -15,8 +15,8 @@ struct CalendarWithCustomSelectLogicExampleView: View {
     var body: some View {
         let context = CXCalendarContext.paged
             .builder
-            .canSelect { month, day, calendar in
-                calendar.isSameMonthInYear(month, day)
+            .canSelect { dateInterval, day, calendar in
+                dateInterval.contains(day)
             }
             .build()
 
