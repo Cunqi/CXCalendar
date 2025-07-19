@@ -32,7 +32,7 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
 
             LazyVGrid(columns: manager.columns, spacing: layout.rowPadding) {
                 ForEach(days) { day in
-                    compose.dayView(date, day.value).erased
+                    compose.dayView(dateInterval, day.value).erased
                 }
             }
 

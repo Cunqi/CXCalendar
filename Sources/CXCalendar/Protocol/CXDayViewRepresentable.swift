@@ -8,7 +8,7 @@
 import SwiftUI
 
 public protocol CXDayViewRepresentable: View, CXCalendarAccessible, CXContextAccessible {
-    var month: Date { get }
+    var dateInterval: DateInterval { get }
 
     var day: Date { get }
 

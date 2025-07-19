@@ -7,37 +7,49 @@
 
 import SwiftUI
 
+// MARK: - Typealias
+
+public typealias CalendarHeaderMaker = (Date) -> any CXCalendarHeaderViewRepresentable
+
+public typealias BodyHeaderMaker = (Date) -> any CXCalendarHeaderViewRepresentable
+
+public typealias WeekHeaderMaker = (Date) -> any CXCalendarHeaderViewRepresentable
+
+public typealias DayViewMaker = (DateInterval, Date) -> any CXDayViewRepresentable
+
+public typealias AccessoryViewMaker = (Date) -> any View
+
 // MARK: - CXCalendarComposeProtocol
 
 public protocol CXCalendarComposeProtocol {
     /// Closure returning a SwiftUI View for the calendar header, given the current month date.
-    var calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable { get }
+    var calendarHeader: CalendarHeaderMaker { get }
 
     /// Closure returning a SwiftUI View for the body header, given the current month date.
     /// This is used to display the month title along with the month view.
-    var bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)? { get }
+    var bodyHeader: BodyHeaderMaker? { get }
 
     /// Closure returning a SwiftUI View for the week header, given the current month date.
     /// This is used to display the week title of calendar view.
-    var weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable { get }
+    var weekHeader: WeekHeaderMaker { get }
 
-    /// Closure returning a SwiftUI View for individual days, given the month and day dates.
-    var dayView: (Date, Date) -> any CXDayViewRepresentable { get }
+    /// Closure returning a SwiftUI View for individual days, given the date interval and day dates.
+    var dayView: DayViewMaker { get }
 
     /// Optional closure returning a SwiftUI View to overlay when a day is selected.
-    var accessoryView: ((Date) -> any View)? { get }
+    var accessoryView: AccessoryViewMaker? { get }
 }
 
 // MARK: - CalendarCompose
 
 struct CalendarCompose: CXCalendarComposeProtocol {
-    let calendarHeader: (Date) -> any CXCalendarHeaderViewRepresentable
+    let calendarHeader: CalendarHeaderMaker
 
-    let bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+    let bodyHeader: BodyHeaderMaker?
 
-    let weekHeader: (Date) -> any CXCalendarHeaderViewRepresentable
+    let weekHeader: WeekHeaderMaker
 
-    let dayView: (Date, Date) -> any CXDayViewRepresentable
+    let dayView: DayViewMaker
 
-    let accessoryView: ((Date) -> any View)?
+    let accessoryView: AccessoryViewMaker?
 }

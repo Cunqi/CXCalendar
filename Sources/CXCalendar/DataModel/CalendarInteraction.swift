@@ -7,35 +7,45 @@
 
 import SwiftUI
 
+// MARK: - Typealias
+
+public typealias CanSelectAction = (DateInterval, Date, Calendar) -> Bool
+
+public typealias IsSelectedAction = (Date, Date?, Calendar) -> Bool
+
+public typealias OnSelectedAction = (Date?) -> Void
+
+public typealias OnMonthChangedAction = (Date) -> Void
+
 // MARK: - CXCalendarInteractionProtocol
 
 public protocol CXCalendarInteractionProtocol {
     /// Closure to tell if given date can be selected
-    var canSelect: (Date, Date, Calendar) -> Bool { get }
+    var canSelect: CanSelectAction { get }
 
     /// Closure to tell if given date is selected
-    var isSelected: (Date, Date?, Calendar) -> Bool { get }
+    var isSelected: IsSelectedAction { get }
 
     /// Boolean indicating whether to hide non-current month days in the calendar.
     var shouldHideNonCurrentMonthDays: Bool { get }
 
     /// Callback triggered when a date is selected or deselected.
-    var onSelected: ((Date?) -> Void)? { get }
+    var onSelected: OnSelectedAction? { get }
 
     /// Callback triggered when the month is changed.
-    var onMonthChanged: ((Date) -> Void)? { get }
+    var onMonthChanged: OnMonthChangedAction? { get }
 }
 
 // MARK: - CalendarInteraction
 
 struct CalendarInteraction: CXCalendarInteractionProtocol {
-    let canSelect: (Date, Date, Calendar) -> Bool
+    let canSelect: CanSelectAction
 
-    let isSelected: (Date, Date?, Calendar) -> Bool
+    let isSelected: IsSelectedAction
 
     let shouldHideNonCurrentMonthDays: Bool
 
-    let onSelected: ((Date?) -> Void)?
+    let onSelected: OnSelectedAction?
 
-    let onMonthChanged: ((Date) -> Void)?
+    let onMonthChanged: OnMonthChangedAction?
 }
