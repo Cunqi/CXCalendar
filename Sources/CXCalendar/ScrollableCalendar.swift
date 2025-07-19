@@ -27,9 +27,12 @@ public struct ScrollableCalendar: View, CXCalendarAccessible, CXContextAccessibl
 
     public var body: some View {
         VStack {
-            compose.calendarHeader(currentDate).erased
+            compose.calendarHeader(currentDate)
+                .erased
+                .padding(.horizontal, layout.calendarHPadding)
             CXLazyList(currentPage: $manager.currentPage) { index in
                 CalendarBodyView(date: manager.makeDate(for: index))
+                    .padding(.horizontal, layout.calendarHPadding)
             } heightOf: { index in
                 let rowHeight = Int(layout.rowHeight)
                 let rowPadding = Int(layout.rowPadding)

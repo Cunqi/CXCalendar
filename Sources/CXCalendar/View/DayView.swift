@@ -25,7 +25,7 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     var body: some View {
-        if interaction.shouldHideWhenOutOfBounds, !isInRange {
+        if shouldHideWhenOutOfBounds, !isInRange {
             Color.clear
         } else {
             Text(numericDay)
@@ -79,5 +79,9 @@ struct DayView: View, CXDayViewRepresentable {
 
     private var isSelected: Bool {
         interaction.isSelected(day, manager.selectedDate, calendar)
+    }
+
+    private var shouldHideWhenOutOfBounds: Bool {
+        context.calendarType.scrollBehavior == .scroll
     }
 }

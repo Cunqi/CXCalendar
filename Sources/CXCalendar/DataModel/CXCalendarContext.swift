@@ -65,7 +65,6 @@ extension CXCalendarContext {
             // CXCalendarInteractionProtocol
             canSelect = context.interaction.canSelect
             isSelected = context.interaction.isSelected
-            shouldHideWhenOutOfBounds = context.interaction.shouldHideWhenOutOfBounds
             onSelected = context.interaction.onSelected
             onMonthChanged = context.interaction.onMonthChanged
         }
@@ -123,8 +122,6 @@ extension CXCalendarContext {
         public private(set) var isSelected: IsSelectedAction = { day, selectedDate, calendar in
             selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
         }
-
-        public private(set) var shouldHideWhenOutOfBounds = false
 
         public private(set) var onSelected: OnSelectedAction?
 
@@ -260,12 +257,6 @@ extension CXCalendarContext.Builder {
         return self
     }
 
-    public func shouldHideWhenOutOfBounds(_ shouldHideWhenOutOfBounds: Bool)
-        -> CXCalendarContext.Builder {
-        self.shouldHideWhenOutOfBounds = shouldHideWhenOutOfBounds
-        return self
-    }
-
     public func onSelected(_ onSelected: OnSelectedAction?) -> CXCalendarContext.Builder {
         self.onSelected = onSelected
         return self
@@ -280,7 +271,6 @@ extension CXCalendarContext.Builder {
     public func build() -> CXCalendarContext {
         if case CXCalendarType.month(.scroll) = calendarType {
             axis = .vertical
-            shouldHideWhenOutOfBounds = true
         }
 
         let layout = CalendarLayout(
@@ -300,7 +290,6 @@ extension CXCalendarContext.Builder {
         let interaction = CalendarInteraction(
             canSelect: canSelect,
             isSelected: isSelected,
-            shouldHideWhenOutOfBounds: shouldHideWhenOutOfBounds,
             onSelected: onSelected,
             onMonthChanged: onMonthChanged
         )
