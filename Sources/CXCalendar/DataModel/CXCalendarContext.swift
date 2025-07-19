@@ -56,7 +56,7 @@ extension CXCalendarContext {
 
             // CXCalendarComposeProtocol
             calendarHeader = context.compose.calendarHeader
-            monthHeader = context.compose.monthHeader
+            bodyHeader = context.compose.bodyHeader
             weekHeader = context.compose.weekHeader
             dayView = context.compose.dayView
             accessoryView = context.compose.accessoryView
@@ -102,7 +102,7 @@ extension CXCalendarContext {
                 CalendarHeaderView(month: month)
             }
 
-        public private(set) var monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+        public private(set) var bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
 
         public private(set) var weekHeader: (Date)
             -> any CXCalendarHeaderViewRepresentable = { month in
@@ -141,7 +141,7 @@ extension CXCalendarContext {
     public static var paged: CXCalendarContext {
         CXCalendarContext.Builder()
             .style(.paged)
-            .monthHeader(nil)
+            .bodyHeader(nil)
             .build()
     }
 
@@ -155,7 +155,7 @@ extension CXCalendarContext {
             .calendarHeader { month in
                 WeekHeaderView(month: month)
             }
-            .monthHeader { month in
+            .bodyHeader { month in
                 MonthHeaderView(month: month)
             }
             .build()
@@ -223,9 +223,9 @@ extension CXCalendarContext.Builder {
         return self
     }
 
-    public func monthHeader(_ monthHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?)
+    public func bodyHeader(_ bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?)
         -> CXCalendarContext.Builder {
-        self.monthHeader = monthHeader
+        self.bodyHeader = bodyHeader
         return self
     }
 
@@ -285,7 +285,7 @@ extension CXCalendarContext.Builder {
         )
         let compose = CalendarCompose(
             calendarHeader: calendarHeader,
-            monthHeader: monthHeader,
+            bodyHeader: bodyHeader,
             weekHeader: weekHeader,
             dayView: dayView,
             accessoryView: accessoryView

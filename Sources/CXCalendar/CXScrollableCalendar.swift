@@ -36,7 +36,7 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
         VStack {
             compose.calendarHeader(currentDate).erased
             CXLazyList(currentPage: $manager.currentPage) { index in
-                MonthView(month: manager.makeMonthFromStart(offset: index))
+                CalendarBodyView(month: manager.makeMonthFromStart(offset: index))
             } heightOf: { index in
                 let rowHeight = Int(layout.rowHeight)
                 let rowPadding = Int(layout.rowPadding)
