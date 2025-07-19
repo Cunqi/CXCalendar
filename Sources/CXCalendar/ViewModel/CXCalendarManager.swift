@@ -18,6 +18,7 @@ public class CXCalendarManager {
 
     init(context: CXCalendarContext) {
         self.context = context
+
         columns = Array(
             repeating: GridItem(.flexible(), spacing: context.layout.columnPadding),
             count: 7
@@ -25,6 +26,7 @@ public class CXCalendarManager {
 
         startDate = context.startDate
         selectedDate = context.selectedDate
+        contentType = context.contentType
     }
 
     // MARK: Public
@@ -57,7 +59,12 @@ public class CXCalendarManager {
     /// - Parameter date: The date to check, represented as a `Date`.
     /// - Returns: A Boolean value indicating whether the reset to today button should be displayed.
     public func shouldDisplayResetToTodayButton(date: Date) -> Bool {
-        let isInRange = context.calendar.isSameMonthInYear(startDate, date)
+        let isInRange: Bool = switch contentType {
+        case .month:
+            context.calendar.isSameMonthInYear(date, startDate)
+        case .week:
+            context.calendar.isDate(date, equalTo: startDate, toGranularities: [.year, .weekOfYear])
+        }
         let isTodaySelected =
             if let selectedDate {
                 context.calendar.isSameDay(selectedDate, startDate)
@@ -76,6 +83,8 @@ public class CXCalendarManager {
 
     // MARK: Internal
 
+    var contentType: CXCalendarContentType
+
     let columns: [GridItem]
 
     var currentPage = 0
@@ -83,15 +92,24 @@ public class CXCalendarManager {
     // MARK: - Internal Methods
 
     func makeDate(for offset: Int) -> Date {
-        context.calendar.date(byAdding: .month, value: offset, to: startDate)!
+        context.calendar.date(byAdding: contentType.component, value: offset, to: startDate)!
     }
 
     func makeDateInterval(for offset: Int) -> DateInterval {
-        context.calendar.dateInterval(of: .month, for: makeDate(for: offset))!
+        context.calendar.dateInterval(of: contentType.component, for: makeDate(for: offset))!
     }
 
     func makeDateInterval(for date: Date) -> DateInterval {
-        context.calendar.dateInterval(of: .month, for: date)!
+        context.calendar.dateInterval(of: contentType.component, for: date)!
+    }
+
+    func makeBodyGridDates(from interval: DateInterval) -> [IdentifiableDate] {
+        switch contentType {
+        case .month:
+            makeMonthGridDates(from: interval)
+        case .week:
+            makeWeekGridDates(from: interval)
+        }
     }
 
     func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {

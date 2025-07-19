@@ -48,6 +48,6 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
     // MARK: Private
 
     private var days: [IdentifiableDate] {
-        manager.makeMonthGridDates(from: dateInterval)
+        manager.makeBodyGridDates(from: dateInterval)
     }
 }
