@@ -11,12 +11,9 @@ import SwiftUI
 struct VerticalScrollableCalendarExampleView: View {
     @State private var backToToday = false
     var body: some View {
-        let context = CXCalendarContext.scrollable
-            .builder
-            .build()
+        let context = CXCalendarContext.month(.scroll)
 
-        CXScrollableCalendar(context: context, backToToday: $backToToday)
-            .padding(.horizontal)
+        CXCalendar(context: context, backToToday: $backToToday)
             .navigationTitle("Vertical Continuous Calendar")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

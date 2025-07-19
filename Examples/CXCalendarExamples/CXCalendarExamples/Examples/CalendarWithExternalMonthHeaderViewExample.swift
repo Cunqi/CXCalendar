@@ -15,7 +15,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.paged
+        let context = CXCalendarContext.month(.page)
             .builder
             .calendarHeader { month in
                 WeekdayOnlyHeaderView(month: month)
@@ -25,8 +25,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
             }
             .build()
 
-        CXPagedCalendar(context: context, backToToday: $resetToday)
-            .padding(.horizontal)
+        CXCalendar(context: context, backToToday: $resetToday)
             .toolbar {
                 ToolbarItem(placement: .title) {
                     CustomNavHeaderView(month: $currentMonth)

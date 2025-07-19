@@ -11,11 +11,8 @@ import SwiftUI
 // MARK: - CXCalendarContext
 
 public struct CXCalendarContext {
-    /// Style of the calendar (paged or scrollable)
-    public let style: CXCalendarStyle
-
-    /// Content type of the calendar (month or week)
-    public let contentType: CXCalendarContentType
+    /// Calendar type of the calendar (month or week)
+    public let calendarType: CXCalendarType
 
     /// Calendar used for all date and calculation logic.
     public let calendar: Calendar
@@ -46,8 +43,7 @@ extension CXCalendarContext {
 
         init(from context: CXCalendarContext) {
             // Basic
-            style = context.style
-            contentType = context.contentType
+            calendarType = context.calendarType
             calendar = context.calendar
             startDate = context.startDate
             selectedDate = context.selectedDate
@@ -78,11 +74,8 @@ extension CXCalendarContext {
 
         // MARK: - Basic
 
-        /// Style of the calendar (paged or scrollable)
-        public private(set) var style = CXCalendarStyle.paged
-
         /// Content type of the calendar (month or week)
-        public private(set) var contentType = CXCalendarContentType.month
+        public private(set) var calendarType = CXCalendarType.month(.page)
 
         /// Calendar used for all date and calculation logic.
         public private(set) var calendar = Calendar.current
@@ -142,34 +135,30 @@ extension CXCalendarContext {
 // MARK: - Convenience accessors
 
 extension CXCalendarContext {
-    /// Returns a pre-configured CXCalendarContext instance for `CXCalendarStyle.paged`
-    /// this context is targetting to serve `CXPagedCalendar` ONLY
-    public static var paged: CXCalendarContext {
-        CXCalendarContext.Builder()
-            .style(.paged)
-            .bodyHeader(nil)
-            .build()
-    }
-
-    /// Returns a pre-configured CXCalendarContext instance for `CXCalendarStyle.scrollable`
-    /// this context is targetting to serve `CXScrollableCalendar` ONLY
-    public static var scrollable: CXCalendarContext {
-        CXCalendarContext.Builder()
-            .style(.scrollable)
-            .axis(.vertical)
-            .shouldHideWhenOutOfBounds(true)
-            .calendarHeader { month in
-                WeekHeaderView(month: month)
-            }
-            .bodyHeader { month in
-                MonthHeaderView(month: month)
-            }
-            .build()
-    }
-
-    /// Returns a builder instance initialized with the current context.
     public var builder: CXCalendarContext.Builder {
         CXCalendarContext.Builder(from: self)
+    }
+
+    public static func month(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
+        var builder = CXCalendarContext.Builder()
+            .calendarType(.month(scrollBehavior))
+
+        if scrollBehavior == .scroll {
+            builder = builder
+                .calendarHeader { month in
+                    WeekHeaderView(month: month)
+                }
+                .bodyHeader { month in
+                    MonthHeaderView(month: month)
+                }
+        }
+        return builder.build()
+    }
+
+    public static func week() -> CXCalendarContext {
+        CXCalendarContext.Builder()
+            .calendarType(.week)
+            .build()
     }
 }
 
@@ -178,13 +167,8 @@ extension CXCalendarContext {
 extension CXCalendarContext.Builder {
     // MARK: - Basic
 
-    public func style(_ style: CXCalendarStyle) -> CXCalendarContext.Builder {
-        self.style = style
-        return self
-    }
-
-    public func contentType(_ contentType: CXCalendarContentType) -> CXCalendarContext.Builder {
-        self.contentType = contentType
+    public func calendarType(_ calendarType: CXCalendarType) -> CXCalendarContext.Builder {
+        self.calendarType = calendarType
         return self
     }
 
@@ -294,6 +278,11 @@ extension CXCalendarContext.Builder {
     }
 
     public func build() -> CXCalendarContext {
+        if case CXCalendarType.month(.scroll) = calendarType {
+            axis = .vertical
+            shouldHideWhenOutOfBounds = true
+        }
+
         let layout = CalendarLayout(
             axis: axis,
             columnPadding: columnPadding,
@@ -317,8 +306,7 @@ extension CXCalendarContext.Builder {
         )
 
         return CXCalendarContext(
-            style: style,
-            contentType: contentType,
+            calendarType: calendarType,
             calendar: calendar,
             startDate: startDate,
             selectedDate: selectedDate,

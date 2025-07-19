@@ -10,13 +10,12 @@ import SwiftUI
 
 struct VerticalCalendarExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.paged
+        let context = CXCalendarContext.month(.page)
             .builder
             .axis(.vertical)
             .build()
 
-        CXPagedCalendar(context: context)
-            .padding(.horizontal)
+        CXCalendar(context: context)
             .navigationTitle("Vertical Calendar")
             .navigationBarTitleDisplayMode(.inline)
     }

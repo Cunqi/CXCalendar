@@ -1,5 +1,5 @@
 {
-  "originHash" : "cb64287b4a9ffb023570539e07dbd3806d08923aa54580d9dd61c95792e5be5c",
+  "originHash" : "a5535e6c8985c274d106a08a6eff5d7c8616a3b94bb163a4eaa8ac929c3907d6",
   "pins" : [
     {
       "identity" : "cxfoundation",
@@ -8,15 +8,6 @@
       "state" : {
         "branch" : "master",
         "revision" : "0d1b69414bcc00e6320aa47cf5b37c1bbc88380d"
-      }
-    },
-    {
-      "identity" : "cxlazypage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Cunqi/CXLazyPage.git",
-      "state" : {
-        "branch" : "master",
-        "revision" : "f63f0a55b726ac7c2ed46fb2ef0a1001efb6a1cd"
       }
     },
     {

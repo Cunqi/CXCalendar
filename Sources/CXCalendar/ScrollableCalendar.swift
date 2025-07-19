@@ -1,5 +1,5 @@
 //
-//  CXScrollableCalendar.swift
+//  ScrollableCalendar.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/15/25.
@@ -8,7 +8,7 @@
 import CXLazyPage
 import SwiftUI
 
-public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessible {
+public struct ScrollableCalendar: View, CXCalendarAccessible, CXContextAccessible {
     // MARK: Lifecycle
 
     /// A scrollable calendar view that displays months in a paginated format.
@@ -16,14 +16,7 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
     ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes.
     /// This gives the ability to reset the calendar view to today's date externally.
-    public init(
-        context: CXCalendarContext = .paged,
-        backToToday: Binding<Bool> = .constant(false)
-    ) {
-        if context.style != .scrollable {
-            assertionFailure("CXScrollableCalendar only supports scrollable style.")
-        }
-
+    public init(context: CXCalendarContext, backToToday: Binding<Bool>) {
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }

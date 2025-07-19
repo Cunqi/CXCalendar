@@ -13,15 +13,14 @@ import SwiftUI
 
 struct CalendarWithCustomDayExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.paged
+        let context = CXCalendarContext.month(.page)
             .builder
             .dayView { dateInterval, day in
                 CustomDayView(dateInterval: dateInterval, day: day)
             }
             .build()
 
-        CXPagedCalendar(context: context)
-            .padding(.horizontal)
+        CXCalendar(context: context)
             .navigationTitle("Custom Day View")
             .navigationBarTitleDisplayMode(.inline)
     }

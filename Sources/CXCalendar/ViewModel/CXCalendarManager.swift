@@ -26,7 +26,7 @@ public class CXCalendarManager {
 
         startDate = context.startDate
         selectedDate = context.selectedDate
-        contentType = context.contentType
+        calendarType = context.calendarType
     }
 
     // MARK: Public
@@ -59,7 +59,7 @@ public class CXCalendarManager {
     /// - Parameter date: The date to check, represented as a `Date`.
     /// - Returns: A Boolean value indicating whether the reset to today button should be displayed.
     public func shouldDisplayResetToTodayButton(date: Date) -> Bool {
-        let isInRange: Bool = switch contentType {
+        let isInRange: Bool = switch calendarType {
         case .month:
             context.calendar.isSameMonthInYear(date, startDate)
         case .week:
@@ -83,7 +83,7 @@ public class CXCalendarManager {
 
     // MARK: Internal
 
-    var contentType: CXCalendarContentType
+    var calendarType: CXCalendarType
 
     let columns: [GridItem]
 
@@ -92,19 +92,19 @@ public class CXCalendarManager {
     // MARK: - Internal Methods
 
     func makeDate(for offset: Int) -> Date {
-        context.calendar.date(byAdding: contentType.component, value: offset, to: startDate)!
+        context.calendar.date(byAdding: calendarType.component, value: offset, to: startDate)!
     }
 
     func makeDateInterval(for offset: Int) -> DateInterval {
-        context.calendar.dateInterval(of: contentType.component, for: makeDate(for: offset))!
+        context.calendar.dateInterval(of: calendarType.component, for: makeDate(for: offset))!
     }
 
     func makeDateInterval(for date: Date) -> DateInterval {
-        context.calendar.dateInterval(of: contentType.component, for: date)!
+        context.calendar.dateInterval(of: calendarType.component, for: date)!
     }
 
     func makeBodyGridDates(from interval: DateInterval) -> [IdentifiableDate] {
-        switch contentType {
+        switch calendarType {
         case .month:
             makeMonthGridDates(from: interval)
         case .week:
@@ -113,10 +113,10 @@ public class CXCalendarManager {
     }
 
     func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
-        switch context.style {
-        case .paged:
+        switch context.calendarType.scrollBehavior {
+        case .page:
             context.calendar.makeFixedMonthGridDates(from: monthInterval)
-        case .scrollable:
+        case .scroll:
             context.calendar.makeDynamicMonthGridDates(from: monthInterval)
         }
     }

@@ -32,7 +32,7 @@ struct DayView: View, CXDayViewRepresentable {
                 .font(.footnote)
                 .foregroundColor(foregroundColor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ifElse(manager.context.style == .paged) {
+                .ifElse(manager.context.calendarType.scrollBehavior == .page) {
                     $0.aspectRatio(1, contentMode: .fit)
                 } else: {
                     $0.frame(height: layout.rowHeight)

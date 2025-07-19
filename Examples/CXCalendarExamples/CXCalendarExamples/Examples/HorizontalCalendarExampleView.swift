@@ -10,7 +10,7 @@ import SwiftUI
 
 struct HorizontalCalendarExampleView: View {
     var body: some View {
-        CXPagedCalendar()
+        CXCalendar(context: .month(.page))
             .navigationTitle("Horizontal Calendar")
             .navigationBarTitleDisplayMode(.inline)
     }

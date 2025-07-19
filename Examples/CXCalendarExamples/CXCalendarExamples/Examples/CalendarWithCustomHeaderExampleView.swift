@@ -13,16 +13,14 @@ import SwiftUI
 
 struct CalendarWithCustomHeaderExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.paged
+        let context = CXCalendarContext.month(.page)
             .builder
             .calendarHeader { month in
                 CustomMonthHeaderView(month: month)
             }
             .build()
 
-        CXPagedCalendar(context: context)
-            .padding(.horizontal)
-            .padding(.horizontal)
+        CXCalendar(context: context)
             .navigationTitle("Calendar with Custom Header")
             .navigationBarTitleDisplayMode(.inline)
     }

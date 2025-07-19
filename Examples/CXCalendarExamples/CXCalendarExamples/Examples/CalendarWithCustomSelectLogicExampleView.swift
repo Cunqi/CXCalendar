@@ -13,15 +13,14 @@ struct CalendarWithCustomSelectLogicExampleView: View {
     @State private var selectedDate: Date? = nil
 
     var body: some View {
-        let context = CXCalendarContext.paged
+        let context = CXCalendarContext.month(.page)
             .builder
             .canSelect { dateInterval, day, _ in
                 dateInterval.contains(day)
             }
             .build()
 
-        CXPagedCalendar(context: context)
-            .padding(.horizontal)
+        CXCalendar(context: context)
             .navigationTitle("Custom Select Logic Calendar")
             .navigationBarTitleDisplayMode(.inline)
     }
