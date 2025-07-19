@@ -20,10 +20,6 @@ public struct CXScrollableCalendar: View, CXCalendarAccessible, CXContextAccessi
         context: CXCalendarContext = .paged,
         backToToday: Binding<Bool> = .constant(false)
     ) {
-        if context.style != .scrollable {
-            assertionFailure("CXScrollableCalendar only supports scrollable style.")
-        }
-
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }

@@ -23,10 +23,6 @@ public struct CXPagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
         context: CXCalendarContext = .paged,
         backToToday: Binding<Bool> = .constant(false)
     ) {
-        if context.style != .paged {
-            assertionFailure("CXPagedCalendar only supports paged style.")
-        }
-
         manager = CXCalendarManager(context: context)
         _backToToday = backToToday
     }
