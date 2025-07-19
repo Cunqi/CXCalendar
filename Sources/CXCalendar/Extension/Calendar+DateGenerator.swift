@@ -16,7 +16,6 @@ extension Calendar {
     /// - Returns: an array of `IdentifiableDate` representing the month grid with fixed 42 cells.
     func makeFixedMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
         let firstDay = monthInterval.start
-
         let lead = (component(.weekday, from: firstDay) - firstWeekday + 7) % 7
         let gridStart = date(byAdding: .day, value: -lead, to: firstDay)!
 
@@ -33,25 +32,16 @@ extension Calendar {
     /// - Parameter monthInterval: The date interval representing the month for which to generate the grid.
     /// - Returns: An array of `IdentifiableDate` representing the dates in the month grid.
     func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
-        let firstDay = monthInterval.start
-        let lastDay = date(byAdding: .day, value: -1, to: monthInterval.end)!
-
-        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: firstDay),
-              let endWeekInterval = dateInterval(of: .weekOfMonth, for: lastDay)
-        else {
+        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: monthInterval.start) else {
             return []
         }
 
-        let startDate = startWeekInterval.start
-        let endDate = endWeekInterval.end
-
         var result = [IdentifiableDate]()
-        var current = startDate
+        var current = startWeekInterval.start
         var index = 0
 
-        while current < endDate {
+        while current < monthInterval.end {
             result.append(IdentifiableDate(value: current, id: index))
-
             guard let next = date(byAdding: .day, value: 1, to: current) else {
                 break
             }
