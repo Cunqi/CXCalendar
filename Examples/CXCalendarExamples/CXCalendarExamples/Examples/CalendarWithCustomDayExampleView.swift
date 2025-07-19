@@ -36,7 +36,7 @@ struct CustomDayView: CXDayViewRepresentable {
 
     let day: Date
 
-    let isInRange: Bool = true
+    let isInRange = true
 
     var isToday: Bool {
         calendar.isDateInToday(day)

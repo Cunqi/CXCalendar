@@ -118,7 +118,7 @@ struct RangeDay: CXDayViewRepresentable {
     let day: Date
     @Binding var range: DateInterval?
 
-    let isInRange: Bool = true
+    let isInRange = true
 
     var isToday: Bool {
         calendar.isDateInToday(day)

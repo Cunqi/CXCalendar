@@ -8,18 +8,18 @@ let package = Package(
     platforms: [
         // Platforms define the platforms that this package supports.
         // .iOS(.v17, // Minimum iOS version
-        .iOS(.v17),
+        .iOS(.v17)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "CXCalendar",
             targets: ["CXCalendar"]
-        ),
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/Cunqi/CXLazyPage.git", branch: "master"),
-        .package(url: "https://github.com/Cunqi/CXUICore.git", branch: "master"),
+        .package(url: "https://github.com/Cunqi/CXUICore.git", branch: "master")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,12 +28,12 @@ let package = Package(
             name: "CXCalendar",
             dependencies: [
                 .product(name: "CXLazyPage", package: "CXLazyPage"),
-                .product(name: "CXUICore", package: "CXUICore"),
+                .product(name: "CXUICore", package: "CXUICore")
             ]
         ),
         .testTarget(
             name: "CXCalendarTests",
             dependencies: ["CXCalendar"]
-        ),
+        )
     ]
 )

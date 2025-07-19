@@ -16,8 +16,8 @@ struct CalendarWithWeekContentTypeExampleView: View {
             .build()
 
         CXPagedCalendar(context: context)
-        .padding(.horizontal)
-        .navigationTitle("Week Content Type")
-        .navigationBarTitleDisplayMode(.inline)
+            .padding(.horizontal)
+            .navigationTitle("Week Content Type")
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
