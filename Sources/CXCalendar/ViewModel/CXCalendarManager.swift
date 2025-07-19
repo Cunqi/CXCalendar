@@ -18,6 +18,7 @@ public class CXCalendarManager {
 
     init(context: CXCalendarContext) {
         self.context = context
+
         columns = Array(
             repeating: GridItem(.flexible(), spacing: context.layout.columnPadding),
             count: 7
@@ -25,6 +26,7 @@ public class CXCalendarManager {
 
         startDate = context.startDate
         selectedDate = context.selectedDate
+        contentType = context.contentType
     }
 
     // MARK: Public
@@ -38,7 +40,11 @@ public class CXCalendarManager {
     public var selectedDate: Date?
 
     public var currentDate: Date {
-        makeMonthFromStart(offset: currentPage)
+        makeDate(for: currentPage)
+    }
+
+    public var currentDateInterval: DateInterval {
+        makeDateInterval(for: currentPage)
     }
 
     // MARK: - Public Methods
@@ -50,17 +56,22 @@ public class CXCalendarManager {
     /// If the month is not the same as the start month and year, or if the selected date is not today,
     /// the button should be displayed.
     ///
-    /// - Parameter month: The month to check, represented as a `Date`.
+    /// - Parameter date: The date to check, represented as a `Date`.
     /// - Returns: A Boolean value indicating whether the reset to today button should be displayed.
-    public func shouldDisplayResetToTodayButton(month: Date) -> Bool {
-        let isInStartMonthAndYear = context.calendar.isSameMonthInYear(startDate, month)
+    public func shouldDisplayResetToTodayButton(date: Date) -> Bool {
+        let isInRange: Bool = switch contentType {
+        case .month:
+            context.calendar.isSameMonthInYear(date, startDate)
+        case .week:
+            context.calendar.isDate(date, equalTo: startDate, toGranularities: [.year, .weekOfYear])
+        }
         let isTodaySelected =
             if let selectedDate {
                 context.calendar.isSameDay(selectedDate, startDate)
             } else {
                 true
             }
-        return !isInStartMonthAndYear || !isTodaySelected
+        return !isInRange || !isTodaySelected
     }
 
     public func resetToToday() {
@@ -72,31 +83,49 @@ public class CXCalendarManager {
 
     // MARK: Internal
 
+    var contentType: CXCalendarContentType
+
     let columns: [GridItem]
 
     var currentPage = 0
 
     // MARK: - Internal Methods
 
-    func makeMonthFromStart(offset: Int) -> Date {
-        context.calendar.date(byAdding: .month, value: offset, to: startDate)!
+    func makeDate(for offset: Int) -> Date {
+        context.calendar.date(byAdding: contentType.component, value: offset, to: startDate)!
     }
 
-    func makeMonthGridDates(for month: Date) -> [IdentifiableDate] {
-        guard let monthInterval = context.calendar.dateInterval(of: .month, for: month) else {
-            return []
-        }
+    func makeDateInterval(for offset: Int) -> DateInterval {
+        context.calendar.dateInterval(of: contentType.component, for: makeDate(for: offset))!
+    }
 
+    func makeDateInterval(for date: Date) -> DateInterval {
+        context.calendar.dateInterval(of: contentType.component, for: date)!
+    }
+
+    func makeBodyGridDates(from interval: DateInterval) -> [IdentifiableDate] {
+        switch contentType {
+        case .month:
+            makeMonthGridDates(from: interval)
+        case .week:
+            makeWeekGridDates(from: interval)
+        }
+    }
+
+    func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
         switch context.style {
         case .paged:
-            return context.calendar.makeFixedMonthGridDates(from: monthInterval)
+            context.calendar.makeFixedMonthGridDates(from: monthInterval)
         case .scrollable:
-            return context.calendar.makeDynamicMonthGridDates(from: monthInterval)
+            context.calendar.makeDynamicMonthGridDates(from: monthInterval)
         }
+    }
+
+    func makeWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
+        context.calendar.makeFixedWeekGridDates(from: weekInterval)
     }
 
     func numberOfRows(for index: Int) -> Int {
-        context.calendar
-            .numberOfWeeks(inMonthOf: makeMonthFromStart(offset: index)) + 1 // +1 for month header
+        context.calendar.numberOfWeeks(inMonthOf: makeDate(for: index)) + 1 // +1 for month header
     }
 }

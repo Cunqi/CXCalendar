@@ -14,6 +14,9 @@ public struct CXCalendarContext {
     /// Style of the calendar (paged or scrollable)
     public let style: CXCalendarStyle
 
+    /// Content type of the calendar (month or week)
+    public let contentType: CXCalendarContentType
+
     /// Calendar used for all date and calculation logic.
     public let calendar: Calendar
 
@@ -44,6 +47,7 @@ extension CXCalendarContext {
         init(from context: CXCalendarContext) {
             // Basic
             style = context.style
+            contentType = context.contentType
             calendar = context.calendar
             startDate = context.startDate
             selectedDate = context.selectedDate
@@ -64,7 +68,7 @@ extension CXCalendarContext {
             // CXCalendarInteractionProtocol
             canSelect = context.interaction.canSelect
             isSelected = context.interaction.isSelected
-            shouldHideNonCurrentMonthDays = context.interaction.shouldHideNonCurrentMonthDays
+            shouldHideWhenOutOfBounds = context.interaction.shouldHideWhenOutOfBounds
             onSelected = context.interaction.onSelected
             onMonthChanged = context.interaction.onMonthChanged
         }
@@ -75,6 +79,9 @@ extension CXCalendarContext {
 
         /// Style of the calendar (paged or scrollable)
         public private(set) var style = CXCalendarStyle.paged
+
+        /// Content type of the calendar (month or week)
+        public private(set) var contentType = CXCalendarContentType.month
 
         /// Calendar used for all date and calculation logic.
         public private(set) var calendar = Calendar.current
@@ -97,39 +104,35 @@ extension CXCalendarContext {
 
         // MARK: - CXCalendarComposeProtocol
 
-        public private(set) var calendarHeader: (Date)
-            -> any CXCalendarHeaderViewRepresentable = { month in
-                CalendarHeaderView(month: month)
-            }
+        public private(set) var calendarHeader: CalendarHeaderMaker = { month in
+            CalendarHeaderView(date: month)
+        }
 
-        public private(set) var bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?
+        public private(set) var bodyHeader: BodyHeaderMaker?
 
-        public private(set) var weekHeader: (Date)
-            -> any CXCalendarHeaderViewRepresentable = { month in
-                WeekHeaderView(month: month)
-            }
+        public private(set) var weekHeader: WeekHeaderMaker = { month in
+            WeekHeaderView(month: month)
+        }
 
-        public private(set) var dayView: (Date, Date)
-            -> any CXDayViewRepresentable = { month, day in
-                DayView(month: month, day: day)
-            }
+        public private(set) var dayView: DayViewMaker = { dateInterval, day in
+            DayView(dateInterval: dateInterval, day: day)
+        }
 
-        public private(set) var accessoryView: ((Date) -> any View)?
+        public private(set) var accessoryView: AccessoryViewMaker?
 
         // MARK: - CXCalendarInteractionProtocol
 
-        public private(set) var canSelect: (Date, Date, Calendar) -> Bool = { _, _, _ in true }
+        public private(set) var canSelect: CanSelectAction = { _, _, _ in true }
 
-        public private(set) var isSelected: (Date, Date?, Calendar)
-            -> Bool = { day, selectedDate, calendar in
-                selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
-            }
+        public private(set) var isSelected: IsSelectedAction = { day, selectedDate, calendar in
+            selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
+        }
 
-        public private(set) var shouldHideNonCurrentMonthDays = false
+        public private(set) var shouldHideWhenOutOfBounds = false
 
-        public private(set) var onSelected: ((Date?) -> Void)?
+        public private(set) var onSelected: OnSelectedAction?
 
-        public private(set) var onMonthChanged: ((Date) -> Void)?
+        public private(set) var onMonthChanged: OnMonthChangedAction?
     }
 }
 
@@ -151,7 +154,7 @@ extension CXCalendarContext {
         CXCalendarContext.Builder()
             .style(.scrollable)
             .axis(.vertical)
-            .shouldHideNonCurrentMonthDays(true)
+            .shouldHideWhenOutOfBounds(true)
             .calendarHeader { month in
                 WeekHeaderView(month: month)
             }
@@ -174,6 +177,11 @@ extension CXCalendarContext.Builder {
 
     public func style(_ style: CXCalendarStyle) -> CXCalendarContext.Builder {
         self.style = style
+        return self
+    }
+
+    public func contentType(_ contentType: CXCalendarContentType) -> CXCalendarContext.Builder {
+        self.contentType = contentType
         return self
     }
 
@@ -223,55 +231,56 @@ extension CXCalendarContext.Builder {
         return self
     }
 
-    public func bodyHeader(_ bodyHeader: ((Date) -> any CXCalendarHeaderViewRepresentable)?)
+    public func bodyHeader(_ bodyHeader: BodyHeaderMaker?)
         -> CXCalendarContext.Builder {
         self.bodyHeader = bodyHeader
         return self
     }
 
-    public func weekHeader(_ weekHeader: @escaping (Date) -> any CXCalendarHeaderViewRepresentable)
+    public func weekHeader(_ weekHeader: @escaping WeekHeaderMaker)
         -> CXCalendarContext.Builder {
         self.weekHeader = weekHeader
         return self
     }
 
-    public func dayView(_ dayView: @escaping (Date, Date) -> any CXDayViewRepresentable)
+    public func dayView(_ dayView: @escaping DayViewMaker)
         -> CXCalendarContext.Builder {
         self.dayView = dayView
         return self
     }
 
-    public func accessoryView(_ accessoryView: ((Date) -> any View)?) -> CXCalendarContext.Builder {
+    public func accessoryView(_ accessoryView: AccessoryViewMaker?) -> CXCalendarContext.Builder {
         self.accessoryView = accessoryView
         return self
     }
 
     // MARK: - CXCalendarInteractionProtocol
 
-    public func canSelect(_ canSelect: @escaping (Date, Date, Calendar) -> Bool)
+    public func canSelect(_ canSelect: @escaping CanSelectAction)
         -> CXCalendarContext.Builder {
         self.canSelect = canSelect
         return self
     }
 
-    public func isSelected(_ isSelected: @escaping (Date, Date?, Calendar) -> Bool)
+    public func isSelected(_ isSelected: @escaping IsSelectedAction)
         -> CXCalendarContext.Builder {
         self.isSelected = isSelected
         return self
     }
 
-    public func shouldHideNonCurrentMonthDays(_ shouldHideNonCurrentMonthDays: Bool)
+    public func shouldHideWhenOutOfBounds(_ shouldHideWhenOutOfBounds: Bool)
         -> CXCalendarContext.Builder {
-        self.shouldHideNonCurrentMonthDays = shouldHideNonCurrentMonthDays
+        self.shouldHideWhenOutOfBounds = shouldHideWhenOutOfBounds
         return self
     }
 
-    public func onSelected(_ onSelected: ((Date?) -> Void)?) -> CXCalendarContext.Builder {
+    public func onSelected(_ onSelected: OnSelectedAction?) -> CXCalendarContext.Builder {
         self.onSelected = onSelected
         return self
     }
 
-    public func onMonthChanged(_ onMonthChanged: ((Date) -> Void)?) -> CXCalendarContext.Builder {
+    public func onMonthChanged(_ onMonthChanged: OnMonthChangedAction?)
+        -> CXCalendarContext.Builder {
         self.onMonthChanged = onMonthChanged
         return self
     }
@@ -293,13 +302,14 @@ extension CXCalendarContext.Builder {
         let interaction = CalendarInteraction(
             canSelect: canSelect,
             isSelected: isSelected,
-            shouldHideNonCurrentMonthDays: shouldHideNonCurrentMonthDays,
+            shouldHideWhenOutOfBounds: shouldHideWhenOutOfBounds,
             onSelected: onSelected,
             onMonthChanged: onMonthChanged
         )
 
         return CXCalendarContext(
             style: style,
+            contentType: contentType,
             calendar: calendar,
             startDate: startDate,
             selectedDate: selectedDate,

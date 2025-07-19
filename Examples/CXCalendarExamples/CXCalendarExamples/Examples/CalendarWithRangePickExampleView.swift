@@ -19,8 +19,8 @@ struct CalendarWithRangePickExampleView: View {
         let context = CXCalendarContext.paged
             .builder
             .columnPadding(.zero)
-            .dayView { month, day in
-                RangeDay(month: month, day: day, range: $viewModel.range)
+            .dayView { dateInterval, day in
+                RangeDay(dateInterval: dateInterval, day: day, range: $viewModel.range)
             }
             .onSelected { date in
                 guard let date else {
@@ -114,11 +114,11 @@ struct CalendarWithRangePickExampleView: View {
 struct RangeDay: CXDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
-    let month: Date
+    let dateInterval: DateInterval
     let day: Date
     @Binding var range: DateInterval?
 
-    let isInCurrentMonth = true
+    let isInRange: Bool = true
 
     var isToday: Bool {
         calendar.isDateInToday(day)

@@ -13,14 +13,18 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
 
     @Environment(CXCalendarManager.self) var manager
 
-    let month: Date
+    let date: Date
+
+    var dateInterval: DateInterval {
+        manager.makeDateInterval(for: date)
+    }
 
     // MARK: - Initializer
 
     var body: some View {
         VStack(spacing: layout.rowPadding) {
-            if let monthHeader = compose.bodyHeader {
-                monthHeader(month)
+            if let bodyHeader = compose.bodyHeader {
+                bodyHeader(date)
                     .frame(height: layout.rowHeight)
                     .frame(maxWidth: .infinity)
                     .erased
@@ -28,22 +32,22 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
 
             LazyVGrid(columns: manager.columns, spacing: layout.rowPadding) {
                 ForEach(days) { day in
-                    compose.dayView(month, day.value).erased
+                    compose.dayView(dateInterval, day.value).erased
                 }
             }
 
-            if let accessoryView = compose.accessoryView,
-               let selectedDate = manager.selectedDate {
+            if let accessoryView = compose.accessoryView, let selectedDate = manager.selectedDate {
                 accessoryView(selectedDate)
                     .erased
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 
     // MARK: Private
 
     private var days: [IdentifiableDate] {
-        manager.makeMonthGridDates(for: month)
+        manager.makeBodyGridDates(from: dateInterval)
     }
 }

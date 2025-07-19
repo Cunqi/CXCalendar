@@ -47,7 +47,7 @@ struct CustomMonthHeaderView: CXCalendarHeaderViewRepresentable {
 
                 Spacer()
 
-                if manager.shouldDisplayResetToTodayButton(month: month) {
+                if manager.shouldDisplayResetToTodayButton(date: month) {
                     resetToTodayButton
                 }
             }

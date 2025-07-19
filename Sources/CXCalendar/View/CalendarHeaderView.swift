@@ -13,7 +13,7 @@ struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
 
     @Environment(CXCalendarManager.self) var manager
 
-    let month: Date
+    let date: Date
 
     var body: some View {
         VStack {
@@ -23,26 +23,26 @@ struct CalendarHeaderView: CXCalendarHeaderViewRepresentable {
                     yearText
                 }
                 Spacer()
-                if manager.shouldDisplayResetToTodayButton(month: month) {
+                if manager.shouldDisplayResetToTodayButton(date: date) {
                     navTodayButton
                 }
             }
             Divider()
-            compose.weekHeader(month).erased
+            compose.weekHeader(date).erased
         }
     }
 
     // MARK: Private
 
     private var monthText: some View {
-        Text(month.fullMonth)
+        Text(date.fullMonth)
             .font(.headline)
             .bold()
             .foregroundColor(.primary)
     }
 
     private var yearText: some View {
-        Text(month.year)
+        Text(date.year)
             .font(.body)
             .foregroundColor(.secondary)
     }

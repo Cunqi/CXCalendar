@@ -13,11 +13,11 @@ struct DayView: View, CXDayViewRepresentable {
 
     @Environment(CXCalendarManager.self) var manager
 
-    let month: Date
+    let dateInterval: DateInterval
     let day: Date
 
-    var isInCurrentMonth: Bool {
-        calendar.isSameMonthInYear(day, month)
+    var isInRange: Bool {
+        dateInterval.contains(day)
     }
 
     var isToday: Bool {
@@ -25,7 +25,7 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     var body: some View {
-        if interaction.shouldHideNonCurrentMonthDays, !isInCurrentMonth {
+        if interaction.shouldHideWhenOutOfBounds, !isInRange {
             Color.clear
         } else {
             Text(numericDay)
@@ -50,7 +50,7 @@ struct DayView: View, CXDayViewRepresentable {
                         .padding(1)
                 )
                 .onTapGesture {
-                    guard interaction.canSelect(month, day, calendar) else {
+                    guard interaction.canSelect(dateInterval, day, calendar) else {
                         return
                     }
                     withAnimation {
@@ -67,14 +67,14 @@ struct DayView: View, CXDayViewRepresentable {
     }
 
     private var foregroundColor: Color {
-        isInCurrentMonth ? .primary : .secondary
+        isInRange ? .primary : .secondary
     }
 
     private var backgroundColor: Color {
         if isToday {
             return .accentColor.opacity(0.5)
         }
-        return isInCurrentMonth ? Color.green.opacity(0.1) : Color.clear
+        return isInRange ? Color.green.opacity(0.1) : Color.clear
     }
 
     private var isSelected: Bool {

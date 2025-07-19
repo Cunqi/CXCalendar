@@ -62,17 +62,13 @@ extension Calendar {
         return result
     }
 
-    func makeFixedWeekGridDates(for date: Date) -> [IdentifiableDate] {
-        guard let weekInterval = dateInterval(of: .weekOfMonth, for: date) else {
-            return []
-        }
-
+    func makeFixedWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
         var day = weekInterval.start
         var result = [IdentifiableDate]()
         var index = 0
         while day < weekInterval.end {
             result.append(IdentifiableDate(value: day, id: index))
-            guard let nextDay = self.date(byAdding: .day, value: 1, to: day) else {
+            guard let nextDay = date(byAdding: .day, value: 1, to: day) else {
                 break
             }
             index += 1
