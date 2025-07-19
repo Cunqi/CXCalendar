@@ -10,9 +10,7 @@ import SwiftUI
 
 struct CalendarWithWeekContentTypeExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.month(.page)
-
-        CXCalendar(context: context)
+        CXCalendar(context: CXCalendarContext.week())
             .navigationTitle("Week Content Type")
             .navigationBarTitleDisplayMode(.inline)
     }

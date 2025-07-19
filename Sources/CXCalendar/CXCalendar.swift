@@ -26,7 +26,7 @@ public struct CXCalendar: View, CXContextAccessible {
             monthView(for: scrollBehavior)
                 .environment(manager)
         case .week:
-            ScrollableCalendar(context: context, backToToday: $backToToday)
+            PagedCalendar(context: context, backToToday: $backToToday)
                 .environment(manager)
         }
     }

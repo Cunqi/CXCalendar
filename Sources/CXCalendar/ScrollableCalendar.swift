@@ -30,7 +30,10 @@ public struct ScrollableCalendar: View, CXCalendarAccessible, CXContextAccessibl
             compose.calendarHeader(currentDate)
                 .erased
                 .padding(.horizontal, layout.calendarHPadding)
-            CXLazyList(currentPage: $manager.currentPage) { index in
+            CXLazyList(
+                viewportTrackerContext: viewportContext,
+                currentPage: $manager.currentPage
+            ) { index in
                 CalendarBodyView(date: manager.makeDate(for: index))
                     .padding(.horizontal, layout.calendarHPadding)
             } heightOf: { index in
@@ -52,4 +55,18 @@ public struct ScrollableCalendar: View, CXCalendarAccessible, CXContextAccessibl
     // MARK: Internal
 
     @Binding var backToToday: Bool
+
+    // MARK: Private
+
+    private let viewportContext: ViewportTrackerContext = {
+        var showViewportTracker = false
+        #if DEBUG
+        showViewportTracker = true
+        #endif
+
+        return ViewportTrackerContext.default
+            .builder
+            .showDetectArea(showViewportTracker)
+            .build()
+    }()
 }
