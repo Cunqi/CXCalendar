@@ -1,5 +1,5 @@
 //
-//  DayView.swift
+//  CalendarBodyContentItemView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/13/25.
@@ -8,7 +8,7 @@
 import CXUICore
 import SwiftUI
 
-struct DayView: View, CXDayViewRepresentable {
+struct CalendarDayView: CXDayViewRepresentable {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager

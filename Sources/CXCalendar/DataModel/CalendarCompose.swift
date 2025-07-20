@@ -13,7 +13,7 @@ public typealias CalendarHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
 public typealias BodyHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
-public typealias BodyContentMaker = (Date) -> any CXCalendarViewRepresentable
+public typealias BodyContentMaker = (Date) -> any CXCalendarBodyContentViewRepresentable
 
 public typealias WeekHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 

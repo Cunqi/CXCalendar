@@ -89,15 +89,18 @@ public class CXCalendarManager {
     // MARK: - Internal Methods
 
     func makeDate(for offset: Int) -> Date {
-        context.calendar.date(byAdding: calendarType.component, value: offset, to: startDate)!
+        context.calendar.date(byAdding: calendarType.dateComponent, value: offset, to: startDate)!
     }
 
     func makeDateInterval(for offset: Int) -> DateInterval {
-        context.calendar.dateInterval(of: calendarType.component, for: makeDate(for: offset))!
+        context.calendar.dateInterval(
+            of: calendarType.dateIntervalComponent,
+            for: makeDate(for: offset)
+        )!
     }
 
     func makeDateInterval(for date: Date) -> DateInterval {
-        context.calendar.dateInterval(of: calendarType.component, for: date)!
+        context.calendar.dateInterval(of: calendarType.dateIntervalComponent, for: date)!
     }
 
     func makeBodyGridDates(from interval: DateInterval) -> [IdentifiableDate] {

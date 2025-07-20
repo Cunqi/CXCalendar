@@ -16,12 +16,21 @@ public enum CXCalendarType {
 }
 
 extension CXCalendarType {
-    var component: Calendar.Component {
+    var dateIntervalComponent: Calendar.Component {
         switch self {
         case .month:
             .month
         case .week:
             .weekOfYear
+        }
+    }
+
+    var dateComponent: Calendar.Component {
+        switch self {
+        case .month:
+            .month
+        case .week:
+            .day
         }
     }
 }

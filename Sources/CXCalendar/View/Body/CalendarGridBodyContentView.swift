@@ -1,5 +1,5 @@
 //
-//  CalendarBodyContentView.swift
+//  CalendarGridBodyContentView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/20/25.
@@ -8,9 +8,7 @@
 import CXFoundation
 import SwiftUI
 
-struct CalendarBodyContentView: CXCalendarViewRepresentable {
-    // MARK: Internal
-
+struct CalendarGridBodyContentView: CXCalendarBodyContentViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let date: Date
@@ -23,14 +21,11 @@ struct CalendarBodyContentView: CXCalendarViewRepresentable {
         }
     }
 
-    // MARK: Private
-
-    private var dateInterval: DateInterval {
+    var dateInterval: DateInterval {
         manager.makeDateInterval(for: date)
     }
 
-    private var days: [IdentifiableDate] {
+    var days: [IdentifiableDate] {
         manager.makeBodyGridDates(from: dateInterval)
     }
 }
-

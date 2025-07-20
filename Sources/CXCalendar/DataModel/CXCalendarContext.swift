@@ -103,7 +103,7 @@ extension CXCalendarContext {
         public private(set) var bodyHeader: BodyHeaderMaker?
 
         public private(set) var bodyContent: BodyContentMaker = { date in
-            CalendarBodyContentView(date: date)
+            CalendarGridBodyContentView(date: date)
         }
 
         public private(set) var weekHeader: WeekHeaderMaker = { month in
@@ -111,7 +111,7 @@ extension CXCalendarContext {
         }
 
         public private(set) var dayView: DayViewMaker = { dateInterval, day in
-            DayView(dateInterval: dateInterval, day: day)
+            CalendarDayView(dateInterval: dateInterval, day: day)
         }
 
         public private(set) var accessoryView: AccessoryViewMaker?
@@ -241,8 +241,13 @@ extension CXCalendarContext.Builder {
     }
 
     public func build() -> CXCalendarContext {
-        if case CXCalendarType.month(.scroll) = calendarType {
+        switch calendarType {
+        case .month(.scroll):
             axis = .vertical
+        case .month:
+            break
+        case .week:
+            accessoryView = nil
         }
 
         let layout = CalendarLayout(
@@ -302,6 +307,9 @@ extension CXCalendarContext {
     public static func week() -> CXCalendarContext {
         CXCalendarContext.Builder()
             .calendarType(.week)
+            .bodyContent { date in
+                CalendarPlainBodyContentView(date: date)
+            }
             .build()
     }
 }
