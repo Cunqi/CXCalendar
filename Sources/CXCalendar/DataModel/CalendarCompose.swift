@@ -9,11 +9,13 @@ import SwiftUI
 
 // MARK: - Typealias
 
-public typealias CalendarHeaderMaker = (Date) -> any CXCalendarHeaderViewRepresentable
+public typealias CalendarHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
-public typealias BodyHeaderMaker = (Date) -> any CXCalendarHeaderViewRepresentable
+public typealias BodyHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
-public typealias WeekHeaderMaker = (Date) -> any CXCalendarHeaderViewRepresentable
+public typealias BodyContentMaker = (Date) -> any CXCalendarViewRepresentable
+
+public typealias WeekHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
 public typealias DayViewMaker = (DateInterval, Date) -> any CXDayViewRepresentable
 
@@ -28,6 +30,10 @@ public protocol CXCalendarComposeProtocol {
     /// Closure returning a SwiftUI View for the body header, given the current month date.
     /// This is used to display the month title along with the month view.
     var bodyHeader: BodyHeaderMaker? { get }
+
+    /// Closure returning a SwiftUI View for the body content, given the current month date.
+    /// This is used to display the main content of the calendar view. (e.g., the month view)
+    var bodyContent: BodyContentMaker { get }
 
     /// Closure returning a SwiftUI View for the week header, given the current month date.
     /// This is used to display the week title of calendar view.
@@ -46,6 +52,8 @@ struct CalendarCompose: CXCalendarComposeProtocol {
     let calendarHeader: CalendarHeaderMaker
 
     let bodyHeader: BodyHeaderMaker?
+
+    let bodyContent: BodyContentMaker
 
     let weekHeader: WeekHeaderMaker
 

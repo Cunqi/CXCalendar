@@ -21,7 +21,7 @@ public struct CXCalendarContext {
     public let startDate: Date
 
     /// The date initially selected by the calendar, if any.
-    public let selectedDate: Date?
+    public let selectedDate: Date
 
     public let layout: CXCalendarLayoutProtocol
 
@@ -58,6 +58,7 @@ extension CXCalendarContext {
             // CXCalendarComposeProtocol
             calendarHeader = context.compose.calendarHeader
             bodyHeader = context.compose.bodyHeader
+            bodyContent = context.compose.bodyContent
             weekHeader = context.compose.weekHeader
             dayView = context.compose.dayView
             accessoryView = context.compose.accessoryView
@@ -73,17 +74,13 @@ extension CXCalendarContext {
 
         // MARK: - Basic
 
-        /// Content type of the calendar (month or week)
         public private(set) var calendarType = CXCalendarType.month(.page)
 
-        /// Calendar used for all date and calculation logic.
         public private(set) var calendar = Calendar.current
 
-        /// The calendar's starting display date.
         public private(set) var startDate = Date.now
 
-        /// The date initially selected by the calendar, if any.
-        public private(set) var selectedDate: Date?
+        public private(set) var selectedDate = Date.now
 
         // MARK: - CXCalendarLayoutProtocol
 
@@ -104,6 +101,10 @@ extension CXCalendarContext {
         }
 
         public private(set) var bodyHeader: BodyHeaderMaker?
+
+        public private(set) var bodyContent: BodyContentMaker = { date in
+            CalendarBodyContentView(date: date)
+        }
 
         public private(set) var weekHeader: WeekHeaderMaker = { month in
             WeekHeaderView(month: month)
@@ -129,33 +130,6 @@ extension CXCalendarContext {
     }
 }
 
-// MARK: - Convenience accessors
-
-extension CXCalendarContext {
-    public var builder: CXCalendarContext.Builder {
-        CXCalendarContext.Builder(from: self)
-    }
-
-    public static func month(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
-        var builder = CXCalendarContext.Builder()
-            .calendarType(.month(scrollBehavior))
-
-        if scrollBehavior == .scroll {
-            builder = builder
-                .bodyHeader { month in
-                    MonthHeaderView(month: month)
-                }
-        }
-        return builder.build()
-    }
-
-    public static func week() -> CXCalendarContext {
-        CXCalendarContext.Builder()
-            .calendarType(.week)
-            .build()
-    }
-}
-
 // MARK: - Builder Methods
 
 extension CXCalendarContext.Builder {
@@ -176,7 +150,7 @@ extension CXCalendarContext.Builder {
         return self
     }
 
-    public func selectedDate(_ selectedDate: Date?) -> CXCalendarContext.Builder {
+    public func selectedDate(_ selectedDate: Date) -> CXCalendarContext.Builder {
         self.selectedDate = selectedDate
         return self
     }
@@ -211,26 +185,29 @@ extension CXCalendarContext.Builder {
     // MARK: - CXCalendarComposeProtocol
 
     public func calendarHeader(_ calendarHeader: @escaping (Date)
-        -> any CXCalendarHeaderViewRepresentable
+        -> any CXCalendarViewRepresentable
     ) -> CXCalendarContext.Builder {
         self.calendarHeader = calendarHeader
         return self
     }
 
-    public func bodyHeader(_ bodyHeader: BodyHeaderMaker?)
-        -> CXCalendarContext.Builder {
+    public func bodyHeader(_ bodyHeader: BodyHeaderMaker?) -> CXCalendarContext.Builder {
         self.bodyHeader = bodyHeader
         return self
     }
 
-    public func weekHeader(_ weekHeader: @escaping WeekHeaderMaker)
-        -> CXCalendarContext.Builder {
+    public func bodyContent(_ bodyContent: @escaping BodyContentMaker) -> CXCalendarContext
+        .Builder {
+        self.bodyContent = bodyContent
+        return self
+    }
+
+    public func weekHeader(_ weekHeader: @escaping WeekHeaderMaker) -> CXCalendarContext.Builder {
         self.weekHeader = weekHeader
         return self
     }
 
-    public func dayView(_ dayView: @escaping DayViewMaker)
-        -> CXCalendarContext.Builder {
+    public func dayView(_ dayView: @escaping DayViewMaker) -> CXCalendarContext.Builder {
         self.dayView = dayView
         return self
     }
@@ -242,14 +219,12 @@ extension CXCalendarContext.Builder {
 
     // MARK: - CXCalendarInteractionProtocol
 
-    public func canSelect(_ canSelect: @escaping CanSelectAction)
-        -> CXCalendarContext.Builder {
+    public func canSelect(_ canSelect: @escaping CanSelectAction) -> CXCalendarContext.Builder {
         self.canSelect = canSelect
         return self
     }
 
-    public func isSelected(_ isSelected: @escaping IsSelectedAction)
-        -> CXCalendarContext.Builder {
+    public func isSelected(_ isSelected: @escaping IsSelectedAction) -> CXCalendarContext.Builder {
         self.isSelected = isSelected
         return self
     }
@@ -280,6 +255,7 @@ extension CXCalendarContext.Builder {
         let compose = CalendarCompose(
             calendarHeader: calendarHeader,
             bodyHeader: bodyHeader,
+            bodyContent: bodyContent,
             weekHeader: weekHeader,
             dayView: dayView,
             accessoryView: accessoryView
@@ -300,5 +276,32 @@ extension CXCalendarContext.Builder {
             compose: compose,
             interaction: interaction
         )
+    }
+}
+
+// MARK: - Convenience accessors
+
+extension CXCalendarContext {
+    public var builder: CXCalendarContext.Builder {
+        CXCalendarContext.Builder(from: self)
+    }
+
+    public static func month(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
+        var builder = CXCalendarContext.Builder()
+            .calendarType(.month(scrollBehavior))
+
+        if scrollBehavior == .scroll {
+            builder = builder
+                .bodyHeader { month in
+                    MonthHeaderView(month: month)
+                }
+        }
+        return builder.build()
+    }
+
+    public static func week() -> CXCalendarContext {
+        CXCalendarContext.Builder()
+            .calendarType(.week)
+            .build()
     }
 }

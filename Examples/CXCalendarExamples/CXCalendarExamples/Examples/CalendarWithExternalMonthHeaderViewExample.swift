@@ -49,7 +49,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
 
 // MARK: - WeekdayOnlyHeaderView
 
-struct WeekdayOnlyHeaderView: CXCalendarHeaderViewRepresentable {
+struct WeekdayOnlyHeaderView: CXCalendarViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date

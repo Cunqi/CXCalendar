@@ -37,7 +37,7 @@ public class CXCalendarManager {
 
     public let startDate: Date
 
-    public var selectedDate: Date?
+    public var selectedDate: Date
 
     public var currentDate: Date {
         makeDate(for: currentPage)
@@ -65,12 +65,7 @@ public class CXCalendarManager {
         case .week:
             context.calendar.isDate(date, equalTo: startDate, toGranularities: [.year, .weekOfYear])
         }
-        let isTodaySelected =
-            if let selectedDate {
-                context.calendar.isSameDay(selectedDate, startDate)
-            } else {
-                true
-            }
+        let isTodaySelected = context.calendar.isSameDay(selectedDate, startDate)
         return !isInRange || !isTodaySelected
     }
 
@@ -88,6 +83,8 @@ public class CXCalendarManager {
     let columns: [GridItem]
 
     var currentPage = 0
+
+    var presentAccessoryView = false
 
     // MARK: - Internal Methods
 

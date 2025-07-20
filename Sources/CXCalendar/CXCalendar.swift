@@ -8,7 +8,7 @@
 import CXLazyPage
 import SwiftUI
 
-public struct CXCalendar: View, CXContextAccessible {
+public struct CXCalendar: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
     public init(context: CXCalendarContext, backToToday: Binding<Bool> = .constant(false)) {

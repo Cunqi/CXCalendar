@@ -8,7 +8,7 @@
 import CXLazyPage
 import SwiftUI
 
-public struct ScrollableCalendar: View, CXCalendarAccessible, CXContextAccessible {
+public struct ScrollableCalendar: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
     /// A scrollable calendar view that displays months in a paginated format.

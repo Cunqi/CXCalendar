@@ -55,7 +55,7 @@ struct CustomDayView: CXDayViewRepresentable {
                     return
                 }
                 withAnimation {
-                    manager.selectedDate = isSelected ? nil : day
+                    manager.selectedDate = day
                 }
             }
     }

@@ -8,16 +8,12 @@
 import CXFoundation
 import SwiftUI
 
-struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
-    // MARK: Internal
+// MARK: - CalendarBodyView
 
+struct CalendarBodyView: CXCalendarViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let date: Date
-
-    var dateInterval: DateInterval {
-        manager.makeDateInterval(for: date)
-    }
 
     // MARK: - Initializer
 
@@ -30,24 +26,14 @@ struct CalendarBodyView: View, CXCalendarAccessible, CXContextAccessible {
                     .erased
             }
 
-            LazyVGrid(columns: manager.columns, spacing: layout.rowPadding) {
-                ForEach(days) { day in
-                    compose.dayView(dateInterval, day.value).erased
-                }
-            }
+            compose.bodyContent(date).erased
 
-            if let accessoryView = compose.accessoryView, let selectedDate = manager.selectedDate {
+            if let accessoryView = compose.accessoryView, case .month = calendarType {
                 accessoryView(selectedDate)
                     .erased
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-    }
-
-    // MARK: Private
-
-    private var days: [IdentifiableDate] {
-        manager.makeBodyGridDates(from: dateInterval)
     }
 }

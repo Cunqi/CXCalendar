@@ -9,7 +9,7 @@ import CXLazyPage
 import CXUICore
 import SwiftUI
 
-public struct PagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
+public struct PagedCalendar: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
     // MARK: - Initializer
@@ -42,11 +42,6 @@ public struct PagedCalendar: View, CXCalendarAccessible, CXContextAccessible {
         .environment(manager)
         .onChange(of: selectedDate) { _, newValue in
             interaction.onSelected?(newValue)
-        }
-        .onChange(of: currentDate) { _, _ in
-            withAnimation {
-                manager.selectedDate = nil
-            }
         }
         .onChange(of: currentDate) { _, newValue in
             interaction.onMonthChanged?(newValue)

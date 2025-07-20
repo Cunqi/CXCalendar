@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WeekHeaderView: CXCalendarHeaderViewRepresentable {
+struct WeekHeaderView: CXCalendarViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date

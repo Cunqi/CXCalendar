@@ -21,7 +21,7 @@ public protocol CXCalendarAccessible {
 
     var currentDateInterval: DateInterval { get }
 
-    var selectedDate: Date? { get }
+    var selectedDate: Date { get }
 }
 
 extension CXCalendarAccessible {
@@ -41,7 +41,7 @@ extension CXCalendarAccessible {
         manager.currentDateInterval
     }
 
-    public var selectedDate: Date? {
+    public var selectedDate: Date {
         manager.selectedDate
     }
 }

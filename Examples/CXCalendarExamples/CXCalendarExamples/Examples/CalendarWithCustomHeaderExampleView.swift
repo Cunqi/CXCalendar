@@ -28,7 +28,7 @@ struct CalendarWithCustomHeaderExampleView: View {
 
 // MARK: - CustomMonthHeaderView
 
-struct CustomMonthHeaderView: CXCalendarHeaderViewRepresentable {
+struct CustomMonthHeaderView: CXCalendarViewRepresentable {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager
