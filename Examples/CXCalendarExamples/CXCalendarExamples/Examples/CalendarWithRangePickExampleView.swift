@@ -110,7 +110,7 @@ struct CalendarWithRangePickExampleView: View {
 
 // MARK: - RangeDay
 
-struct RangeDay: CXDayViewRepresentable {
+struct RangeDay: CXCalendarDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let dateInterval: DateInterval

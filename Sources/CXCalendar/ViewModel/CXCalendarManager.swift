@@ -39,6 +39,8 @@ public class CXCalendarManager {
 
     public var selectedDate: Date
 
+    public let columns: [GridItem]
+
     public var currentDate: Date {
         makeDate(for: currentPage)
     }
@@ -71,16 +73,25 @@ public class CXCalendarManager {
 
     public func resetToToday() {
         currentPage = 0
-        if selectedDate != nil {
-            selectedDate = startDate
+        selectedDate = startDate
+    }
+
+    public func makeDays(from interval: DateInterval) -> [IdentifiableDate] {
+        switch calendarType {
+        case .month:
+            makeMonthGridDates(from: interval)
+        case .week:
+            makeWeekGridDates(from: interval)
         }
+    }
+
+    public func makeDateInterval(for date: Date) -> DateInterval {
+        context.calendar.dateInterval(of: calendarType.component, for: date)!
     }
 
     // MARK: Internal
 
     var calendarType: CXCalendarType
-
-    let columns: [GridItem]
 
     var currentPage = 0
 
@@ -89,27 +100,14 @@ public class CXCalendarManager {
     // MARK: - Internal Methods
 
     func makeDate(for offset: Int) -> Date {
-        context.calendar.date(byAdding: calendarType.dateComponent, value: offset, to: startDate)!
+        context.calendar.date(byAdding: calendarType.component, value: offset, to: startDate)!
     }
 
     func makeDateInterval(for offset: Int) -> DateInterval {
         context.calendar.dateInterval(
-            of: calendarType.dateIntervalComponent,
+            of: calendarType.component,
             for: makeDate(for: offset)
         )!
-    }
-
-    func makeDateInterval(for date: Date) -> DateInterval {
-        context.calendar.dateInterval(of: calendarType.dateIntervalComponent, for: date)!
-    }
-
-    func makeBodyGridDates(from interval: DateInterval) -> [IdentifiableDate] {
-        switch calendarType {
-        case .month:
-            makeMonthGridDates(from: interval)
-        case .week:
-            makeWeekGridDates(from: interval)
-        }
     }
 
     func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {

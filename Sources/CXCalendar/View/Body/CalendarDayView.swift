@@ -8,7 +8,7 @@
 import CXUICore
 import SwiftUI
 
-struct CalendarDayView: CXDayViewRepresentable {
+struct CalendarDayView: CXCalendarDayViewRepresentable {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager
@@ -17,7 +17,7 @@ struct CalendarDayView: CXDayViewRepresentable {
     let day: Date
 
     var isInRange: Bool {
-        dateInterval.contains(day)
+        dateInterval.containsDay(day, calendar: calendar)
     }
 
     var isToday: Bool {

@@ -1,5 +1,5 @@
 //
-//  CXDayViewRepresentable.swift
+//  CXCalendarDayViewRepresentable.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/13/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public protocol CXDayViewRepresentable: CXCalendarViewRepresentable {
+public protocol CXCalendarDayViewRepresentable: CXCalendarViewRepresentable {
     var dateInterval: DateInterval { get }
 
     var day: Date { get }

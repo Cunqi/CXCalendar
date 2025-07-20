@@ -244,10 +244,8 @@ extension CXCalendarContext.Builder {
         switch calendarType {
         case .month(.scroll):
             axis = .vertical
-        case .month:
+        default:
             break
-        case .week:
-            accessoryView = nil
         }
 
         let layout = CalendarLayout(
@@ -307,9 +305,6 @@ extension CXCalendarContext {
     public static func week() -> CXCalendarContext {
         CXCalendarContext.Builder()
             .calendarType(.week)
-            .bodyContent { date in
-                CalendarPlainBodyContentView(date: date)
-            }
             .build()
     }
 }

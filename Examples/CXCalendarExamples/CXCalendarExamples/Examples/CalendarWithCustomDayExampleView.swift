@@ -28,7 +28,7 @@ struct CalendarWithCustomDayExampleView: View {
 
 // MARK: - CustomDayView
 
-struct CustomDayView: CXDayViewRepresentable {
+struct CustomDayView: CXCalendarDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let dateInterval: DateInterval

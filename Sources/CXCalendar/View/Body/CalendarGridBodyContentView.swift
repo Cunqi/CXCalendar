@@ -19,6 +19,18 @@ struct CalendarGridBodyContentView: CXCalendarBodyContentViewRepresentable {
                 compose.dayView(dateInterval, day.value).erased
             }
         }
+        .onChange(of: manager.currentPage) { oldValue, newValue in
+            let isIncrement = newValue > oldValue
+            if case .week = calendarType, !dateInterval.containsDay(
+                selectedDate,
+                calendar: calendar
+            ) {
+                manager.selectedDate = isIncrement
+                    ? dateInterval.start
+                    : dateInterval
+                        .lastDay(calendar: calendar)
+            }
+        }
     }
 
     var dateInterval: DateInterval {
@@ -26,6 +38,6 @@ struct CalendarGridBodyContentView: CXCalendarBodyContentViewRepresentable {
     }
 
     var days: [IdentifiableDate] {
-        manager.makeBodyGridDates(from: dateInterval)
+        manager.makeDays(from: dateInterval)
     }
 }

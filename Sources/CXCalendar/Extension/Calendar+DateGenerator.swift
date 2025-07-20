@@ -32,7 +32,8 @@ extension Calendar {
     /// - Parameter monthInterval: The date interval representing the month for which to generate the grid.
     /// - Returns: An array of `IdentifiableDate` representing the dates in the month grid.
     func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
-        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: monthInterval.start) else {
+        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: monthInterval.start)
+        else {
             return []
         }
 
@@ -65,6 +66,17 @@ extension Calendar {
             day = nextDay
         }
         return result
+    }
+
+    func offset(
+        between date1: Date,
+        and date2: Date,
+        by component: Calendar.Component = .day
+    ) -> Int {
+        let startOfDay1 = startOfDay(for: date1)
+        let startOfDay2 = startOfDay(for: date2)
+        let dateComponents = dateComponents([component], from: startOfDay1, to: startOfDay2)
+        return dateComponents.value(for: component) ?? 0
     }
 
     /// Calculates the number of weeks in the month of a given date.

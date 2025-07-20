@@ -16,7 +16,7 @@ public enum CXCalendarType {
 }
 
 extension CXCalendarType {
-    var dateIntervalComponent: Calendar.Component {
+    var component: Calendar.Component {
         switch self {
         case .month:
             .month
@@ -25,10 +25,10 @@ extension CXCalendarType {
         }
     }
 
-    var dateComponent: Calendar.Component {
+    var offsetComponent: Calendar.Component {
         switch self {
         case .month:
-            .month
+            .day
         case .week:
             .day
         }
