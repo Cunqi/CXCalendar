@@ -15,7 +15,7 @@ struct CalendarWithCustomDayExampleView: View {
     var body: some View {
         let context = CXCalendarContext.month(.page)
             .builder
-            .dayView { dateInterval, day in
+            .dayView { dateInterval, day, _ in
                 CustomDayView(dateInterval: dateInterval, day: day)
             }
             .build()
