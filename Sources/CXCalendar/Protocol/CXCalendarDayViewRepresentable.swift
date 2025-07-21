@@ -11,14 +11,14 @@ import SwiftUI
 public protocol CXCalendarDayViewRepresentable: CXCalendarViewRepresentable {
     /// The date interval that currently being displayed
     var dateInterval: DateInterval { get }
-    
+
     /// The date that represents the day being displayed in the view.
     var day: Date { get }
-    
+
     /// Tell whether the `day` is in some sort of range, such as the current month or week.
     /// this can be calculated by leveraging the `dateInterval` property.
     var isInRange: Bool { get }
-    
+
     /// /// A Boolean value indicating whether the day is startDate.
     var isStartDate: Bool { get }
 }

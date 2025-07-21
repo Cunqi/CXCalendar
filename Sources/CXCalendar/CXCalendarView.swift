@@ -15,7 +15,7 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
 
     /// Initializes a `CXCalendar` instance with the specified context and optional
     /// binding to control returning to the start date.
-    /// 
+    ///
     /// - Parameters:
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
     ///   - backToStart: A binding that indicates whether the calendar should return to the start date when it changes.

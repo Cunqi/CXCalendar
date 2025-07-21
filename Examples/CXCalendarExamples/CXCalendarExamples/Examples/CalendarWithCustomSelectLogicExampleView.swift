@@ -10,7 +10,7 @@ import CXFoundation
 import SwiftUI
 
 struct CalendarWithCustomSelectLogicExampleView: View {
-    @State private var selectedDate: Date? = nil
+    // MARK: Internal
 
     var body: some View {
         let context = CXCalendarContext.month(.page)
@@ -30,4 +30,8 @@ struct CalendarWithCustomSelectLogicExampleView: View {
             .navigationTitle("Custom Select Logic Calendar")
             .navigationBarTitleDisplayMode(.inline)
     }
+
+    // MARK: Private
+
+    @State private var selectedDate: Date? = nil
 }

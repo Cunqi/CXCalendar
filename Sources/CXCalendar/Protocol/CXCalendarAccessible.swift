@@ -14,17 +14,17 @@ import Foundation
 public protocol CXCalendarAccessible {
     /// The calendar manager that handles the calendar view's data and behavior.
     var manager: CXCalendarManager { get }
-    
+
     /// The calendar used for date calculations and formatting.
     var calendar: Calendar { get }
-    
+
     /// The start date of the calendar, representing the first date displayed in the calendar view.
     var startDate: Date { get }
-    
+
     /// The current anchor date of the calendar, which is typically the date offset from the start date
     /// based on the `currentPage`
     var currentAnchorDate: Date { get }
-    
+
     /// The current date interval of the calendar, representing the range of dates currently displayed.
     var currentDateInterval: DateInterval { get }
 
@@ -43,7 +43,7 @@ extension CXCalendarAccessible {
     }
 
     public var currentAnchorDate: Date {
-        manager.currentDate
+        manager.currentAnchorDate
     }
 
     public var currentDateInterval: DateInterval {
