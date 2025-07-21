@@ -36,7 +36,7 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
     let day: Date
 
     var isInRange: Bool {
-        dateInterval.containsExceptEnd(day, calendar: calendar)
+        dateInterval.containsExceptEnd(day, calendar)
     }
 
     var isStartDate: Bool {

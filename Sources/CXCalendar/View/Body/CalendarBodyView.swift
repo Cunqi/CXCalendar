@@ -27,9 +27,10 @@ struct CalendarBodyView: CXCalendarViewRepresentable {
                     .erased
             }
 
-            compose.bodyContent(date).erased
+            CalendarBodyContentView(date: date)
 
-            if let accessoryView = compose.accessoryView {
+            if let accessoryView = compose.accessoryView,
+               manager.shouldPresentAccessoryView(for: date) {
                 accessoryView(selectedDate)
                     .erased
                     .transition(.move(edge: .bottom).combined(with: .opacity))

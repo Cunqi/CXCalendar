@@ -20,7 +20,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
     let namespace: Namespace.ID
 
     var isInRange: Bool {
-        dateInterval.containsExceptEnd(day, calendar: calendar)
+        dateInterval.containsExceptEnd(day, calendar)
     }
 
     var isStartDate: Bool {
@@ -68,7 +68,12 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                     guard interaction.canSelect(dateInterval, day, calendar) else {
                         return
                     }
-                    withAnimation(.interpolatingSpring) {
+                    withAnimation {
+                        if calendar.isSameDay(day, selectedDate) {
+                            manager.togglePresentAccessoryView()
+                        } else {
+                            manager.shouldPresentAccessoryView = true
+                        }
                         manager.selectedDate = day
                     }
                 }

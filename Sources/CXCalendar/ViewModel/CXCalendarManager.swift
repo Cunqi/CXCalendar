@@ -33,21 +33,21 @@ public class CXCalendarManager {
     // MARK: Public
 
     // MARK: - Public properties
-    
+
     /// The calendar context containing the configuration and state of the calendar.
     public let context: CXCalendarContext
-    
+
     /// The start date of the calendar, representing the anchor date from which the calendar is displayed.
     public let startDate: Date
-    
+
     /// The selected date of the calendar, which is the date currently highlighted or focused.
     public var selectedDate: Date
-    
+
     /// The columns used for the calendar grid layout, typically representing the days of the week.
     public let columns: [GridItem]
 
-    /// The current date displayed in the calendar, calculated based on the current page offset.
-    public var currentDate: Date {
+    /// The current anchor date displayed in the calendar, calculated based on the current page offset.
+    public var currentAnchorDate: Date {
         makeDate(for: currentPage)
     }
 
@@ -58,7 +58,7 @@ public class CXCalendarManager {
 
     // MARK: - Public Methods
 
-    /// Determines whether the reset to today button should be displayed for a given month.
+    /// Determines whether the back to start button should be displayed for a given month.
     /// - This method checks if the given date is equal to start date with given granularities.
     ///  and whether the selected date is today.
     ///
@@ -66,7 +66,7 @@ public class CXCalendarManager {
     /// the button should be displayed.
     ///
     /// - Parameter date: The date to check, represented as a `Date`.
-    /// - Returns: A Boolean value indicating whether the reset to today button should be displayed.
+    /// - Returns: A Boolean value indicating whether the back to start button should be displayed.
     public func shouldBackToStart(date: Date) -> Bool {
         let isInRange: Bool = switch calendarType {
         case .month:
@@ -77,19 +77,38 @@ public class CXCalendarManager {
         let isTodaySelected = context.calendar.isSameDay(selectedDate, startDate)
         return !isInRange || !isTodaySelected
     }
-    
+
     /// Resets the page to the start date and updates the selected date to the start date.
     public func backToStart() {
         currentPage = 0
         selectedDate = startDate
+        togglePresentAccessoryView()
+    }
+
+    /// Toggles the presentation of the accessory view based on the calendar type.
+    /// - For week view, the accessory view is always presented.
+    /// - For month view with page scroll behavior, the accessory view is toggled.
+    /// - For month view with scroll scroll behavior, the accessory view is never presented.
+    public func togglePresentAccessoryView() {
+        switch calendarType {
+        case .week:
+            shouldPresentAccessoryView = true
+        case .month(.page):
+            shouldPresentAccessoryView.toggle()
+        case .month(.scroll):
+            shouldPresentAccessoryView = false
+        }
     }
 
     // MARK: Internal
 
     var calendarType: CXCalendarType
-    
+
     /// The current page offset in the calendar, used to determine which dates are displayed.
     var currentPage = 0
+
+    /// Whether the accessory view should be presented.
+    var shouldPresentAccessoryView = true
 
     func makeDateInterval(for date: Date) -> DateInterval {
         context.calendar.dateInterval(of: calendarType.component, for: date)!
@@ -130,5 +149,16 @@ public class CXCalendarManager {
 
     func numberOfRows(for index: Int) -> Int {
         context.calendar.numberOfWeeks(inMonthOf: makeDate(for: index)) + 1 // +1 for month header
+    }
+
+    func shouldPresentAccessoryView(for date: Date) -> Bool {
+        switch calendarType {
+        case .week:
+            true
+        case .month(.page):
+            shouldPresentAccessoryView && context.calendar.isSameDay(date, currentAnchorDate)
+        case .month(.scroll):
+            false
+        }
     }
 }

@@ -8,13 +8,12 @@
 import Foundation
 
 extension DateInterval {
-
     /// Checks if the date interval contains a specific date. excluding the end date.
     /// - Parameters:
     ///   - date: The date to check if it falls within the interval.
     ///   - calendar: The calendar used for date calculations.
     /// - Returns: `true` if the date is within the interval, `false` otherwise.
-    public func containsExceptEnd(_ date: Date, calendar: Calendar) -> Bool {
+    public func containsExceptEnd(_ date: Date, _ calendar: Calendar) -> Bool {
         let startDay = calendar.startOfDay(for: start)
         let lastDay = calendar.startOfDay(for: end)
         let dateDay = calendar.startOfDay(for: date)

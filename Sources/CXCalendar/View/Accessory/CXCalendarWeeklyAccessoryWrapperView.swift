@@ -13,7 +13,7 @@ import SwiftUI
 public struct CXCalendarWeeklyAccessoryWrapperView<AccessoryContent: View>:
     CXCalendarViewRepresentable {
     // MARK: Lifecycle
-    
+
     /// Creates a new instance of `CXCalendarWeeklyAccessoryWrapperView`.
     /// - Parameters:
     ///   - date: The date that the accessory date relates to.
@@ -46,7 +46,20 @@ public struct CXCalendarWeeklyAccessoryWrapperView<AccessoryContent: View>:
         }
         .onChange(of: manager.selectedDate) { _, newValue in
             if !calendar.isSameDay(newValue, focusedDate) {
-                withAnimation {
+                // If the weekly accessory view is not currently forcused on the selected date,
+                // this means the user is scrolling the calendar view.
+                // In all of following conditions were met, we should disable the animation.
+                // 1. The focused date is not in the current week interval.
+                // 2. user is scrolling backward and selected date is smaller than the focused date.
+
+                let isInRange = manager.currentDateInterval.containsExceptEnd(focusedDate, calendar)
+                let isMovingBackward = calendar.compare(
+                    newValue,
+                    to: focusedDate,
+                    toGranularity: .day
+                ) == .orderedAscending
+                let shouldDisableAnimation = !isInRange && isMovingBackward
+                withAnimation(shouldDisableAnimation ? nil : .default) {
                     focusedDate = newValue
                 }
             }
