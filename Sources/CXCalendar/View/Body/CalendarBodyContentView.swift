@@ -28,7 +28,7 @@ struct CalendarBodyContentView: CXCalendarBodyContentViewRepresentable {
             // select start or last day as the initial selected date.
             // if selected date equals to start date. means it is a reset, do nothing.
             if case .week = calendarType,
-               !dateInterval.containsDay(selectedDate, calendar: calendar),
+               !dateInterval.containsExceptEnd(selectedDate, calendar: calendar),
                !calendar.isSameDay(selectedDate, startDate) {
                 manager.selectedDate = newValue > oldValue
                     ? dateInterval.start

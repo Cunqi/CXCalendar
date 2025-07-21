@@ -20,7 +20,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
     let namespace: Namespace.ID
 
     var isInRange: Bool {
-        dateInterval.containsDay(day, calendar: calendar)
+        dateInterval.containsExceptEnd(day, calendar: calendar)
     }
 
     var isStartDate: Bool {

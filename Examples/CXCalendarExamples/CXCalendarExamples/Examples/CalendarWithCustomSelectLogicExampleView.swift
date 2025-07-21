@@ -18,6 +18,12 @@ struct CalendarWithCustomSelectLogicExampleView: View {
             .canSelect { dateInterval, day, _ in
                 dateInterval.contains(day)
             }
+            .accessoryView { _ in
+                Text("""
+                    Only the date of current month can be selected.
+                    """)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
             .build()
 
         CXCalendarView(context: context)

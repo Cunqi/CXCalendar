@@ -35,7 +35,9 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
 
     let day: Date
 
-    let isInRange = true
+    var isInRange: Bool {
+        dateInterval.containsExceptEnd(day, calendar: calendar)
+    }
 
     var isStartDate: Bool {
         calendar.isDate(day, inSameDayAs: startDate)
@@ -43,11 +45,11 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
 
     var body: some View {
         Text(day.day)
-            .font(.body)
+            .font(font)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .aspectRatio(1, contentMode: .fit)
             .background(
-                RoundedRectangle(cornerRadius: 4)
+                Circle()
                     .fill(backgroundColor)
             )
             .onTapGesture {
@@ -60,14 +62,12 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
             }
     }
 
+    var font: Font {
+        isStartDate ? .body.bold() : .body
+    }
+
     var backgroundColor: Color {
-        if isSelected {
-            .accentColor.opacity(0.5)
-        } else if isStartDate {
-            .green.opacity(0.2)
-        } else {
-            .clear
-        }
+        isSelected ? .accentColor.opacity(0.5) : .clear
     }
 
     var isSelected: Bool {
