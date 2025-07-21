@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// The `WeekHeaderView` is a view that displays the header of a calendar week.
+/// It shows the abbreviated names of the weekdays in a grid layout.
+/// This is the default header view used in the calendar.
 struct WeekHeaderView: CXCalendarViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 

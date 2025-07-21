@@ -8,6 +8,8 @@
 import CXFoundation
 import SwiftUI
 
+/// The `CalendarHeaderView` is a SwiftUI view that displays the header of a calendar, including the month and year, and a button to reset to today's date if applicable.
+/// it is the default implementation of the header view for `CXCalendar`.
 struct CalendarHeaderView: CXCalendarViewRepresentable {
     // MARK: Internal
 
@@ -23,7 +25,7 @@ struct CalendarHeaderView: CXCalendarViewRepresentable {
                     yearText
                 }
                 Spacer()
-                if manager.shouldDisplayResetToTodayButton(date: date) {
+                if manager.shouldBackToStart(date: date) {
                     navTodayButton
                 }
             }
@@ -50,7 +52,7 @@ struct CalendarHeaderView: CXCalendarViewRepresentable {
     private var navTodayButton: some View {
         Button(action: {
             withAnimation {
-                manager.resetToToday()
+                manager.backToStart()
             }
         }) {
             Image(systemName: "arrow.turn.up.left")

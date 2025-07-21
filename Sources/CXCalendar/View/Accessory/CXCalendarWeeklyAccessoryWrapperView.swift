@@ -8,10 +8,16 @@
 import CXFoundation
 import SwiftUI
 
+/// The `CXCalendarWeeklyAccessoryWrapperView` is a SwiftUI view that wraps a calendar accessory
+/// It provides the ability to scroll through a week's worth of dates, displaying the accessory content for each date.
 public struct CXCalendarWeeklyAccessoryWrapperView<AccessoryContent: View>:
     CXCalendarViewRepresentable {
     // MARK: Lifecycle
-
+    
+    /// Creates a new instance of `CXCalendarWeeklyAccessoryWrapperView`.
+    /// - Parameters:
+    ///   - date: The date that the accessory date relates to.
+    ///   - content: A closure that returns the accessory content view for a given date and the calendar manager.
     public init(
         date: Date,
         @ViewBuilder content: @escaping (Date, CXCalendarManager) -> AccessoryContent

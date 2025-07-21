@@ -6,8 +6,8 @@
 //
 
 import CXCalendar
-import CXUICore
 import CXLazyPage
+import CXUICore
 import SwiftUI
 
 struct CalendarWithWeekContentTypeExampleView: View {

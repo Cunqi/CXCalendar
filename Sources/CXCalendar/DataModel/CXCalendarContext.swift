@@ -20,13 +20,16 @@ public struct CXCalendarContext {
     /// The calendar's starting display date.
     public let startDate: Date
 
-    /// The date initially selected by the calendar, if any.
+    /// The date initially selected by the calendar, default is `startDate`.
     public let selectedDate: Date
 
+    /// The layout configuration for the calendar.
     public let layout: CXCalendarLayoutProtocol
 
+    /// The compose configuration for the calendar.
     public let compose: CXCalendarComposeProtocol
 
+    /// The interaction configuration for the calendar.
     public let interaction: CXCalendarInteractionProtocol
 }
 
@@ -103,7 +106,7 @@ extension CXCalendarContext {
         public private(set) var bodyHeader: BodyHeaderMaker?
 
         public private(set) var bodyContent: BodyContentMaker = { date in
-            CalendarGridBodyContentView(date: date)
+            CalendarBodyContentView(date: date)
         }
 
         public private(set) var weekHeader: WeekHeaderMaker = { month in

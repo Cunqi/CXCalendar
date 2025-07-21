@@ -9,6 +9,7 @@ import CXFoundation
 import Observation
 import SwiftUI
 
+/// /// The `CXCalendarManager` class is responsible for managing the calendar's state and behavior.
 @Observable
 @MainActor
 public class CXCalendarManager {
@@ -25,26 +26,32 @@ public class CXCalendarManager {
         )
 
         startDate = context.calendar.startOfDay(for: context.startDate)
-        selectedDate = context.selectedDate
+        selectedDate = context.calendar.startOfDay(for: context.selectedDate)
         calendarType = context.calendarType
     }
 
     // MARK: Public
 
     // MARK: - Public properties
-
+    
+    /// The calendar context containing the configuration and state of the calendar.
     public let context: CXCalendarContext
-
+    
+    /// The start date of the calendar, representing the anchor date from which the calendar is displayed.
     public let startDate: Date
-
+    
+    /// The selected date of the calendar, which is the date currently highlighted or focused.
     public var selectedDate: Date
-
+    
+    /// The columns used for the calendar grid layout, typically representing the days of the week.
     public let columns: [GridItem]
 
+    /// The current date displayed in the calendar, calculated based on the current page offset.
     public var currentDate: Date {
         makeDate(for: currentPage)
     }
 
+    /// The current date interval of the calendar, representing the range of dates currently displayed.
     public var currentDateInterval: DateInterval {
         makeDateInterval(for: currentPage)
     }
@@ -52,7 +59,7 @@ public class CXCalendarManager {
     // MARK: - Public Methods
 
     /// Determines whether the reset to today button should be displayed for a given month.
-    /// - This method checks if the given month has the same month and year as the start date,
+    /// - This method checks if the given date is equal to start date with given granularities.
     ///  and whether the selected date is today.
     ///
     /// If the month is not the same as the start month and year, or if the selected date is not today,
@@ -60,7 +67,7 @@ public class CXCalendarManager {
     ///
     /// - Parameter date: The date to check, represented as a `Date`.
     /// - Returns: A Boolean value indicating whether the reset to today button should be displayed.
-    public func shouldDisplayResetToTodayButton(date: Date) -> Bool {
+    public func shouldBackToStart(date: Date) -> Bool {
         let isInRange: Bool = switch calendarType {
         case .month:
             context.calendar.isSameMonthInYear(date, startDate)
@@ -70,8 +77,9 @@ public class CXCalendarManager {
         let isTodaySelected = context.calendar.isSameDay(selectedDate, startDate)
         return !isInRange || !isTodaySelected
     }
-
-    public func resetToToday() {
+    
+    /// Resets the page to the start date and updates the selected date to the start date.
+    public func backToStart() {
         currentPage = 0
         selectedDate = startDate
     }
@@ -79,10 +87,9 @@ public class CXCalendarManager {
     // MARK: Internal
 
     var calendarType: CXCalendarType
-
+    
+    /// The current page offset in the calendar, used to determine which dates are displayed.
     var currentPage = 0
-
-    var presentAccessoryView = false
 
     func makeDateInterval(for date: Date) -> DateInterval {
         context.calendar.dateInterval(of: calendarType.component, for: date)!
@@ -96,8 +103,6 @@ public class CXCalendarManager {
             makeWeekGridDates(from: interval)
         }
     }
-
-    // MARK: - Internal Methods
 
     func makeDate(for offset: Int) -> Date {
         context.calendar.date(byAdding: calendarType.component, value: offset, to: startDate)!

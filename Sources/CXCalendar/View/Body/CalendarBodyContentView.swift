@@ -1,5 +1,5 @@
 //
-//  CalendarGridBodyContentView.swift
+//  CalendarBodyContentView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/20/25.
@@ -8,7 +8,9 @@
 import CXUICore
 import SwiftUI
 
-struct CalendarGridBodyContentView: CXCalendarBodyContentViewRepresentable {
+/// This view is responsible for rendering the content of the calendar body.
+/// It displays the days of the month or week, depending on the calendar type.
+struct CalendarBodyContentView: CXCalendarBodyContentViewRepresentable {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager

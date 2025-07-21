@@ -7,8 +7,11 @@
 
 import Foundation
 
+/// /// The `CXCalendarScrollBehavior` enum defines the scrolling behavior of the calendar.
 public enum CXCalendarScrollBehavior {
+    /// The calendar scrolls continuously, allowing users to scroll through dates seamlessly.
     case scroll
 
+    /// The calendar scrolls in pages, where each page represents a complete month or week.
     case page
 }

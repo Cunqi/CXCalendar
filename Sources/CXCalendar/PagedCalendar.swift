@@ -9,28 +9,25 @@ import CXLazyPage
 import CXUICore
 import SwiftUI
 
-public struct PagedCalendar: CXCalendarViewRepresentable {
+/// This view represents a paged calendar that allows users to navigate through dates in a paginated manner.
+struct PagedCalendar: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
     // MARK: - Initializer
 
-    /// A SwiftUI view that represents a calendar view.
-    /// - Parameters:
-    ///   - context: The context for the calendar, which includes configuration options like axis and header view.
-    ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes.
-    /// This gives the ability to reset the calendar view to today's date externally.
-    public init(context: CXCalendarContext, backToToday: Binding<Bool>) {
+    init(context: CXCalendarContext, backToStart: Binding<Bool>) {
         manager = CXCalendarManager(context: context)
-        _backToToday = backToToday
+        _backToStart = backToStart
     }
 
-    // MARK: Public
+    // MARK: Internal
 
-    @State public var manager: CXCalendarManager
+    @State var manager: CXCalendarManager
+    @Binding var backToStart: Bool
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: layout.rowPadding) {
-            compose.calendarHeader(currentDate)
+            compose.calendarHeader(currentAnchorDate)
                 .erased
                 .padding(.horizontal, layout.calendarHPadding)
 
@@ -43,15 +40,11 @@ public struct PagedCalendar: CXCalendarViewRepresentable {
         .onChange(of: selectedDate) { _, newValue in
             interaction.onSelected?(newValue)
         }
-        .onChange(of: currentDate) { _, newValue in
+        .onChange(of: currentAnchorDate) { _, newValue in
             interaction.onMonthChanged?(newValue)
         }
-        .onChange(of: backToToday) { _, _ in
-            manager.resetToToday()
+        .onChange(of: backToStart) { _, _ in
+            manager.backToStart()
         }
     }
-
-    // MARK: Internal
-
-    @Binding var backToToday: Bool
 }

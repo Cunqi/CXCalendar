@@ -32,13 +32,12 @@ extension Calendar {
     /// - Parameter monthInterval: The date interval representing the month for which to generate the grid.
     /// - Returns: An array of `IdentifiableDate` representing the dates in the month grid.
     func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
-        guard let startWeekInterval = dateInterval(of: .weekOfMonth, for: monthInterval.start)
-        else {
+        guard let weekInterval = dateInterval(of: .weekOfMonth, for: monthInterval.start) else {
             return []
         }
 
         var result = [IdentifiableDate]()
-        var current = startWeekInterval.start
+        var current = weekInterval.start
         var index = 0
 
         while current < monthInterval.end {
@@ -53,6 +52,9 @@ extension Calendar {
         return result
     }
 
+    /// Generates a fixed week grid of dates based on the provided week interval.
+    /// - Parameter weekInterval: The date interval representing the week for which to generate the grid.
+    /// - Returns: An array of `IdentifiableDate` representing the dates in the week grid.
     func makeFixedWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
         var day = weekInterval.start
         var result = [IdentifiableDate]()
@@ -68,6 +70,12 @@ extension Calendar {
         return result
     }
 
+    /// Calculates the offset in a specified calendar component between two dates.
+    /// - Parameters:
+    ///   - date1: The first date for comparison.
+    ///   - date2: The second date for comparison.
+    ///   - component: The calendar component to use for the offset calculation. Default is `.day`.
+    /// - Returns: The offset as an integer value for the specified component.
     func offset(
         between date1: Date,
         and date2: Date,

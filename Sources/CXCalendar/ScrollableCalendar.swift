@@ -8,26 +8,23 @@
 import CXLazyPage
 import SwiftUI
 
-public struct ScrollableCalendar: CXCalendarViewRepresentable {
+/// This view represents a paged calendar that allows users to navigate through dates in a seamless manner.
+struct ScrollableCalendar: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
-    /// A scrollable calendar view that displays months in a paginated format.
-    /// - Parameters:
-    ///   - context: The context for the calendar, which includes configuration options like axis and header view.
-    ///   - backToToday: A binding that indicates whether the calendar should return to today's date when it changes.
-    /// This gives the ability to reset the calendar view to today's date externally.
-    public init(context: CXCalendarContext, backToToday: Binding<Bool>) {
+    init(context: CXCalendarContext, backToStart: Binding<Bool>) {
         manager = CXCalendarManager(context: context)
-        _backToToday = backToToday
+        _backToStart = backToStart
     }
 
-    // MARK: Public
+    // MARK: Internal
 
-    @State public var manager: CXCalendarManager
+    @State var manager: CXCalendarManager
+    @Binding var backToStart: Bool
 
-    public var body: some View {
+    var body: some View {
         VStack {
-            compose.calendarHeader(currentDate)
+            compose.calendarHeader(currentAnchorDate)
                 .erased
                 .padding(.horizontal, layout.calendarHPadding)
             CXLazyList(
@@ -44,17 +41,13 @@ public struct ScrollableCalendar: CXCalendarViewRepresentable {
             }
         }
         .environment(manager)
-        .onChange(of: backToToday) { _, _ in
-            manager.resetToToday()
+        .onChange(of: backToStart) { _, _ in
+            manager.backToStart()
         }
-        .onChange(of: currentDate) { _, newValue in
+        .onChange(of: currentAnchorDate) { _, newValue in
             interaction.onMonthChanged?(newValue)
         }
     }
-
-    // MARK: Internal
-
-    @Binding var backToToday: Bool
 
     // MARK: Private
 

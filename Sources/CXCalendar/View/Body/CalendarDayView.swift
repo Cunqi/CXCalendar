@@ -8,6 +8,8 @@
 import CXUICore
 import SwiftUI
 
+/// This view represents a single day in the calendar, displaying the date and handling selection logic.
+/// This is the default implementation of a day view in the calendar.
 struct CalendarDayView: CXCalendarDayViewRepresentable {
     // MARK: Internal
 
@@ -21,8 +23,8 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
         dateInterval.containsDay(day, calendar: calendar)
     }
 
-    var isToday: Bool {
-        calendar.isDateInToday(day)
+    var isStartDate: Bool {
+        calendar.isSameDay(startDate, day)
     }
 
     var isSelected: Bool {
@@ -52,7 +54,11 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                             .stroke(Color.primary, lineWidth: CXSpacing.quarterX)
                             .padding(1)
                             .ifElse(calendarType.isWeek) {
-                                $0.matchedGeometryEffect(id: "selection", in: namespace, isSource: isSelected)
+                                $0.matchedGeometryEffect(
+                                    id: "selection",
+                                    in: namespace,
+                                    isSource: isSelected
+                                )
                             } else: {
                                 $0.transition(.scale(0.9).combined(with: .opacity))
                             }
@@ -76,7 +82,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
     }
 
     private var backgroundColor: Color {
-        if isToday {
+        if isStartDate {
             return .accentColor.opacity(0.5)
         }
         return isInRange ? Color.green.opacity(0.1) : Color.clear
