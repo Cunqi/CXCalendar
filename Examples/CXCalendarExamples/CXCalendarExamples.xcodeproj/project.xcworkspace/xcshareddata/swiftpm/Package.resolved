@@ -7,16 +7,7 @@
       "location" : "https://github.com/Cunqi/CXFoundation.git",
       "state" : {
         "branch" : "master",
-        "revision" : "0d1b69414bcc00e6320aa47cf5b37c1bbc88380d"
-      }
-    },
-    {
-      "identity" : "cxlazypage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Cunqi/CXLazyPage.git",
-      "state" : {
-        "branch" : "master",
-        "revision" : "cf1260f665a9962e5eba7384f96528564a56abaf"
+        "revision" : "8b4668b57ec223aabf4343bb64dbe1387ab641f7"
       }
     },
     {
