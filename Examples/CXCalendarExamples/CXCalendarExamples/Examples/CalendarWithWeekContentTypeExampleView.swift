@@ -27,7 +27,7 @@ struct CalendarWithWeekContentTypeExampleView: View {
             }
             .build()
 
-        CXCalendar(context: context)
+        CXCalendarView(context: context)
             .navigationTitle("Scrollable Day Example")
             .navigationBarTitleDisplayMode(.inline)
     }

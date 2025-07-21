@@ -20,7 +20,7 @@ struct CalendarWithCustomDayExampleView: View {
             }
             .build()
 
-        CXCalendar(context: context)
+        CXCalendarView(context: context)
             .navigationTitle("Custom Day View")
             .navigationBarTitleDisplayMode(.inline)
     }
@@ -37,8 +37,8 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
 
     let isInRange = true
 
-    var isToday: Bool {
-        calendar.isDateInToday(day)
+    var isStartDate: Bool {
+        calendar.isDate(day, inSameDayAs: startDate)
     }
 
     var body: some View {
@@ -63,7 +63,7 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
     var backgroundColor: Color {
         if isSelected {
             .accentColor.opacity(0.5)
-        } else if isToday {
+        } else if isStartDate {
             .green.opacity(0.2)
         } else {
             .clear

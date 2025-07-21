@@ -29,7 +29,7 @@ struct CalendarWithAccessoryViewExampleView: View {
             }
             .build()
 
-        CXCalendar(context: context)
+        CXCalendarView(context: context)
             .navigationTitle("Calendar with Accessory View")
             .navigationBarTitleDisplayMode(.inline)
     }

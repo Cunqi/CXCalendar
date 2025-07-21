@@ -25,7 +25,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
             }
             .build()
 
-        CXCalendar(context: context, backToToday: $resetToday)
+        CXCalendarView(context: context, backToStart: $resetToday)
             .toolbar {
                 ToolbarItem(placement: .title) {
                     CustomNavHeaderView(month: $currentMonth)

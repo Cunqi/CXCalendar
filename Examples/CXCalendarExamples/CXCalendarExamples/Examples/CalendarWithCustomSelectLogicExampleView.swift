@@ -20,7 +20,7 @@ struct CalendarWithCustomSelectLogicExampleView: View {
             }
             .build()
 
-        CXCalendar(context: context)
+        CXCalendarView(context: context)
             .navigationTitle("Custom Select Logic Calendar")
             .navigationBarTitleDisplayMode(.inline)
     }

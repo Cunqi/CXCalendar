@@ -31,7 +31,7 @@ struct CalendarWithRangePickExampleView: View {
             .build()
 
         VStack {
-            CXCalendar(context: context)
+            CXCalendarView(context: context)
                 .navigationTitle("Calendar with Range Pick")
                 .navigationBarTitleDisplayMode(.inline)
 
@@ -119,8 +119,8 @@ struct RangeDay: CXCalendarDayViewRepresentable {
 
     let isInRange = true
 
-    var isToday: Bool {
-        calendar.isDateInToday(day)
+    var isStartDate: Bool {
+        calendar.isDate(day, inSameDayAs: startDate)
     }
 
     var isSelected: Bool {
@@ -146,7 +146,7 @@ struct RangeDay: CXCalendarDayViewRepresentable {
 
     var body: some View {
         Text(day.day)
-            .font(isToday ? .body.bold() : .body)
+            .font(isStartDate ? .body.bold() : .body)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .aspectRatio(1, contentMode: .fit)
             .background {

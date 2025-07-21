@@ -20,7 +20,7 @@ struct CalendarWithCustomHeaderExampleView: View {
             }
             .build()
 
-        CXCalendar(context: context)
+        CXCalendarView(context: context)
             .navigationTitle("Calendar with Custom Header")
             .navigationBarTitleDisplayMode(.inline)
     }
@@ -45,7 +45,7 @@ struct CustomMonthHeaderView: CXCalendarViewRepresentable {
 
                 Spacer()
 
-                if manager.shouldDisplayResetToTodayButton(date: month) {
+                if manager.shouldBackToStart(date: month) {
                     resetToTodayButton
                 }
             }
@@ -76,7 +76,7 @@ struct CustomMonthHeaderView: CXCalendarViewRepresentable {
     private var resetToTodayButton: some View {
         Button {
             withAnimation {
-                manager.resetToToday()
+                manager.backToStart()
             }
         } label: {
             Image(systemName: "t.square.fill")

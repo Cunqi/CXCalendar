@@ -12,7 +12,7 @@ struct VerticalScrollableCalendarExampleView: View {
     var body: some View {
         let context = CXCalendarContext.month(.scroll)
 
-        CXCalendar(context: context)
+        CXCalendarView(context: context)
             .navigationTitle("Vertical Continuous Calendar")
             .navigationBarTitleDisplayMode(.inline)
     }
