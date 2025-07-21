@@ -6,7 +6,7 @@
 //
 
 import CXCalendar
-import CXFoundation
+import CXUICore
 import CXLazyPage
 import SwiftUI
 
@@ -14,50 +14,21 @@ struct CalendarWithWeekContentTypeExampleView: View {
     var body: some View {
         let context = CXCalendarContext.week()
             .builder
-            .accessoryView { day in
-                ScrollableDayView(date: day)
+            .accessoryView { date in
+                CXCalendarWeeklyAccessoryWrapperView(date: date) { date, manager in
+                    Text(date, format: .dateTime.day().month())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background {
+                            RoundedRectangle(cornerRadius: CXSpacing.oneX)
+                                .fill(.blue.opacity(0.2))
+                        }
+                        .padding(.horizontal, manager.context.layout.calendarHPadding)
+                }
             }
             .build()
 
         CXCalendar(context: context)
             .navigationTitle("Scrollable Day Example")
             .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-// MARK: - ScrollableDayView
-
-struct ScrollableDayView: CXCalendarViewRepresentable {
-    @Environment(CXCalendarManager.self) var manager
-
-    var days: [IdentifiableDate] {
-        manager.makeDays(from: manager.currentDateInterval)
-    }
-
-    var day: Date
-
-    @State private var focusedDate: Date
-
-    init(date: Date) {
-        self.day = date
-        self.focusedDate = date
-    }
-
-    var body: some View {
-        TabView(selection: $focusedDate) {
-            ForEach(days) { day in
-                Text(day.value, format: .dateTime.day())
-                    .tag(day.value)
-            }
-        }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .onChange(of: focusedDate) { oldValue, newValue in
-            manager.selectedDate = newValue
-        }
-        .onChange(of: manager.selectedDate) { oldValue, newValue in
-            if !calendar.isSameDay(newValue, focusedDate) {
-                focusedDate = newValue
-            }
-        }
     }
 }
