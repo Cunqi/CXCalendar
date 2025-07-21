@@ -20,10 +20,10 @@ extension Calendar {
         let gridStart = date(byAdding: .day, value: -lead, to: firstDay)!
 
         return Calendar.gridRange.compactMap { index in
-            guard let day = date(byAdding: .day, value: index, to: gridStart) else {
-                return nil
-            }
-            return IdentifiableDate(value: day, id: index)
+            date(byAdding: .day, value: index, to: gridStart).map { IdentifiableDate(
+                value: $0,
+                id: $0.fullDate
+            ) }
         }
     }
 
@@ -38,14 +38,12 @@ extension Calendar {
 
         var result = [IdentifiableDate]()
         var current = weekInterval.start
-        var index = 0
 
         while current < monthInterval.end {
-            result.append(IdentifiableDate(value: current, id: index))
+            result.append(IdentifiableDate(value: current, id: current.fullDate))
             guard let next = date(byAdding: .day, value: 1, to: current) else {
                 break
             }
-            index += 1
             current = next
         }
 
@@ -58,13 +56,11 @@ extension Calendar {
     func makeFixedWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
         var day = weekInterval.start
         var result = [IdentifiableDate]()
-        var index = 0
         while day < weekInterval.end {
-            result.append(IdentifiableDate(value: day, id: index))
+            result.append(IdentifiableDate(value: day, id: day.fullDate))
             guard let nextDay = date(byAdding: .day, value: 1, to: day) else {
                 break
             }
-            index += 1
             day = nextDay
         }
         return result
