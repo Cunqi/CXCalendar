@@ -19,7 +19,7 @@ struct CalendarWithRangePickExampleView: View {
         let context = CXCalendarContext.month(.page)
             .builder
             .columnPadding(.zero)
-            .dayView { dateInterval, day in
+            .dayView { dateInterval, day, _ in
                 RangeDay(dateInterval: dateInterval, day: day, range: $viewModel.range)
             }
             .onSelected { date in

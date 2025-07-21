@@ -15,6 +15,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
 
     let dateInterval: DateInterval
     let day: Date
+    let namespace: Namespace.ID
 
     var isInRange: Bool {
         dateInterval.containsDay(day, calendar: calendar)
@@ -24,11 +25,15 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
         calendar.isDateInToday(day)
     }
 
+    var isSelected: Bool {
+        interaction.isSelected(day, manager.selectedDate, calendar)
+    }
+
     var body: some View {
         if shouldHideWhenOutOfBounds, !isInRange {
             Color.clear
         } else {
-            Text(numericDay)
+            Text(day, format: .dateTime.day())
                 .font(.footnote)
                 .foregroundColor(foregroundColor)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -41,19 +46,23 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                     RoundedRectangle(cornerRadius: CXSpacing.halfX)
                         .fill(backgroundColor)
                 )
-                .overlay(
-                    RoundedRectangle(cornerRadius: CXSpacing.halfX)
-                        .stroke(
-                            isSelected ? Color.primary : Color.clear,
-                            lineWidth: CXSpacing.quarterX
-                        )
-                        .padding(1)
-                )
+                .overlay {
+                    if isSelected {
+                        RoundedRectangle(cornerRadius: CXSpacing.halfX)
+                            .stroke(Color.primary, lineWidth: CXSpacing.quarterX)
+                            .padding(1)
+                            .ifElse(calendarType.isWeek) {
+                                $0.matchedGeometryEffect(id: "selection", in: namespace, isSource: isSelected)
+                            } else: {
+                                $0.transition(.scale(0.9).combined(with: .opacity))
+                            }
+                    }
+                }
                 .onTapGesture {
                     guard interaction.canSelect(dateInterval, day, calendar) else {
                         return
                     }
-                    withAnimation {
+                    withAnimation(.interpolatingSpring) {
                         manager.selectedDate = day
                     }
                 }
@@ -61,10 +70,6 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
     }
 
     // MARK: Private
-
-    private var numericDay: String {
-        String(manager.context.calendar.component(.day, from: day))
-    }
 
     private var foregroundColor: Color {
         isInRange ? .primary : .secondary
@@ -75,10 +80,6 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
             return .accentColor.opacity(0.5)
         }
         return isInRange ? Color.green.opacity(0.1) : Color.clear
-    }
-
-    private var isSelected: Bool {
-        interaction.isSelected(day, manager.selectedDate, calendar)
     }
 
     private var shouldHideWhenOutOfBounds: Bool {

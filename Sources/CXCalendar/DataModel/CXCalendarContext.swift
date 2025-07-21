@@ -110,8 +110,8 @@ extension CXCalendarContext {
             WeekHeaderView(month: month)
         }
 
-        public private(set) var dayView: DayViewMaker = { dateInterval, day in
-            CalendarDayView(dateInterval: dateInterval, day: day)
+        public private(set) var dayView: DayViewMaker = { dateInterval, day, namespace in
+            CalendarDayView(dateInterval: dateInterval, day: day, namespace: namespace)
         }
 
         public private(set) var accessoryView: AccessoryViewMaker?

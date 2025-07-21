@@ -33,6 +33,15 @@ extension CXCalendarType {
             .day
         }
     }
+
+    var isWeek: Bool {
+        switch self {
+        case .week:
+            true
+        case .month:
+            false
+        }
+    }
 }
 
 extension CXCalendarType {

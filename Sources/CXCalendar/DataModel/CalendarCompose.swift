@@ -17,7 +17,8 @@ public typealias BodyContentMaker = (Date) -> any CXCalendarBodyContentViewRepre
 
 public typealias WeekHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
-public typealias DayViewMaker = (DateInterval, Date) -> any CXCalendarDayViewRepresentable
+public typealias DayViewMaker = (DateInterval, Date, Namespace.ID)
+    -> any CXCalendarDayViewRepresentable
 
 public typealias AccessoryViewMaker = (Date) -> any View
 

@@ -24,7 +24,7 @@ public class CXCalendarManager {
             count: 7
         )
 
-        startDate = context.startDate
+        startDate = context.calendar.startOfDay(for: context.startDate)
         selectedDate = context.selectedDate
         calendarType = context.calendarType
     }
@@ -76,19 +76,6 @@ public class CXCalendarManager {
         selectedDate = startDate
     }
 
-    public func makeDays(from interval: DateInterval) -> [IdentifiableDate] {
-        switch calendarType {
-        case .month:
-            makeMonthGridDates(from: interval)
-        case .week:
-            makeWeekGridDates(from: interval)
-        }
-    }
-
-    public func makeDateInterval(for date: Date) -> DateInterval {
-        context.calendar.dateInterval(of: calendarType.component, for: date)!
-    }
-
     // MARK: Internal
 
     var calendarType: CXCalendarType
@@ -96,6 +83,19 @@ public class CXCalendarManager {
     var currentPage = 0
 
     var presentAccessoryView = false
+
+    func makeDateInterval(for date: Date) -> DateInterval {
+        context.calendar.dateInterval(of: calendarType.component, for: date)!
+    }
+
+    func makeDays(from interval: DateInterval) -> [IdentifiableDate] {
+        switch calendarType {
+        case .month:
+            makeMonthGridDates(from: interval)
+        case .week:
+            makeWeekGridDates(from: interval)
+        }
+    }
 
     // MARK: - Internal Methods
 
