@@ -1,5 +1,5 @@
 //
-//  ScrollableCalendar.swift
+//  ScrollableCalendarView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/15/25.
@@ -9,7 +9,7 @@ import CXLazyPage
 import SwiftUI
 
 /// This view represents a paged calendar that allows users to navigate through dates in a seamless manner.
-struct ScrollableCalendar: CXCalendarViewRepresentable {
+struct ScrollableCalendarView: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
     init(context: CXCalendarContext, backToStart: Binding<Bool>) {

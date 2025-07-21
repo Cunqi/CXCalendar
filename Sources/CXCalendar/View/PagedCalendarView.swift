@@ -1,5 +1,5 @@
 //
-//  PagedCalendar.swift
+//  PagedCalendarView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/13/25.
@@ -10,7 +10,7 @@ import CXUICore
 import SwiftUI
 
 /// This view represents a paged calendar that allows users to navigate through dates in a paginated manner.
-struct PagedCalendar: CXCalendarViewRepresentable {
+struct PagedCalendarView: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
     // MARK: - Initializer

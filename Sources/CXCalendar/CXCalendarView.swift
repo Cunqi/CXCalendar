@@ -1,5 +1,5 @@
 //
-//  CXCalendar.swift
+//  CXCalendarView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/19/25.
@@ -10,7 +10,7 @@ import SwiftUI
 
 /// The `CXCalendar` struct is a SwiftUI view that represents a calendar component.
 /// It supports both month and week views, with customizable scrolling behavior.
-public struct CXCalendar: CXCalendarViewRepresentable {
+public struct CXCalendarView: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
     /// Initializes a `CXCalendar` instance with the specified context and optional
@@ -36,7 +36,7 @@ public struct CXCalendar: CXCalendarViewRepresentable {
                 .environment(manager)
 
         case .week:
-            PagedCalendar(context: context, backToStart: $backToStart)
+            PagedCalendarView(context: context, backToStart: $backToStart)
                 .environment(manager)
         }
     }
@@ -47,9 +47,9 @@ public struct CXCalendar: CXCalendarViewRepresentable {
     func monthView(for scrollBehavior: CXCalendarScrollBehavior) -> some View {
         switch scrollBehavior {
         case .page:
-            PagedCalendar(context: context, backToStart: $backToStart)
+            PagedCalendarView(context: context, backToStart: $backToStart)
         case .scroll:
-            ScrollableCalendar(context: context, backToStart: $backToStart)
+            ScrollableCalendarView(context: context, backToStart: $backToStart)
         }
     }
 

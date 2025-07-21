@@ -9,7 +9,7 @@ import CXFoundation
 import SwiftUI
 
 /// The `CalendarHeaderView` is a SwiftUI view that displays the header of a calendar, including the month and year, and a button to reset to today's date if applicable.
-/// it is the default implementation of the header view for `CXCalendar`.
+/// it is the default implementation of the header view for `CXCalendarView`.
 struct CalendarHeaderView: CXCalendarViewRepresentable {
     // MARK: Internal
 
