@@ -36,50 +36,13 @@ struct CalendarWithRangePickExampleView: View {
                 .navigationBarTitleDisplayMode(.inline)
 
             HStack {
-                fromDateCard
+                DateDisplayCardView(label: "From", date: viewModel.range?.start)
 
-                toDateCard
+                DateDisplayCardView(label: "To", date: viewModel.range?.end)
             }
+            .padding(.horizontal)
 
             Spacer()
-        }
-    }
-
-    @ViewBuilder
-    var fromDateCard: some View {
-        if let start = viewModel.range?.start {
-            makeTimeCard(for: start, title: "From")
-        } else {
-            makePlaceholderCard(title: "From")
-        }
-    }
-
-    @ViewBuilder
-    var toDateCard: some View {
-        if let end = viewModel.range?.end {
-            makeTimeCard(for: end, title: "To")
-        } else {
-            makePlaceholderCard(title: "To")
-        }
-    }
-
-    @ViewBuilder
-    func makeTimeCard(for date: Date, title: String) -> some View {
-        VStack(alignment: .leading, spacing: CXSpacing.halfX) {
-            Text(title)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Text(date, format: .dateTime.day().month(.abbreviated).year())
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background {
-            RoundedRectangle(cornerRadius: CXSpacing.oneX)
-                .fill(Color.accentColor.opacity(0.2))
         }
     }
 
