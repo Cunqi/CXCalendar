@@ -27,10 +27,7 @@ struct ScrollableCalendarView: CXCalendarViewRepresentable {
             compose.calendarHeader(currentAnchorDate)
                 .erased
                 .padding(.horizontal, layout.calendarHPadding)
-            CXLazyList(
-                viewportTrackerContext: viewportContext,
-                currentPage: $manager.currentPage
-            ) { index in
+            CXLazyList(currentPage: $manager.currentPage) { index in
                 CalendarBodyView(date: manager.makeDate(for: index))
                     .padding(.horizontal, layout.calendarHPadding)
             } heightOf: { index in
@@ -48,18 +45,4 @@ struct ScrollableCalendarView: CXCalendarViewRepresentable {
             interaction.onMonthChanged?(newValue)
         }
     }
-
-    // MARK: Private
-
-    private let viewportContext: ViewportTrackerContext = {
-        var showViewportTracker = false
-        #if DEBUG
-        showViewportTracker = true
-        #endif
-
-        return ViewportTrackerContext.default
-            .builder
-            .showDetectArea(showViewportTracker)
-            .build()
-    }()
 }

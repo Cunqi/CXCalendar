@@ -37,18 +37,14 @@ class DailyTodoListGenerator {
         let startDate = calendar.startOfDay(for: monthInterval.start)
         let endDate = calendar.startOfDay(for: monthInterval.end)
 
-        // 计算所有天数
         guard let totalDays = calendar.dateComponents([.day], from: startDate, to: endDate).day,
               totalDays >= count else {
             return []
         }
 
-        // 所有可能的日期
         var allDates: [Date] = (0 ... totalDays).compactMap {
             calendar.date(byAdding: .day, value: $0, to: startDate)
         }
-
-        // 随机打乱，取前 n 个
         allDates.shuffle()
         return Array(allDates.prefix(count))
     }

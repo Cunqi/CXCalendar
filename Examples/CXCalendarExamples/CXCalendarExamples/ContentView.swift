@@ -21,6 +21,7 @@ enum Examples: String, CaseIterable {
     case calendarWithRangePicker = "Calendar with Range Picker"
     case calendarWithAccessoryView = "Calendar with Accessory View"
     case calendarWithWeekContentType = "Calendar with Week Content Type"
+    case onboardExample = "Onboard Example"
 }
 
 // MARK: - ContentView
@@ -64,6 +65,8 @@ struct ContentView: View {
             CalendarWithAccessoryViewExampleView()
         case .calendarWithWeekContentType:
             CalendarWithWeekContentTypeExampleView()
+        case .onboardExample:
+            OnboardIntroView()
         }
     }
 }

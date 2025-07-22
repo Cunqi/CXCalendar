@@ -124,37 +124,21 @@ struct RangeDay: CXCalendarDayViewRepresentable {
 
     var background: some View {
         if isLeadingDay, isTrailingDay {
-            MaskedRoundedRectangle(radius: CXSpacing.oneX)
+            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX)
                 .fill(Color.accentColor.opacity(0.5))
         } else if isLeadingDay {
-            MaskedRoundedRectangle(radius: CXSpacing.oneX, corners: [.topLeft, .bottomLeft])
+            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topLeft, .bottomLeft])
                 .fill(Color.accentColor.opacity(0.5))
         } else if isTrailingDay {
-            MaskedRoundedRectangle(radius: CXSpacing.oneX, corners: [.topRight, .bottomRight])
+            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topRight, .bottomRight])
                 .fill(Color.accentColor.opacity(0.5))
         } else if isSelected {
-            MaskedRoundedRectangle(radius: .zero)
+            MaskedRoundedRectangle(cornerRadius: .zero)
                 .fill(Color.accentColor.opacity(0.5))
         } else {
-            MaskedRoundedRectangle(radius: .zero)
+            MaskedRoundedRectangle(cornerRadius: .zero)
                 .fill(Color.clear)
         }
-    }
-}
-
-// MARK: - MaskedRoundedRectangle
-
-struct MaskedRoundedRectangle: Shape {
-    var radius: CGFloat = CXSpacing.oneX
-    var corners = UIRectCorner.allCorners
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
     }
 }
 
