@@ -114,7 +114,7 @@ public class CXCalendarManager {
         context.calendar.dateInterval(of: calendarType.component, for: date)!
     }
 
-    func makeDays(from interval: DateInterval) -> [IdentifiableDate] {
+    func makeDays(from interval: DateInterval) -> [IndexedDate] {
         switch calendarType {
         case .month:
             makeMonthGridDates(from: interval)
@@ -134,7 +134,7 @@ public class CXCalendarManager {
         )!
     }
 
-    func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
+    func makeMonthGridDates(from monthInterval: DateInterval) -> [IndexedDate] {
         switch context.calendarType.scrollBehavior {
         case .page:
             context.calendar.makeFixedMonthGridDates(from: monthInterval)
@@ -143,7 +143,7 @@ public class CXCalendarManager {
         }
     }
 
-    func makeWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
+    func makeWeekGridDates(from weekInterval: DateInterval) -> [IndexedDate] {
         context.calendar.makeFixedWeekGridDates(from: weekInterval)
     }
 
