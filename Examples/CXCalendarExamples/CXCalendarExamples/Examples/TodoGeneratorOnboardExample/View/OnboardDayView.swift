@@ -34,7 +34,7 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
             .font(font)
             .foregroundColor(.primary)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .aspectRatio(1, contentMode: .fit)
+            .frame(height: layout.rowHeight)
             .background { background }
             .onTapGesture {
                 withAnimation {
@@ -44,21 +44,24 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
     }
 
     private var background: some View {
-        if isFirstDate && isLastDate {
-            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX)
-                .fill(.blue.opacity(0.2))
-        } else if isFirstDate || isSelectedAndSunday || isMonthStart {
-            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topLeft, .bottomLeft])
-                .fill(.blue.opacity(0.2))
-        } else if isLastDate || isSelectedAndSaturday || isMonthEnd {
-            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topRight, .bottomRight])
-                .fill(.blue.opacity(0.2))
-        } else if isSelected {
-            MaskedRoundedRectangle(cornerRadius: .zero)
-                .fill(.blue.opacity(0.2))
-        } else {
-            MaskedRoundedRectangle(cornerRadius: .zero)
+        if !isSelected {
+            return MaskedRoundedRectangle(cornerRadius: .zero)
                 .fill(.clear)
+        } else {
+            var corners: UIRectCorner = []
+
+            if isFirstDate || isMonthStart || isSunday {
+                corners.insert(.topLeft)
+                corners.insert(.bottomLeft)
+            }
+
+            if isLastDate || isMonthEnd || isSaturday {
+                corners.insert(.topRight)
+                corners.insert(.bottomRight)
+            }
+
+            return MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: corners)
+                .fill(.blue.opacity(0.2))
         }
     }
 
@@ -84,28 +87,22 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
         viewModel.isInRange(day)
     }
 
-    private var isSelectedAndSunday: Bool {
+    private var isSunday: Bool {
         let isSunday = calendar.component(.weekday, from: day) == 1
-        return isSunday && isSelected
+        return isSunday
     }
 
-    private var isSelectedAndSaturday: Bool {
+    private var isSaturday: Bool {
         let isSaturday = calendar.component(.weekday, from: day) == 7
-        return isSaturday && isSelected
+        return isSaturday
     }
 
     private var isMonthStart: Bool {
-        guard isSelected else {
-            return false
-        }
         let startOfMonth = calendar.startOfMonth(for: day)
         return calendar.isSameDay(day, startOfMonth)
     }
 
     private var isMonthEnd: Bool {
-        guard isSelected else {
-            return false
-        }
         guard let nextMonth = calendar.date(byAdding: .month, value: 1, to: day) else {
             return false
         }

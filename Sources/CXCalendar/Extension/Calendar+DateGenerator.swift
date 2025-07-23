@@ -87,15 +87,15 @@ extension Calendar {
     }
 
     /// Calculates the number of weeks in the month of a given date.
-    /// - Parameter date: The date for which to calculate the number of weeks in its month.
+    /// - Parameter month: The date for which to calculate the number of weeks in its month.
     /// - Returns: The number of weeks in the month of the specified date.
-    func numberOfWeeks(inMonthOf date: Date) -> Int {
-        guard let monthInterval = dateInterval(of: .month, for: date) else {
+    func numberOfWeeks(inMonthOf month: Date) -> Int {
+        guard let monthInterval = dateInterval(of: .month, for: month) else {
             return 0
         }
 
         let startOfMonth = monthInterval.start
-        let endOfMonth = self.date(byAdding: .day, value: -1, to: monthInterval.end)!
+        let endOfMonth = date(byAdding: .day, value: -1, to: monthInterval.end)!
 
         let startWeek = component(.weekOfYear, from: startOfMonth)
         let endWeek = component(.weekOfYear, from: endOfMonth)
@@ -106,7 +106,7 @@ extension Calendar {
             let weeksInYear = range(
                 of: .weekOfYear,
                 in: .yearForWeekOfYear,
-                for: self.date(from: DateComponents(year: year))!
+                for: date(from: DateComponents(year: year))!
             )?.count ?? 52
             return (weeksInYear - startWeek + 1) + endWeek
         }

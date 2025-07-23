@@ -148,7 +148,9 @@ public class CXCalendarManager {
     }
 
     func numberOfRows(for index: Int) -> Int {
-        context.calendar.numberOfWeeks(inMonthOf: makeDate(for: index)) + 1 // +1 for month header
+        let date = makeDate(for: index)
+        let numberOfWeeks = context.calendar.numberOfWeeks(inMonthOf: date)
+        return numberOfWeeks + 1
     }
 
     func shouldPresentAccessoryView(for date: Date) -> Bool {

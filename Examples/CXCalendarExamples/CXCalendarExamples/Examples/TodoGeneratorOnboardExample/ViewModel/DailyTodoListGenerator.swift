@@ -13,7 +13,7 @@ class DailyTodoListGenerator {
 
     func generateTodos(from startDate: Date, to endDate: Date) -> [DailyTodoList] {
         let numberOfDays = numberOfDays(from: startDate, to: endDate)
-        let maxDailyTodoCount = Int(Double(numberOfDays) * 0.67)
+        let maxDailyTodoCount = min(Int(Double(numberOfDays) * 0.67), 1)
         let dates = DailyTodoListGenerator.randomDates(
             in: DateInterval(start: startDate, end: endDate),
             count: maxDailyTodoCount

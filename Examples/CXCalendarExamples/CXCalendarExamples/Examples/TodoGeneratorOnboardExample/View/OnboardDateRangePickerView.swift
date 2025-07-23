@@ -40,11 +40,16 @@ struct OnboardDateRangePickerView: View {
                 Button("Next") {
                     // Handle navigation to the next view
                 }
+                .disabled(isNextButtonDisabled)
             }
+        }
+        .onChange(of: viewModel.interval) { _, newValue in
+            isNextButtonDisabled = newValue == nil
         }
     }
 
     // MARK: Private
 
     @State private var viewModel = TodoGeneratorOnboardViewModel()
+    @State private var isNextButtonDisabled = true
 }
