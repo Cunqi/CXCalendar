@@ -26,14 +26,14 @@ struct CalendarBodyContentView: CXCalendarBodyContentViewRepresentable {
         .onChange(of: manager.currentPage) { oldValue, newValue in
             let containsSelectedDate = dateInterval.containsExceptEnd(selectedDate, calendar)
             let isTodaySelected = calendar.isSameDay(selectedDate, startDate)
-            if case .week = calendarType, !containsSelectedDate, !isTodaySelected {
+            if case .week = context.calendarType, !containsSelectedDate, !isTodaySelected {
                 // For weekly calendar, if selected date is not in current week interval,
                 // select start or last day as the initial selected date.
                 // if selected date equals to start date. means it is a reset, do nothing.
                 manager.selectedDate = newValue > oldValue
                     ? dateInterval.start
                     : dateInterval.lastDay(calendar: calendar)
-            } else if case .month = calendarType {
+            } else if case .month = context.calendarType {
                 manager.shouldPresentAccessoryView = false
             }
         }

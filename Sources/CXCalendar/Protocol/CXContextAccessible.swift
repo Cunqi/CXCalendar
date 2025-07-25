@@ -18,9 +18,6 @@ public protocol CXContextAccessible {
     /// The calendar context that contains the configuration and state of the calendar.
     var context: CXCalendarContext { get }
 
-    /// The type of calendar being used (month or week).
-    var calendarType: CXCalendarType { get }
-
     /// The layout configuration for the calendar, defining how the calendar's items are arranged.
     var layout: CXCalendarLayoutProtocol { get }
 
@@ -34,10 +31,6 @@ public protocol CXContextAccessible {
 extension CXContextAccessible {
     public var context: CXCalendarContext {
         manager.context
-    }
-
-    public var calendarType: CXCalendarType {
-        context.calendarType
     }
 
     public var layout: CXCalendarLayoutProtocol {

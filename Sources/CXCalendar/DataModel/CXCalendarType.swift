@@ -11,7 +11,7 @@ import Foundation
 
 /// The `CXCalendarType` enum defines the type of calendar being used,
 /// either a month or a week view, along with its scrolling behavior, if applicable.
-public enum CXCalendarType {
+public enum CXCalendarType: Equatable {
     /// A month view calendar with a specified scrolling behavior.
     case month(CXCalendarScrollBehavior)
 

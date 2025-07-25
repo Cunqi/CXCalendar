@@ -53,7 +53,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                         RoundedRectangle(cornerRadius: CXSpacing.halfX)
                             .stroke(Color.primary, lineWidth: CXSpacing.quarterX)
                             .padding(1)
-                            .ifElse(calendarType.isWeek) {
+                            .ifElse(context.calendarType.isWeek) {
                                 $0.matchedGeometryEffect(
                                     id: "selection",
                                     in: namespace,
