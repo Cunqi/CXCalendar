@@ -82,7 +82,6 @@ public class CXCalendarManager {
     public func backToStart() {
         currentPage = 0
         selectedDate = startDate
-        togglePresentAccessoryView()
     }
 
     /// Toggles the presentation of the accessory view based on the calendar type.
@@ -98,6 +97,12 @@ public class CXCalendarManager {
         case .month(.scroll):
             shouldPresentAccessoryView = false
         }
+    }
+    
+    /// /// Enables or disables the presentation of the accessory view.
+    /// - Parameter enabled: A Boolean value indicating whether the accessory view should be presented.
+    public func enablePresentAccessoryView(_ enabled: Bool) {
+        shouldPresentAccessoryView = enabled
     }
 
     // MARK: Internal

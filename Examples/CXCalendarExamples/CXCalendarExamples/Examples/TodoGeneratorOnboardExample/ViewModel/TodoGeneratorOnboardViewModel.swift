@@ -5,6 +5,7 @@
 //  Created by Cunqi Xiao on 7/20/25.
 //
 
+import CXFoundation
 import Foundation
 import Observation
 
@@ -13,6 +14,8 @@ class TodoGeneratorOnboardViewModel {
     // MARK: Internal
 
     var interval: DateInterval?
+
+    var todos: [DailyTodoList] = []
 
     func pick(date: Date) {
         if isPickingFirst {
@@ -30,6 +33,24 @@ class TodoGeneratorOnboardViewModel {
             return false
         }
         return interval.contains(date)
+    }
+
+    func generateTodo() {
+        guard let interval else {
+            return
+        }
+        todos = DailyTodoListGenerator().generateTodos(from: interval.start, to: interval.end)
+    }
+
+    func isInTodoList(_ date: Date, calendar: Calendar) -> Bool {
+        guard !todos.isEmpty else {
+            return false
+        }
+        return todos.contains { calendar.isSameDay($0.date.value, date) }
+    }
+
+    func fetchDailyTodoList(for date: Date, calendar: Calendar) -> DailyTodoList? {
+        todos.first(where: { calendar.isSameDay($0.date.value, date) })
     }
 
     // MARK: Private

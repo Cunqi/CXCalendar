@@ -17,9 +17,9 @@ struct OnboardDateRangePickerView: View {
         .calendarHeader { month in
             WeekdayOnlyHeaderView(month: month)
         }
-        .dayView({ dateInterval, day, _ in
+        .dayView { dateInterval, day, _ in
             OnboardDayView(dateInterval: dateInterval, day: day)
-        })
+        }
         .build()
 
     var body: some View {
@@ -38,10 +38,14 @@ struct OnboardDateRangePickerView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Next") {
-                    // Handle navigation to the next view
+                    isNavigating = true
                 }
                 .disabled(isNextButtonDisabled)
             }
+        }
+        .navigationDestination(isPresented: $isNavigating) {
+            OnboardTodoDisplayView(startDate: viewModel.interval?.start ?? .now)
+                .environment(viewModel)
         }
         .onChange(of: viewModel.interval) { _, newValue in
             isNextButtonDisabled = newValue == nil
@@ -52,4 +56,5 @@ struct OnboardDateRangePickerView: View {
 
     @State private var viewModel = TodoGeneratorOnboardViewModel()
     @State private var isNextButtonDisabled = true
+    @State private var isNavigating = false
 }

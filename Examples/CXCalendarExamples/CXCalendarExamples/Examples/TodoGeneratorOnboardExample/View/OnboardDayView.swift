@@ -66,7 +66,7 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
     }
 
     private var font: Font {
-        isFirstDate ? .body.bold() : .body
+        isStartDate ? .body.bold() : .body
     }
 
     private var isFirstDate: Bool {
@@ -88,13 +88,11 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
     }
 
     private var isSunday: Bool {
-        let isSunday = calendar.component(.weekday, from: day) == 1
-        return isSunday
+        calendar.component(.weekday, from: day) == 1
     }
 
     private var isSaturday: Bool {
-        let isSaturday = calendar.component(.weekday, from: day) == 7
-        return isSaturday
+        calendar.component(.weekday, from: day) == 7
     }
 
     private var isMonthStart: Bool {

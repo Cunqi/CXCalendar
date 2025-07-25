@@ -72,7 +72,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                         if calendar.isSameDay(day, selectedDate) {
                             manager.togglePresentAccessoryView()
                         } else {
-                            manager.shouldPresentAccessoryView = true
+                            manager.enablePresentAccessoryView(true)
                         }
                         manager.selectedDate = day
                     }
