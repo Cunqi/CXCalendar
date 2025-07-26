@@ -69,6 +69,8 @@ public class CXCalendarManager {
     /// - Returns: A Boolean value indicating whether the back to start button should be displayed.
     public func shouldBackToStart(date: Date) -> Bool {
         let isInRange: Bool = switch calendarType {
+        case .year:
+            context.calendar.isDate(date, equalTo: startDate, toGranularity: .year)
         case .month:
             context.calendar.isSameMonthInYear(date, startDate)
         case .week:
@@ -96,6 +98,8 @@ public class CXCalendarManager {
             shouldPresentAccessoryView.toggle()
         case .month(.scroll):
             shouldPresentAccessoryView = false
+        case .year:
+            shouldPresentAccessoryView = false
         }
     }
 
@@ -121,6 +125,8 @@ public class CXCalendarManager {
 
     func makeDays(from interval: DateInterval) -> [CXIndexedDate] {
         switch calendarType {
+        case .year:
+            []
         case .month:
             makeMonthGridDates(from: interval)
         case .week:
@@ -155,7 +161,23 @@ public class CXCalendarManager {
     func numberOfRows(for index: Int) -> Int {
         let date = makeDate(for: index)
         let numberOfWeeks = context.calendar.numberOfWeeks(inMonthOf: date)
-        return numberOfWeeks + 1
+        let hasBodyHeader = context.compose.bodyHeader != nil
+        return numberOfWeeks + (hasBodyHeader ? 1 : 0)
+    }
+
+    func makeHeight(for index: Int) -> Int {
+        switch calendarType {
+        case .year(.scroll):
+            let rowHeight = Int(context.layout.rowHeight)
+            return rowHeight
+        case .month(.scroll):
+            let rowHeight = Int(context.layout.rowHeight)
+            let rowPadding = Int(context.layout.rowPadding)
+            let numberOfRows = numberOfRows(for: index)
+            return numberOfRows * (rowHeight + rowPadding) - rowPadding
+        default:
+            return 0
+        }
     }
 
     func shouldPresentAccessoryView(for date: Date) -> Bool {
@@ -165,6 +187,8 @@ public class CXCalendarManager {
         case .month(.page):
             shouldPresentAccessoryView && context.calendar.isSameDay(date, currentAnchorDate)
         case .month(.scroll):
+            false
+        case .year:
             false
         }
     }

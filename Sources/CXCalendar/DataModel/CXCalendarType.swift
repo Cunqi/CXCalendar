@@ -12,6 +12,8 @@ import Foundation
 /// The `CXCalendarType` enum defines the type of calendar being used,
 /// either a month or a week view, along with its scrolling behavior, if applicable.
 public enum CXCalendarType: Equatable {
+    /// A year view calendar with a specified scrolling behavior.
+    case year(CXCalendarScrollBehavior)
     /// A month view calendar with a specified scrolling behavior.
     case month(CXCalendarScrollBehavior)
 
@@ -24,6 +26,8 @@ extension CXCalendarType {
     /// this component will be used for date calculations.
     var component: Calendar.Component {
         switch self {
+        case .year:
+            .month
         case .month:
             .month
         case .week:
@@ -38,12 +42,16 @@ extension CXCalendarType {
             true
         case .month:
             false
+        case .year:
+            false
         }
     }
 
     /// Returns the scroll behavior for the current calendar type.
     var scrollBehavior: CXCalendarScrollBehavior {
         switch self {
+        case .year(let scrollBehavior):
+            scrollBehavior
         case .month(let scrollBehavior):
             scrollBehavior
         case .week:
