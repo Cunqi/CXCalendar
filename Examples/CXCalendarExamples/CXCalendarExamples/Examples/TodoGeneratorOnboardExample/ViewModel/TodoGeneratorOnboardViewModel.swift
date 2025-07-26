@@ -17,6 +17,8 @@ class TodoGeneratorOnboardViewModel {
 
     var todos: [DailyTodoList] = []
 
+    var detailDate: Date?
+
     func pick(date: Date) {
         if isPickingFirst {
             interval = DateInterval(start: date, end: date)

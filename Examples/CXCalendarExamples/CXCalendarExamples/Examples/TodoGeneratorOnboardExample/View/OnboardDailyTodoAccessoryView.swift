@@ -18,9 +18,13 @@ struct OnboardDailyTodoAccessoryView: CXCalendarViewRepresentable {
 
     let date: Date
 
+    var todoList: DailyTodoList? {
+        viewModel.fetchDailyTodoList(for: date, calendar: calendar)
+    }
+
     var body: some View {
         VStack {
-            if let todoList = viewModel.fetchDailyTodoList(for: date, calendar: calendar) {
+            if let todoList {
                 makeTodoListView(for: todoList)
             } else {
                 Text("Empty Todo List")
@@ -33,6 +37,17 @@ struct OnboardDailyTodoAccessoryView: CXCalendarViewRepresentable {
         .background {
             RoundedRectangle(cornerRadius: CXSpacing.halfX)
                 .fill(.secondary.opacity(0.1))
+        }
+        .overlay(alignment: .bottomTrailing) {
+            Button {
+                viewModel.detailDate = date
+            } label: {
+                Text("See detail")
+                    .foregroundStyle(.primary)
+                    .padding()
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
         }
     }
 

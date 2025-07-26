@@ -15,6 +15,7 @@ struct OnboardTodoDisplayView: View {
     // MARK: Lifecycle
 
     init(startDate: Date) {
+        self.startDate = startDate
         let shouldSelect = Calendar.current.isSameMonthInYear(.now, startDate)
         context = CXCalendarContext.month(.page)
             .builder
@@ -33,14 +34,34 @@ struct OnboardTodoDisplayView: View {
 
     @Environment(TodoGeneratorOnboardViewModel.self) var viewModel
 
+    let startDate: Date
     let context: CXCalendarContext
+
 
     var body: some View {
         CXCalendarView(context: context)
             .onAppear {
                 viewModel.generateTodo()
             }
+            .navigationDestination(item: $detailDate, destination: { date in
+                OnboardTodoDetailDisplayView(startDate: date)
+                    .environment(viewModel)
+            })
+            .onChange(of: viewModel.detailDate) { oldValue, newValue in
+                if newValue != nil {
+                    detailDate = newValue
+                }
+            }
+            .onChange(of: detailDate) { oldValue, newValue in
+                if detailDate == nil {
+                    viewModel.detailDate = nil
+                }
+            }
     }
+
+    // MARK: Private
+
+    @State private var detailDate: Date?
 }
 
 // MARK: - OnboardTodoDayView
