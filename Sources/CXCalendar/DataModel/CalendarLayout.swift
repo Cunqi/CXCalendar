@@ -19,6 +19,9 @@ public protocol CXCalendarLayoutProtocol {
     /// Padding between each row of days.
     var rowPadding: CGFloat { get }
 
+    /// Height of the header that displays the header content (e.g., month name).
+    var bodyHeaderHeight: CGFloat { get }
+
     /// Height of each row of month view. it is only used for scrollable calendar.
     var rowHeight: CGFloat { get }
 
@@ -34,6 +37,8 @@ struct CalendarLayout: CXCalendarLayoutProtocol {
     let columnPadding: CGFloat
 
     let rowPadding: CGFloat
+
+    let bodyHeaderHeight: CGFloat
 
     let rowHeight: CGFloat
 

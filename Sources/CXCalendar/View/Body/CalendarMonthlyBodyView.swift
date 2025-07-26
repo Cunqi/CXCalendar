@@ -23,7 +23,7 @@ struct CalendarMonthlyBodyView: CXCalendarBodyViewRepresentable {
         VStack(spacing: layout.rowPadding) {
             if let bodyHeader = compose.bodyHeader {
                 bodyHeader(date)
-                    .frame(height: layout.rowHeight)
+                    .frame(height: layout.bodyHeaderHeight)
                     .frame(maxWidth: .infinity)
                     .erased
             }
