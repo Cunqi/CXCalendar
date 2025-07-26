@@ -51,7 +51,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                 .overlay {
                     if isSelected {
                         RoundedRectangle(cornerRadius: CXSpacing.halfX)
-                            .stroke(Color.primary, lineWidth: CXSpacing.quarterX)
+                            .stroke(theme.selectedColor, lineWidth: CXSpacing.quarterX)
                             .padding(1)
                             .ifElse(context.calendarType.isWeek) {
                                 $0.matchedGeometryEffect(
@@ -88,7 +88,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
 
     private var backgroundColor: Color {
         if isStartDate {
-            return .accentColor.opacity(0.5)
+            return theme.accentColor.opacity(0.5)
         }
         return isInRange ? Color.green.opacity(0.1) : Color.clear
     }

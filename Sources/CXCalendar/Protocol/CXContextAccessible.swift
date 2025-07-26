@@ -26,6 +26,9 @@ public protocol CXContextAccessible {
 
     /// The interaction configuration for the calendar, defining how the calendar responds to user interactions.
     var interaction: CXCalendarInteractionProtocol { get }
+
+    /// The theme configuration for the calendar, defining the appearance and behavior of the calendar.
+    var theme: CXCalendarThemeProtocol { get }
 }
 
 extension CXContextAccessible {
@@ -43,5 +46,9 @@ extension CXContextAccessible {
 
     public var interaction: CXCalendarInteractionProtocol {
         context.interaction
+    }
+
+    public var theme: CXCalendarThemeProtocol {
+        context.theme
     }
 }

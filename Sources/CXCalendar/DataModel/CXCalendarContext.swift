@@ -31,13 +31,16 @@ public struct CXCalendarContext {
 
     /// The interaction configuration for the calendar.
     public let interaction: CXCalendarInteractionProtocol
+
+    /// The theme configuration for the calendar.
+    public let theme: CXCalendarThemeProtocol
 }
 
 // MARK: CXCalendarContext.Builder
 
 extension CXCalendarContext {
     public class Builder: CXCalendarLayoutProtocol, CXCalendarComposeProtocol,
-        CXCalendarInteractionProtocol {
+        CXCalendarInteractionProtocol, CXCalendarThemeProtocol {
         // MARK: Lifecycle
 
         // MARK: - Initializers
@@ -72,6 +75,10 @@ extension CXCalendarContext {
             isSelected = context.interaction.isSelected
             onSelected = context.interaction.onSelected
             onMonthChanged = context.interaction.onMonthChanged
+
+            // CXCalendarThemeProtocol
+            accentColor = context.theme.accentColor
+            selectedColor = context.theme.selectedColor
         }
 
         // MARK: Public
@@ -135,6 +142,12 @@ extension CXCalendarContext {
         public private(set) var onSelected: OnSelectedAction?
 
         public private(set) var onMonthChanged: OnMonthChangedAction?
+
+        // MARK: - CXCalendarThemeProtocol
+
+        public private(set) var accentColor: Color = .red
+
+        public private(set) var selectedColor: Color = .blue
     }
 }
 
@@ -253,6 +266,18 @@ extension CXCalendarContext.Builder {
         return self
     }
 
+    // MARK: - CXCalendarThemeProtocol
+
+    public func accentColor(_ accentColor: Color) -> CXCalendarContext.Builder {
+        self.accentColor = accentColor
+        return self
+    }
+
+    public func selectedColor(_ selectedColor: Color) -> CXCalendarContext.Builder {
+        self.selectedColor = selectedColor
+        return self
+    }
+
     public func build() -> CXCalendarContext {
         switch calendarType {
         case .month(.scroll):
@@ -284,6 +309,11 @@ extension CXCalendarContext.Builder {
             onMonthChanged: onMonthChanged
         )
 
+        let theme = CalendarTheme(
+            accentColor: accentColor,
+            selectedColor: selectedColor
+        )
+
         return CXCalendarContext(
             calendarType: calendarType,
             calendar: calendar,
@@ -291,7 +321,8 @@ extension CXCalendarContext.Builder {
             selectedDate: selectedDate,
             layout: layout,
             compose: compose,
-            interaction: interaction
+            interaction: interaction,
+            theme: theme
         )
     }
 }
