@@ -119,8 +119,8 @@ public class CXCalendarManager {
     /// Whether the accessory view should be presented.
     var shouldPresentAccessoryView = true
 
-    func makeDateInterval(for date: Date) -> DateInterval {
-        context.calendar.dateInterval(of: calendarType.component, for: date)!
+    func makeDateInterval(for date: Date, component: Calendar.Component) -> DateInterval {
+        context.calendar.dateInterval(of: component, for: date)!
     }
 
     func makeDays(from interval: DateInterval) -> [CXIndexedDate] {
@@ -160,22 +160,22 @@ public class CXCalendarManager {
 
     func numberOfRows(for index: Int) -> Int {
         let date = makeDate(for: index)
-        let numberOfWeeks = context.calendar.numberOfWeeks(inMonthOf: date)
-        let hasBodyHeader = context.compose.bodyHeader != nil
-        return numberOfWeeks + (hasBodyHeader ? 1 : 0)
+        return context.calendar.numberOfWeeks(inMonthOf: date)
     }
 
     func makeHeight(for index: Int) -> Int {
-        switch calendarType {
-        case .year(.scroll):
-            let rowHeight = Int(context.layout.rowHeight)
-            return rowHeight
-        case .month(.scroll):
+        if calendarType == .year(.scroll) || calendarType == .month(.scroll) {
+            let isYear = calendarType == .year(.scroll)
             let rowHeight = Int(context.layout.rowHeight)
             let rowPadding = Int(context.layout.rowPadding)
-            let numberOfRows = numberOfRows(for: index)
-            return numberOfRows * (rowHeight + rowPadding) - rowPadding
-        default:
+            let numberOfRows = isYear ? 6 : numberOfRows(for: index)
+            let yearlyBodyHeaderHeight = context.layout.bodyHeaderHeight
+            let monthlyBodyHeaderHeight = context.compose.bodyHeader != nil
+                ? context.layout.bodyHeaderHeight
+                : 0
+            let bodyHeaderHeight = isYear ? yearlyBodyHeaderHeight : monthlyBodyHeaderHeight
+            return numberOfRows * (rowHeight + rowPadding) - rowPadding + Int(bodyHeaderHeight)
+        } else {
             return 0
         }
     }

@@ -8,38 +8,55 @@
 import CXUICore
 import SwiftUI
 
-// MARK: - CalendarMonthThumbnailView
+// MARK: - CalendarYearlyBodyContentView
 
 struct CalendarYearlyBodyContentView: CXCalendarViewRepresentable {
+    @Environment(CXCalendarManager.self) var manager
+
+    let month: Date
+
+    var body: some View {
+        VStack(spacing: layout.rowPadding) {
+            if let bodyHeader = compose.bodyHeader {
+                bodyHeader(month)
+                    .erased
+                    .maybe(context.calendarType.scrollBehavior == .scroll) {
+                        $0.frame(height: layout.bodyHeaderHeight)
+                    }
+            }
+            CalendarMonthThumbnailBodyView(
+                monthInterval: manager.makeDateInterval(for: month, component: .month)
+            )
+        }
+    }
+}
+
+// MARK: - CalendarYearlyBodyHeaderView
+
+struct CalendarYearlyBodyHeaderView: CXCalendarViewRepresentable {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager
 
     let month: Date
 
-    var isSameMonth: Bool {
-        calendar.isSameMonthInYear(month, startDate)
-    }
-
     var body: some View {
-        VStack(alignment: .leading, spacing: CXSpacing.halfX) {
-            monthText
-                .padding(.horizontal, CXSpacing.oneX)
-            CalendarMonthThumbnailBodyView(monthInterval: manager.makeDateInterval(for: month))
-        }
-    }
-
-    // MARK: Private
-
-    private var monthText: some View {
         Text(month, format: .dateTime.month())
             .font(.headline)
             .bold()
             .foregroundStyle(foregroundColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.leading, CXSpacing.oneX)
     }
+
+    // MARK: Private
 
     private var foregroundColor: Color {
         isSameMonth ? theme.accentColor : .primary
+    }
+
+    private var isSameMonth: Bool {
+        calendar.isSameMonthInYear(month, startDate)
     }
 }
 
@@ -57,7 +74,7 @@ struct CalendarMonthThumbnailBodyView: CXCalendarViewRepresentable {
     }
 
     var body: some View {
-        LazyVGrid(columns: columns, spacing: CXSpacing.halfX) {
+        LazyVGrid(columns: columns, spacing: layout.rowPadding) {
             ForEach(days) { day in
                 CalendarMonthThumbnailDayView(day: day.value, dateInterval: monthInterval)
             }
@@ -75,6 +92,8 @@ struct CalendarMonthThumbnailBodyView: CXCalendarViewRepresentable {
 // MARK: - CalendarMonthThumbnailDayView
 
 struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
+    // MARK: Internal
+
     @Environment(CXCalendarManager.self) var manager
 
     let day: Date
@@ -83,7 +102,7 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
 
     var body: some View {
         Text(day.day)
-            .font(.caption2)
+            .font(.system(size: 8))
             .foregroundStyle(foregroundColor)
             .padding(CXSpacing.quarterX)
             .background {
@@ -91,6 +110,8 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
                     .fill(backgroundColor)
             }
     }
+
+    // MARK: Private
 
     private var foregroundColor: Color {
         if isInRange {
@@ -108,7 +129,11 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
     HStack {
         CalendarYearlyBodyContentView(month: .now)
 
-        CalendarYearlyBodyContentView(month: Calendar.current.date(byAdding: .month, value: 1, to: .now)!)
+        CalendarYearlyBodyContentView(month: Calendar.current.date(
+            byAdding: .month,
+            value: 1,
+            to: .now
+        )!)
     }
     .padding(.horizontal)
     .environment(CXCalendarManager(context: .month(.page)))

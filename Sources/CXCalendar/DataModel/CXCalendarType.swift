@@ -27,7 +27,7 @@ extension CXCalendarType {
     var component: Calendar.Component {
         switch self {
         case .year:
-            .month
+            .year
         case .month:
             .month
         case .week:

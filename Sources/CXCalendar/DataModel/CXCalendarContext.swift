@@ -292,12 +292,18 @@ extension CXCalendarContext.Builder {
             axis = .vertical
         case .year:
             axis = .vertical
+            calendarHeader = {
+                YearHeaderView(year: $0)
+            }
             body = {
                 CalendarYearlyBodyView(date: $0)
             }
-            bodyHeaderHeight = CXSpacing.threeX
+            bodyHeader = {
+                CalendarYearlyBodyHeaderView(month: $0)
+            }
+            bodyHeaderHeight = CXSpacing.twoX
             rowHeight = CXSpacing.twoX
-
+            rowPadding = .zero
         default:
             break
         }

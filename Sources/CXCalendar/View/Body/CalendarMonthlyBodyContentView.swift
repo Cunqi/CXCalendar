@@ -40,7 +40,7 @@ struct CalendarMonthlyBodyContentView: CXCalendarBodyContentViewRepresentable {
     }
 
     var dateInterval: DateInterval {
-        manager.makeDateInterval(for: date)
+        manager.makeDateInterval(for: date, component: .month)
     }
 
     var days: [CXIndexedDate] {
