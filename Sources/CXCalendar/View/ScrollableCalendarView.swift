@@ -28,7 +28,7 @@ struct ScrollableCalendarView: CXCalendarViewRepresentable {
                 .erased
                 .padding(.horizontal, layout.calendarHPadding)
             CXLazyList(currentPage: $manager.currentPage) { index in
-                CalendarBodyView(date: manager.makeDate(for: index))
+                CalendarMonthlyBodyView(date: manager.makeDate(for: index))
                     .padding(.horizontal, layout.calendarHPadding)
             } heightOf: { index in
                 let rowHeight = Int(layout.rowHeight)
