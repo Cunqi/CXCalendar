@@ -121,7 +121,7 @@ extension CXCalendarContext {
         public private(set) var bodyHeader: BodyHeaderMaker?
 
         public private(set) var bodyContent: BodyContentMaker = { date in
-            CalendarBodyContentView(date: date)
+            CalendarMonthlyBodyContentView(date: date)
         }
 
         public private(set) var weekHeader: WeekHeaderMaker = { month in

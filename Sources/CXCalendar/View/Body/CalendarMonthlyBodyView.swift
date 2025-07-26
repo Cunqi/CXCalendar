@@ -28,7 +28,7 @@ struct CalendarMonthlyBodyView: CXCalendarBodyViewRepresentable {
                     .erased
             }
 
-            CalendarBodyContentView(date: date)
+            CalendarMonthlyBodyContentView(date: date)
 
             if let accessoryView = compose.accessoryView,
                manager.shouldPresentAccessoryView(for: date) {

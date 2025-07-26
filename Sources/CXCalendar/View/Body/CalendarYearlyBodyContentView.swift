@@ -10,7 +10,7 @@ import SwiftUI
 
 // MARK: - CalendarMonthThumbnailView
 
-struct CalendarMonthThumbnailView: CXCalendarViewRepresentable {
+struct CalendarYearlyBodyContentView: CXCalendarViewRepresentable {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager
@@ -106,9 +106,9 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
 
 #Preview {
     HStack {
-        CalendarMonthThumbnailView(month: .now)
+        CalendarYearlyBodyContentView(month: .now)
 
-        CalendarMonthThumbnailView(month: Calendar.current.date(byAdding: .month, value: 1, to: .now)!)
+        CalendarYearlyBodyContentView(month: Calendar.current.date(byAdding: .month, value: 1, to: .now)!)
     }
     .padding(.horizontal)
     .environment(CXCalendarManager(context: .month(.page)))
