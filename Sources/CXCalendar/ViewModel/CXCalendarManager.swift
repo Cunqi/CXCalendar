@@ -5,7 +5,7 @@
 //  Created by Cunqi Xiao on 7/13/25.
 //
 
-import CXFoundation
+import CXUICore
 import Observation
 import SwiftUI
 
@@ -98,7 +98,7 @@ public class CXCalendarManager {
             shouldPresentAccessoryView = false
         }
     }
-    
+
     /// /// Enables or disables the presentation of the accessory view.
     /// - Parameter enabled: A Boolean value indicating whether the accessory view should be presented.
     public func enablePresentAccessoryView(_ enabled: Bool) {
