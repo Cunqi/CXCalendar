@@ -60,6 +60,7 @@ extension CXCalendarContext {
 
             // CXCalendarComposeProtocol
             calendarHeader = context.compose.calendarHeader
+            body = context.compose.body
             bodyHeader = context.compose.bodyHeader
             bodyContent = context.compose.bodyContent
             weekHeader = context.compose.weekHeader
@@ -101,6 +102,10 @@ extension CXCalendarContext {
 
         public private(set) var calendarHeader: CalendarHeaderMaker = { month in
             CalendarHeaderView(date: month)
+        }
+
+        public private(set) var body: BodyMaker = { month in
+            CalendarMonthlyBodyView(date: month)
         }
 
         public private(set) var bodyHeader: BodyHeaderMaker?
@@ -194,6 +199,11 @@ extension CXCalendarContext.Builder {
         return self
     }
 
+    public func body(_ body: @escaping BodyMaker) -> CXCalendarContext.Builder {
+        self.body = body
+        return self
+    }
+
     public func bodyHeader(_ bodyHeader: BodyHeaderMaker?) -> CXCalendarContext.Builder {
         self.bodyHeader = bodyHeader
         return self
@@ -260,6 +270,7 @@ extension CXCalendarContext.Builder {
         )
         let compose = CalendarCompose(
             calendarHeader: calendarHeader,
+            body: body,
             bodyHeader: bodyHeader,
             bodyContent: bodyContent,
             weekHeader: weekHeader,

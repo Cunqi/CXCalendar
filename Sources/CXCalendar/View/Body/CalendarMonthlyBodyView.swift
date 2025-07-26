@@ -12,7 +12,7 @@ import SwiftUI
 
 /// This view represents the monthly body of the calendar,
 /// displaying the header, body content, and any accessory views.
-struct CalendarMonthlyBodyView: CXCalendarViewRepresentable {
+struct CalendarMonthlyBodyView: CXCalendarBodyViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let date: Date
