@@ -5,7 +5,6 @@
 //  Created by Cunqi Xiao on 7/13/25.
 //
 
-import CXFoundation
 import Foundation
 
 extension Calendar {
@@ -13,16 +12,16 @@ extension Calendar {
 
     /// Generate month grid dates with leading and trailing dates in fix 42 cells.
     /// - Parameter monthInterval: month interval for current month
-    /// - Returns: an array of `IdentifiableDate` representing the month grid with fixed 42 cells.
-    func makeFixedMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
+    /// - Returns: an array of `IndexedDate` representing the month grid with fixed 42 cells.
+    func makeFixedMonthGridDates(from monthInterval: DateInterval) -> [IndexedDate] {
         let firstDay = monthInterval.start
         let lead = (component(.weekday, from: firstDay) - firstWeekday + 7) % 7
         let gridStart = date(byAdding: .day, value: -lead, to: firstDay)!
 
         return Calendar.gridRange.compactMap { index in
-            date(byAdding: .day, value: index, to: gridStart).map { IdentifiableDate(
+            date(byAdding: .day, value: index, to: gridStart).map { IndexedDate(
                 value: $0,
-                id: $0.fullDate
+                id: index
             ) }
         }
     }
@@ -30,21 +29,23 @@ extension Calendar {
     /// Generates a dynamic month grid of dates based on the provided month interval. the size of the grid
     /// is determined by the number of weeks in the month, which can vary.
     /// - Parameter monthInterval: The date interval representing the month for which to generate the grid.
-    /// - Returns: An array of `IdentifiableDate` representing the dates in the month grid.
-    func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
+    /// - Returns: An array of `IndexedDate` representing the dates in the month grid.
+    func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IndexedDate] {
         guard let weekInterval = dateInterval(of: .weekOfMonth, for: monthInterval.start) else {
             return []
         }
 
-        var result = [IdentifiableDate]()
+        var result = [IndexedDate]()
         var current = weekInterval.start
+        var index = 0
 
         while current < monthInterval.end {
-            result.append(IdentifiableDate(value: current, id: current.fullDate))
+            result.append(IndexedDate(value: current, id: index))
             guard let next = date(byAdding: .day, value: 1, to: current) else {
                 break
             }
             current = next
+            index += 1
         }
 
         return result
@@ -53,15 +54,17 @@ extension Calendar {
     /// Generates a fixed week grid of dates based on the provided week interval.
     /// - Parameter weekInterval: The date interval representing the week for which to generate the grid.
     /// - Returns: An array of `IdentifiableDate` representing the dates in the week grid.
-    func makeFixedWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
+    func makeFixedWeekGridDates(from weekInterval: DateInterval) -> [IndexedDate] {
         var day = weekInterval.start
-        var result = [IdentifiableDate]()
+        var result = [IndexedDate]()
+        var index = 0
         while day < weekInterval.end {
-            result.append(IdentifiableDate(value: day, id: day.fullDate))
+            result.append(IndexedDate(value: day, id: index))
             guard let nextDay = date(byAdding: .day, value: 1, to: day) else {
                 break
             }
             day = nextDay
+            index += 1
         }
         return result
     }
@@ -84,15 +87,15 @@ extension Calendar {
     }
 
     /// Calculates the number of weeks in the month of a given date.
-    /// - Parameter date: The date for which to calculate the number of weeks in its month.
+    /// - Parameter month: The date for which to calculate the number of weeks in its month.
     /// - Returns: The number of weeks in the month of the specified date.
-    func numberOfWeeks(inMonthOf date: Date) -> Int {
-        guard let monthInterval = dateInterval(of: .month, for: date) else {
+    func numberOfWeeks(inMonthOf month: Date) -> Int {
+        guard let monthInterval = dateInterval(of: .month, for: month) else {
             return 0
         }
 
         let startOfMonth = monthInterval.start
-        let endOfMonth = self.date(byAdding: .day, value: -1, to: monthInterval.end)!
+        let endOfMonth = date(byAdding: .day, value: -1, to: monthInterval.end)!
 
         let startWeek = component(.weekOfYear, from: startOfMonth)
         let endWeek = component(.weekOfYear, from: endOfMonth)
@@ -103,7 +106,7 @@ extension Calendar {
             let weeksInYear = range(
                 of: .weekOfYear,
                 in: .yearForWeekOfYear,
-                for: self.date(from: DateComponents(year: year))!
+                for: date(from: DateComponents(year: year))!
             )?.count ?? 52
             return (weeksInYear - startWeek + 1) + endWeek
         }

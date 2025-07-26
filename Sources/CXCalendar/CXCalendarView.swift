@@ -30,7 +30,7 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
     @State public var manager: CXCalendarManager
 
     public var body: some View {
-        switch calendarType {
+        switch context.calendarType {
         case .month(let scrollBehavior):
             monthView(for: scrollBehavior)
                 .environment(manager)

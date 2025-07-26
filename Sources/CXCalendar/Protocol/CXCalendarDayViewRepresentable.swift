@@ -22,3 +22,13 @@ public protocol CXCalendarDayViewRepresentable: CXCalendarViewRepresentable {
     /// /// A Boolean value indicating whether the day is startDate.
     var isStartDate: Bool { get }
 }
+
+public extension CXCalendarDayViewRepresentable {
+    var isInRange: Bool {
+        dateInterval.containsExceptEnd(day, calendar)
+    }
+
+    var isStartDate: Bool {
+        calendar.isSameDay(day, startDate)
+    }
+}

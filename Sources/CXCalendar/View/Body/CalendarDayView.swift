@@ -53,7 +53,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                         RoundedRectangle(cornerRadius: CXSpacing.halfX)
                             .stroke(Color.primary, lineWidth: CXSpacing.quarterX)
                             .padding(1)
-                            .ifElse(calendarType.isWeek) {
+                            .ifElse(context.calendarType.isWeek) {
                                 $0.matchedGeometryEffect(
                                     id: "selection",
                                     in: namespace,
@@ -72,7 +72,7 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                         if calendar.isSameDay(day, selectedDate) {
                             manager.togglePresentAccessoryView()
                         } else {
-                            manager.shouldPresentAccessoryView = true
+                            manager.enablePresentAccessoryView(true)
                         }
                         manager.selectedDate = day
                     }

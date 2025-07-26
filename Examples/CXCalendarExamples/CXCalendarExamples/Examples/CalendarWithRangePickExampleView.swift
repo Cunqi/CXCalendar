@@ -36,50 +36,13 @@ struct CalendarWithRangePickExampleView: View {
                 .navigationBarTitleDisplayMode(.inline)
 
             HStack {
-                fromDateCard
+                DateDisplayCardView(label: "From", date: viewModel.range?.start)
 
-                toDateCard
+                DateDisplayCardView(label: "To", date: viewModel.range?.end)
             }
+            .padding(.horizontal)
 
             Spacer()
-        }
-    }
-
-    @ViewBuilder
-    var fromDateCard: some View {
-        if let start = viewModel.range?.start {
-            makeTimeCard(for: start, title: "From")
-        } else {
-            makePlaceholderCard(title: "From")
-        }
-    }
-
-    @ViewBuilder
-    var toDateCard: some View {
-        if let end = viewModel.range?.end {
-            makeTimeCard(for: end, title: "To")
-        } else {
-            makePlaceholderCard(title: "To")
-        }
-    }
-
-    @ViewBuilder
-    func makeTimeCard(for date: Date, title: String) -> some View {
-        VStack(alignment: .leading, spacing: CXSpacing.halfX) {
-            Text(title)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            Text(date, format: .dateTime.day().month(.abbreviated).year())
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background {
-            RoundedRectangle(cornerRadius: CXSpacing.oneX)
-                .fill(Color.accentColor.opacity(0.2))
         }
     }
 
@@ -161,37 +124,21 @@ struct RangeDay: CXCalendarDayViewRepresentable {
 
     var background: some View {
         if isLeadingDay, isTrailingDay {
-            MaskedRoundedRectangle(radius: CXSpacing.oneX)
+            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX)
                 .fill(Color.accentColor.opacity(0.5))
         } else if isLeadingDay {
-            MaskedRoundedRectangle(radius: CXSpacing.oneX, corners: [.topLeft, .bottomLeft])
+            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topLeft, .bottomLeft])
                 .fill(Color.accentColor.opacity(0.5))
         } else if isTrailingDay {
-            MaskedRoundedRectangle(radius: CXSpacing.oneX, corners: [.topRight, .bottomRight])
+            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topRight, .bottomRight])
                 .fill(Color.accentColor.opacity(0.5))
         } else if isSelected {
-            MaskedRoundedRectangle(radius: .zero)
+            MaskedRoundedRectangle(cornerRadius: .zero)
                 .fill(Color.accentColor.opacity(0.5))
         } else {
-            MaskedRoundedRectangle(radius: .zero)
+            MaskedRoundedRectangle(cornerRadius: .zero)
                 .fill(Color.clear)
         }
-    }
-}
-
-// MARK: - MaskedRoundedRectangle
-
-struct MaskedRoundedRectangle: Shape {
-    var radius: CGFloat = CXSpacing.oneX
-    var corners = UIRectCorner.allCorners
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
     }
 }
 

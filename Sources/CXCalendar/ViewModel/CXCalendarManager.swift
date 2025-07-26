@@ -82,7 +82,6 @@ public class CXCalendarManager {
     public func backToStart() {
         currentPage = 0
         selectedDate = startDate
-        togglePresentAccessoryView()
     }
 
     /// Toggles the presentation of the accessory view based on the calendar type.
@@ -99,6 +98,12 @@ public class CXCalendarManager {
             shouldPresentAccessoryView = false
         }
     }
+    
+    /// /// Enables or disables the presentation of the accessory view.
+    /// - Parameter enabled: A Boolean value indicating whether the accessory view should be presented.
+    public func enablePresentAccessoryView(_ enabled: Bool) {
+        shouldPresentAccessoryView = enabled
+    }
 
     // MARK: Internal
 
@@ -114,7 +119,7 @@ public class CXCalendarManager {
         context.calendar.dateInterval(of: calendarType.component, for: date)!
     }
 
-    func makeDays(from interval: DateInterval) -> [IdentifiableDate] {
+    func makeDays(from interval: DateInterval) -> [IndexedDate] {
         switch calendarType {
         case .month:
             makeMonthGridDates(from: interval)
@@ -134,7 +139,7 @@ public class CXCalendarManager {
         )!
     }
 
-    func makeMonthGridDates(from monthInterval: DateInterval) -> [IdentifiableDate] {
+    func makeMonthGridDates(from monthInterval: DateInterval) -> [IndexedDate] {
         switch context.calendarType.scrollBehavior {
         case .page:
             context.calendar.makeFixedMonthGridDates(from: monthInterval)
@@ -143,12 +148,14 @@ public class CXCalendarManager {
         }
     }
 
-    func makeWeekGridDates(from weekInterval: DateInterval) -> [IdentifiableDate] {
+    func makeWeekGridDates(from weekInterval: DateInterval) -> [IndexedDate] {
         context.calendar.makeFixedWeekGridDates(from: weekInterval)
     }
 
     func numberOfRows(for index: Int) -> Int {
-        context.calendar.numberOfWeeks(inMonthOf: makeDate(for: index)) + 1 // +1 for month header
+        let date = makeDate(for: index)
+        let numberOfWeeks = context.calendar.numberOfWeeks(inMonthOf: date)
+        return numberOfWeeks + 1
     }
 
     func shouldPresentAccessoryView(for date: Date) -> Bool {
