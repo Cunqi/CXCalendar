@@ -11,6 +11,8 @@ import SwiftUI
 
 public typealias CalendarHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
+public typealias BodyMaker = (Date) -> any CXCalendarViewRepresentable
+
 public typealias BodyHeaderMaker = (Date) -> any CXCalendarViewRepresentable
 
 public typealias BodyContentMaker = (Date) -> any CXCalendarBodyContentViewRepresentable
@@ -27,6 +29,10 @@ public typealias AccessoryViewMaker = (Date) -> any View
 public protocol CXCalendarComposeProtocol {
     /// Closure returning a SwiftUI View for the calendar header, given the current month date.
     var calendarHeader: CalendarHeaderMaker { get }
+
+    /// Closure returning a SwiftUI View for the body, given the current month date.
+    /// This is used to display the main content of the calendar view.
+    var body: BodyMaker { get }
 
     /// Closure returning a SwiftUI View for the body header, given the current month date.
     /// This is used to display the month title along with the month view.
@@ -51,6 +57,8 @@ public protocol CXCalendarComposeProtocol {
 
 struct CalendarCompose: CXCalendarComposeProtocol {
     let calendarHeader: CalendarHeaderMaker
+
+    let body: BodyMaker
 
     let bodyHeader: BodyHeaderMaker?
 

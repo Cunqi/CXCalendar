@@ -32,7 +32,7 @@ struct PagedCalendarView: CXCalendarViewRepresentable {
                 .padding(.horizontal, layout.calendarHPadding)
 
             CXLazyPage(axis: layout.axis, currentPage: $manager.currentPage) { index in
-                CalendarBodyView(date: manager.makeDate(for: index))
+                CalendarMonthlyBodyView(date: manager.makeDate(for: index))
                     .padding(.horizontal, layout.calendarHPadding)
             }
         }
