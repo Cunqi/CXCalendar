@@ -25,7 +25,7 @@ struct OnboardTodoDisplayView: View {
                 OnboardTodoDayView(dateInterval: dateInterval, day: day)
             }
             .accessoryView { date in
-                OnboardDailyTodoAccessoryView(date: date)
+                OnboardDailyTodoAccessoryView(date: date, showDetailButton: true)
             }
             .build()
     }

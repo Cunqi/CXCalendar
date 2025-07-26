@@ -17,6 +17,7 @@ struct OnboardDailyTodoAccessoryView: CXCalendarViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let date: Date
+    let showDetailButton: Bool
 
     var todoList: DailyTodoList? {
         viewModel.fetchDailyTodoList(for: date, calendar: calendar)
@@ -39,15 +40,22 @@ struct OnboardDailyTodoAccessoryView: CXCalendarViewRepresentable {
                 .fill(.secondary.opacity(0.1))
         }
         .overlay(alignment: .bottomTrailing) {
-            Button {
-                viewModel.detailDate = date
-            } label: {
-                Text("See detail")
-                    .foregroundStyle(.primary)
-                    .padding()
+            if showDetailButton {
+                Button {
+                    viewModel.detailDate = date
+                } label: {
+                    Image(systemName: "arrow.right")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .padding(CXSpacing.oneX)
+                        .background {
+                            Circle()
+                                .fill(Color.blue)
+                        }
+                }
+                .buttonStyle(.plain)
+                .padding(.bottom, CXSpacing.oneX)
             }
-            .buttonStyle(.bordered)
-            .buttonBorderShape(.capsule)
         }
     }
 

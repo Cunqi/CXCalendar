@@ -23,7 +23,7 @@ struct OnboardTodoDetailDisplayView: View {
             }
             .accessoryView { date in
                 CXCalendarWeeklyAccessoryWrapperView(date: date) { date, _ in
-                    OnboardDailyTodoAccessoryView(date: date)
+                    OnboardDailyTodoAccessoryView(date: date, showDetailButton: false)
                 }
             }
             .build()
