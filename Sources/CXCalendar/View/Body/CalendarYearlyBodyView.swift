@@ -32,10 +32,6 @@ struct CalendarYearlyBodyView: CXCalendarBodyViewRepresentable {
             LazyVGrid(columns: columns, spacing: layout.rowPadding) {
                 ForEach(months) { month in
                     CalendarYearlyBodyContentView(month: month.value)
-                        .maybe(context.calendarType.scrollBehavior == .scroll) {
-                            $0.frame(height: layout.rowHeight)
-                        }
-                        .id(month.id)
                 }
             }
         }

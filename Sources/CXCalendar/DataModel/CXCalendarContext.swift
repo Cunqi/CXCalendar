@@ -355,7 +355,7 @@ extension CXCalendarContext {
             .bodyHeader {
                 YearHeaderView(year: $0)
             }
-            .rowHeight(CXSpacing.oneAndHalfX * 6 + CXSpacing.threeX + CXSpacing.oneX)
+            .rowHeight(CXSpacing.twoX * 6 + CXSpacing.threeX)
             .build()
     }
 

@@ -70,10 +70,9 @@ struct CalendarMonthThumbnailBodyView: CXCalendarViewRepresentable {
     var body: some View {
         LazyVGrid(columns: columns, spacing: .zero) {
             ForEach(days) { day in
-                CalendarMonthThumbnailDayView(date: day, id: day.id, dateInterval: monthInterval)
+                CalendarMonthThumbnailDayView(date: day, dateInterval: monthInterval)
             }
         }
-        .drawingGroup()
     }
 
     // MARK: Private
@@ -92,14 +91,18 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let date: CXIndexedDate
-    let id: Int
 
     let dateInterval: DateInterval
 
     var body: some View {
-        Text(id.description)
+        Text(date.id.description)
             .font(.system(size: 8))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ifElse(context.calendarType.scrollBehavior == .page) {
+                $0.aspectRatio(1, contentMode: .fit)
+            } else: {
+                $0.frame(height: CXSpacing.twoX)
+            }
             .aspectRatio(1, contentMode: .fit)
             .foregroundStyle(foregroundColor)
             .background {
