@@ -16,14 +16,8 @@ struct CalendarYearlyBodyContentView: CXCalendarViewRepresentable {
     let month: Date
 
     var body: some View {
-        VStack(spacing: layout.rowPadding) {
-            if let bodyHeader = compose.bodyHeader {
-                bodyHeader(month)
-                    .erased
-                    .maybe(context.calendarType.scrollBehavior == .scroll) {
-                        $0.frame(height: layout.bodyHeaderHeight)
-                    }
-            }
+        VStack(spacing: CXSpacing.halfX) {
+            CalendarYearlyBodyHeaderView(month: month)
             CalendarMonthThumbnailBodyView(
                 monthInterval: manager.makeDateInterval(for: month, component: .month)
             )
@@ -69,22 +63,23 @@ struct CalendarMonthThumbnailBodyView: CXCalendarViewRepresentable {
 
     let monthInterval: DateInterval
 
-    var days: [IndexedDate] {
+    var days: [CXIndexedDate] {
         context.calendar.makeFixedMonthGridDates(from: monthInterval)
     }
 
     var body: some View {
-        LazyVGrid(columns: columns, spacing: layout.rowPadding) {
+        LazyVGrid(columns: columns, spacing: .zero) {
             ForEach(days) { day in
-                CalendarMonthThumbnailDayView(day: day.value, dateInterval: monthInterval)
+                CalendarMonthThumbnailDayView(date: day, id: day.id, dateInterval: monthInterval)
             }
         }
+        .drawingGroup()
     }
 
     // MARK: Private
 
     private let columns = Array(
-        repeating: GridItem(.flexible(), spacing: 0),
+        repeating: GridItem(.flexible(), spacing: .zero),
         count: 7
     )
 }
@@ -96,18 +91,22 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
 
     @Environment(CXCalendarManager.self) var manager
 
-    let day: Date
+    let date: CXIndexedDate
+    let id: Int
 
     let dateInterval: DateInterval
 
     var body: some View {
-        Text(day.day)
+        Text(id.description)
             .font(.system(size: 8))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .aspectRatio(1, contentMode: .fit)
             .foregroundStyle(foregroundColor)
-            .padding(CXSpacing.quarterX)
             .background {
-                Circle()
-                    .fill(backgroundColor)
+                if isStartDate {
+                    Circle()
+                        .fill(theme.accentColor)
+                }
             }
     }
 
@@ -119,22 +118,18 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
         }
         return .clear
     }
-
-    private var backgroundColor: Color {
-        isStartDate ? theme.accentColor : .clear
-    }
 }
 
-#Preview {
-    HStack {
-        CalendarYearlyBodyContentView(month: .now)
-
-        CalendarYearlyBodyContentView(month: Calendar.current.date(
-            byAdding: .month,
-            value: 1,
-            to: .now
-        )!)
-    }
-    .padding(.horizontal)
-    .environment(CXCalendarManager(context: .month(.page)))
-}
+//#Preview {
+//    HStack {
+//        CalendarYearlyBodyContentView(month: .now)
+//
+//        CalendarYearlyBodyContentView(month: Calendar.current.date(
+//            byAdding: .month,
+//            value: 1,
+//            to: .now
+//        )!)
+//    }
+//    .padding(.horizontal)
+//    .environment(CXCalendarManager(context: .month(.page)))
+//}

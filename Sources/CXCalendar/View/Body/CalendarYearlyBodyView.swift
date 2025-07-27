@@ -15,14 +15,28 @@ struct CalendarYearlyBodyView: CXCalendarBodyViewRepresentable {
 
     let date: Date
 
-    var months: [IndexedDate] {
+    var months: [CXIndexedDate] {
         manager.makeMonths(for: date)
     }
 
     var body: some View {
-        LazyVGrid(columns: columns, spacing: CXSpacing.threeX) {
-            ForEach(months) { month in
-                CalendarYearlyBodyContentView(month: month.value)
+        VStack(spacing: layout.rowPadding) {
+            if let bodyHeader = compose.bodyHeader {
+                bodyHeader(date)
+                    .erased
+                    .maybe(context.calendarType.scrollBehavior == .scroll) {
+                        $0.frame(height: layout.bodyHeaderHeight)
+                    }
+            }
+
+            LazyVGrid(columns: columns, spacing: layout.rowPadding) {
+                ForEach(months) { month in
+                    CalendarYearlyBodyContentView(month: month.value)
+                        .maybe(context.calendarType.scrollBehavior == .scroll) {
+                            $0.frame(height: layout.rowHeight)
+                        }
+                        .id(month.id)
+                }
             }
         }
     }
@@ -34,3 +48,4 @@ struct CalendarYearlyBodyView: CXCalendarBodyViewRepresentable {
         count: 3
     )
 }
+
