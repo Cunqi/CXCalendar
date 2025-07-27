@@ -20,4 +20,13 @@ extension View {
             elseTransform(self)
         }
     }
+
+    @ViewBuilder
+    func maybe(_ condition: Bool, transform: (Self) -> some View) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
 }

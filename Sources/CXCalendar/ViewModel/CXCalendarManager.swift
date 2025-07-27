@@ -5,7 +5,7 @@
 //  Created by Cunqi Xiao on 7/13/25.
 //
 
-import CXFoundation
+import CXUICore
 import Observation
 import SwiftUI
 
@@ -69,6 +69,8 @@ public class CXCalendarManager {
     /// - Returns: A Boolean value indicating whether the back to start button should be displayed.
     public func shouldBackToStart(date: Date) -> Bool {
         let isInRange: Bool = switch calendarType {
+        case .year:
+            context.calendar.isDate(date, equalTo: startDate, toGranularity: .year)
         case .month:
             context.calendar.isSameMonthInYear(date, startDate)
         case .week:
@@ -96,9 +98,11 @@ public class CXCalendarManager {
             shouldPresentAccessoryView.toggle()
         case .month(.scroll):
             shouldPresentAccessoryView = false
+        case .year:
+            shouldPresentAccessoryView = false
         }
     }
-    
+
     /// /// Enables or disables the presentation of the accessory view.
     /// - Parameter enabled: A Boolean value indicating whether the accessory view should be presented.
     public func enablePresentAccessoryView(_ enabled: Bool) {
@@ -115,12 +119,25 @@ public class CXCalendarManager {
     /// Whether the accessory view should be presented.
     var shouldPresentAccessoryView = true
 
-    func makeDateInterval(for date: Date) -> DateInterval {
-        context.calendar.dateInterval(of: calendarType.component, for: date)!
+    func makeDateInterval(for date: Date, component: Calendar.Component) -> DateInterval {
+        context.calendar.dateInterval(of: component, for: date)!
+    }
+
+    func makeMonths(for date: Date) -> [CXIndexedDate] {
+        let startOfYear = context.calendar.startOfYear(for: date)
+        return (0 ..< 12).compactMap { index in
+            guard let month = context.calendar
+                .date(byAdding: .month, value: index, to: startOfYear) else {
+                return nil
+            }
+            return CXIndexedDate(value: month, id: index)
+        }
     }
 
     func makeDays(from interval: DateInterval) -> [CXIndexedDate] {
         switch calendarType {
+        case .year:
+            []
         case .month:
             makeMonthGridDates(from: interval)
         case .week:
@@ -154,8 +171,25 @@ public class CXCalendarManager {
 
     func numberOfRows(for index: Int) -> Int {
         let date = makeDate(for: index)
-        let numberOfWeeks = context.calendar.numberOfWeeks(inMonthOf: date)
-        return numberOfWeeks + 1
+        return context.calendar.numberOfWeeks(inMonthOf: date)
+    }
+
+    func makeHeight(for index: Int) -> Int {
+        let rowHeight = Int(context.layout.rowHeight)
+        let rowPadding = Int(context.layout.rowPadding)
+        let bodyHeaderHeight = context.compose.bodyHeader != nil
+            ? Int(context.layout.bodyHeaderHeight)
+            : 0
+
+        let numberOfRows: Int = switch calendarType {
+        case .year(.scroll):
+            4
+        case .month(.scroll):
+            numberOfRows(for: index)
+        default:
+            0
+        }
+        return numberOfRows * (rowHeight + rowPadding) + bodyHeaderHeight + rowPadding
     }
 
     func shouldPresentAccessoryView(for date: Date) -> Bool {
@@ -165,6 +199,8 @@ public class CXCalendarManager {
         case .month(.page):
             shouldPresentAccessoryView && context.calendar.isSameDay(date, currentAnchorDate)
         case .month(.scroll):
+            false
+        case .year:
             false
         }
     }

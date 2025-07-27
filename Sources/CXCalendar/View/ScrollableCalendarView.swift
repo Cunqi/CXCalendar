@@ -24,17 +24,18 @@ struct ScrollableCalendarView: CXCalendarViewRepresentable {
 
     var body: some View {
         VStack {
-            compose.calendarHeader(currentAnchorDate)
-                .erased
-                .padding(.horizontal, layout.calendarHPadding)
+            if let calendarHeader = compose.calendarHeader {
+                calendarHeader(currentAnchorDate)
+                    .erased
+                    .padding(.horizontal, layout.calendarHPadding)
+            }
+
             CXLazyList(currentPage: $manager.currentPage) { index in
-                CalendarMonthlyBodyView(date: manager.makeDate(for: index))
+                compose.body(manager.makeDate(for: index))
+                    .erased
                     .padding(.horizontal, layout.calendarHPadding)
             } heightOf: { index in
-                let rowHeight = Int(layout.rowHeight)
-                let rowPadding = Int(layout.rowPadding)
-                let numberOfRows = manager.numberOfRows(for: index)
-                return numberOfRows * (rowHeight + rowPadding) - rowPadding
+                manager.makeHeight(for: index)
             }
         }
         .environment(manager)

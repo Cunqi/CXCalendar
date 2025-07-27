@@ -58,6 +58,7 @@ extension CXCalendarContext {
             axis = context.layout.axis
             columnPadding = context.layout.columnPadding
             rowPadding = context.layout.rowPadding
+            bodyHeaderHeight = context.layout.bodyHeaderHeight
             rowHeight = context.layout.rowHeight
             calendarHPadding = context.layout.calendarHPadding
 
@@ -101,13 +102,15 @@ extension CXCalendarContext {
 
         public private(set) var rowPadding: CGFloat = CXSpacing.oneX
 
+        public private(set) var bodyHeaderHeight: CGFloat = CXSpacing.fiveX
+
         public private(set) var rowHeight: CGFloat = CXSpacing.sixX
 
         public private(set) var calendarHPadding: CGFloat = CXSpacing.oneX
 
         // MARK: - CXCalendarComposeProtocol
 
-        public private(set) var calendarHeader: CalendarHeaderMaker = { month in
+        public private(set) var calendarHeader: CalendarHeaderMaker? = { month in
             CalendarHeaderView(date: month)
         }
 
@@ -118,7 +121,7 @@ extension CXCalendarContext {
         public private(set) var bodyHeader: BodyHeaderMaker?
 
         public private(set) var bodyContent: BodyContentMaker = { date in
-            CalendarBodyContentView(date: date)
+            CalendarMonthlyBodyContentView(date: date)
         }
 
         public private(set) var weekHeader: WeekHeaderMaker = { month in
@@ -145,9 +148,9 @@ extension CXCalendarContext {
 
         // MARK: - CXCalendarThemeProtocol
 
-        public private(set) var accentColor: Color = .red
+        public private(set) var accentColor = Color.red
 
-        public private(set) var selectedColor: Color = .blue
+        public private(set) var selectedColor = Color.blue
     }
 }
 
@@ -193,6 +196,11 @@ extension CXCalendarContext.Builder {
         return self
     }
 
+    public func bodyHeaderHeight(_ bodyHeaderHeight: CGFloat) -> CXCalendarContext.Builder {
+        self.bodyHeaderHeight = bodyHeaderHeight
+        return self
+    }
+
     public func rowHeight(_ rowHeight: CGFloat) -> CXCalendarContext.Builder {
         self.rowHeight = rowHeight
         return self
@@ -205,9 +213,8 @@ extension CXCalendarContext.Builder {
 
     // MARK: - CXCalendarComposeProtocol
 
-    public func calendarHeader(_ calendarHeader: @escaping (Date)
-        -> any CXCalendarViewRepresentable
-    ) -> CXCalendarContext.Builder {
+    public func calendarHeader(_ calendarHeader: CalendarHeaderMaker?) -> CXCalendarContext
+        .Builder {
         self.calendarHeader = calendarHeader
         return self
     }
@@ -282,6 +289,12 @@ extension CXCalendarContext.Builder {
         switch calendarType {
         case .month(.scroll):
             axis = .vertical
+        case .year:
+            axis = .vertical
+            body = {
+                CalendarYearlyBodyView(date: $0)
+            }
+            rowPadding = CXSpacing.threeX
         default:
             break
         }
@@ -290,6 +303,7 @@ extension CXCalendarContext.Builder {
             axis: axis,
             columnPadding: columnPadding,
             rowPadding: rowPadding,
+            bodyHeaderHeight: bodyHeaderHeight,
             rowHeight: rowHeight,
             calendarHPadding: calendarHPadding
         )
@@ -332,6 +346,17 @@ extension CXCalendarContext.Builder {
 extension CXCalendarContext {
     public var builder: CXCalendarContext.Builder {
         CXCalendarContext.Builder(from: self)
+    }
+
+    public static func year(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
+        CXCalendarContext.Builder()
+            .calendarType(.year(scrollBehavior))
+            .calendarHeader(nil)
+            .bodyHeader {
+                YearHeaderView(year: $0)
+            }
+            .rowHeight(CXSpacing.twoX * 6 + CXSpacing.threeX)
+            .build()
     }
 
     public static func month(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {

@@ -23,12 +23,12 @@ struct CalendarMonthlyBodyView: CXCalendarBodyViewRepresentable {
         VStack(spacing: layout.rowPadding) {
             if let bodyHeader = compose.bodyHeader {
                 bodyHeader(date)
-                    .frame(height: layout.rowHeight)
+                    .frame(height: layout.bodyHeaderHeight)
                     .frame(maxWidth: .infinity)
                     .erased
             }
 
-            CalendarBodyContentView(date: date)
+            CalendarMonthlyBodyContentView(date: date)
 
             if let accessoryView = compose.accessoryView,
                manager.shouldPresentAccessoryView(for: date) {

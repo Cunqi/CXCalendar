@@ -31,8 +31,11 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
 
     public var body: some View {
         switch context.calendarType {
+        case .year(let scrollBehavior):
+            calendarView(for: scrollBehavior)
+                .environment(manager)
         case .month(let scrollBehavior):
-            monthView(for: scrollBehavior)
+            calendarView(for: scrollBehavior)
                 .environment(manager)
 
         case .week:
@@ -44,7 +47,7 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
     // MARK: Internal
 
     @ViewBuilder
-    func monthView(for scrollBehavior: CXCalendarScrollBehavior) -> some View {
+    func calendarView(for scrollBehavior: CXCalendarScrollBehavior) -> some View {
         switch scrollBehavior {
         case .page:
             PagedCalendarView(context: context, backToStart: $backToStart)

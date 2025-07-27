@@ -1,5 +1,5 @@
 //
-//  CalendarBodyContentView.swift
+//  CalendarMonthlyBodyContentView.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/20/25.
@@ -10,7 +10,7 @@ import SwiftUI
 
 /// This view is responsible for rendering the content of the calendar body.
 /// It displays the days of the month or week, depending on the calendar type.
-struct CalendarBodyContentView: CXCalendarBodyContentViewRepresentable {
+struct CalendarMonthlyBodyContentView: CXCalendarBodyContentViewRepresentable {
     // MARK: Internal
 
     @Environment(CXCalendarManager.self) var manager
@@ -40,7 +40,7 @@ struct CalendarBodyContentView: CXCalendarBodyContentViewRepresentable {
     }
 
     var dateInterval: DateInterval {
-        manager.makeDateInterval(for: date)
+        manager.makeDateInterval(for: date, component: .month)
     }
 
     var days: [CXIndexedDate] {

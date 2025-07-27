@@ -28,7 +28,7 @@ public typealias AccessoryViewMaker = (Date) -> any View
 
 public protocol CXCalendarComposeProtocol {
     /// Closure returning a SwiftUI View for the calendar header, given the current month date.
-    var calendarHeader: CalendarHeaderMaker { get }
+    var calendarHeader: CalendarHeaderMaker? { get }
 
     /// Closure returning a SwiftUI View for the body, given the current month date.
     /// This is used to display the main content of the calendar view.
@@ -56,7 +56,7 @@ public protocol CXCalendarComposeProtocol {
 // MARK: - CalendarCompose
 
 struct CalendarCompose: CXCalendarComposeProtocol {
-    let calendarHeader: CalendarHeaderMaker
+    let calendarHeader: CalendarHeaderMaker?
 
     let body: BodyMaker
 
