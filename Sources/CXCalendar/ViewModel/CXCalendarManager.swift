@@ -123,6 +123,17 @@ public class CXCalendarManager {
         context.calendar.dateInterval(of: component, for: date)!
     }
 
+    func makeMonths(for date: Date) -> [CXIndexedDate] {
+        let startOfYear = context.calendar.startOfYear(for: date)
+        return (0 ..< 12).compactMap { index in
+            guard let month = context.calendar
+                .date(byAdding: .month, value: index, to: startOfYear) else {
+                return nil
+            }
+            return CXIndexedDate(value: month, id: index)
+        }
+    }
+
     func makeDays(from interval: DateInterval) -> [CXIndexedDate] {
         switch calendarType {
         case .year:
@@ -164,20 +175,21 @@ public class CXCalendarManager {
     }
 
     func makeHeight(for index: Int) -> Int {
-        if calendarType == .year(.scroll) || calendarType == .month(.scroll) {
-            let isYear = calendarType == .year(.scroll)
-            let rowHeight = Int(context.layout.rowHeight)
-            let rowPadding = Int(context.layout.rowPadding)
-            let numberOfRows = isYear ? 6 : numberOfRows(for: index)
-            let yearlyBodyHeaderHeight = context.layout.bodyHeaderHeight
-            let monthlyBodyHeaderHeight = context.compose.bodyHeader != nil
-                ? context.layout.bodyHeaderHeight
-                : 0
-            let bodyHeaderHeight = isYear ? yearlyBodyHeaderHeight : monthlyBodyHeaderHeight
-            return numberOfRows * (rowHeight + rowPadding) - rowPadding + Int(bodyHeaderHeight)
-        } else {
-            return 0
+        let rowHeight = Int(context.layout.rowHeight)
+        let rowPadding = Int(context.layout.rowPadding)
+        let bodyHeaderHeight = context.compose.bodyHeader != nil
+            ? Int(context.layout.bodyHeaderHeight)
+            : 0
+
+        let numberOfRows: Int = switch calendarType {
+        case .year(.scroll):
+            4
+        case .month(.scroll):
+            numberOfRows(for: index)
+        default:
+            0
         }
+        return numberOfRows * (rowHeight + rowPadding) + bodyHeaderHeight + rowPadding
     }
 
     func shouldPresentAccessoryView(for date: Date) -> Bool {

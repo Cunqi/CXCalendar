@@ -27,9 +27,11 @@ struct PagedCalendarView: CXCalendarViewRepresentable {
 
     var body: some View {
         VStack(spacing: layout.rowPadding) {
-            compose.calendarHeader(currentAnchorDate)
-                .erased
-                .padding(.horizontal, layout.calendarHPadding)
+            if let calendarHeader = compose.calendarHeader {
+                calendarHeader(currentAnchorDate)
+                    .erased
+                    .padding(.horizontal, layout.calendarHPadding)
+            }
 
             CXLazyPage(axis: layout.axis, currentPage: $manager.currentPage) { index in
                 compose.body(manager.makeDate(for: index))

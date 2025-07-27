@@ -24,9 +24,12 @@ struct ScrollableCalendarView: CXCalendarViewRepresentable {
 
     var body: some View {
         VStack {
-            compose.calendarHeader(currentAnchorDate)
-                .erased
-                .padding(.horizontal, layout.calendarHPadding)
+            if let calendarHeader = compose.calendarHeader {
+                calendarHeader(currentAnchorDate)
+                    .erased
+                    .padding(.horizontal, layout.calendarHPadding)
+            }
+
             CXLazyList(currentPage: $manager.currentPage) { index in
                 compose.body(manager.makeDate(for: index))
                     .erased

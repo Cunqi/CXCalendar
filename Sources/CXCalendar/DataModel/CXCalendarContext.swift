@@ -110,7 +110,7 @@ extension CXCalendarContext {
 
         // MARK: - CXCalendarComposeProtocol
 
-        public private(set) var calendarHeader: CalendarHeaderMaker = { month in
+        public private(set) var calendarHeader: CalendarHeaderMaker? = { month in
             CalendarHeaderView(date: month)
         }
 
@@ -213,9 +213,8 @@ extension CXCalendarContext.Builder {
 
     // MARK: - CXCalendarComposeProtocol
 
-    public func calendarHeader(_ calendarHeader: @escaping (Date)
-        -> any CXCalendarViewRepresentable
-    ) -> CXCalendarContext.Builder {
+    public func calendarHeader(_ calendarHeader: CalendarHeaderMaker?) -> CXCalendarContext
+        .Builder {
         self.calendarHeader = calendarHeader
         return self
     }
@@ -292,18 +291,10 @@ extension CXCalendarContext.Builder {
             axis = .vertical
         case .year:
             axis = .vertical
-            calendarHeader = {
-                YearHeaderView(year: $0)
-            }
             body = {
                 CalendarYearlyBodyView(date: $0)
             }
-            bodyHeader = {
-                CalendarYearlyBodyHeaderView(month: $0)
-            }
-            bodyHeaderHeight = CXSpacing.twoX
-            rowHeight = CXSpacing.twoX
-            rowPadding = .zero
+            rowPadding = CXSpacing.threeX
         default:
             break
         }
@@ -360,6 +351,11 @@ extension CXCalendarContext {
     public static func year(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
         CXCalendarContext.Builder()
             .calendarType(.year(scrollBehavior))
+            .calendarHeader(nil)
+            .bodyHeader {
+                YearHeaderView(year: $0)
+            }
+            .rowHeight(CXSpacing.oneAndHalfX * 6 + CXSpacing.threeX + CXSpacing.oneX)
             .build()
     }
 
