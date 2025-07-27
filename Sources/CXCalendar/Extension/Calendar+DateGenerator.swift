@@ -18,12 +18,16 @@ extension Calendar {
         let lead = (component(.weekday, from: firstDay) - firstWeekday + 7) % 7
         let gridStart = date(byAdding: .day, value: -lead, to: firstDay)!
 
-        return Calendar.gridRange.compactMap { index in
-            date(byAdding: .day, value: index, to: gridStart).map { IndexedDate(
-                value: $0,
-                id: index
-            ) }
+        var currentIndex = -lead + 1
+        var result = [IndexedDate]()
+        Calendar.gridRange.forEach { index in
+            guard let indexedDate = date(byAdding: .day, value: index, to: gridStart) else {
+                return
+            }
+            result.append(IndexedDate(value: indexedDate, id: currentIndex))
+            currentIndex += 1
         }
+        return result
     }
 
     /// Generates a dynamic month grid of dates based on the provided month interval. the size of the grid
