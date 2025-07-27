@@ -20,7 +20,7 @@ struct CalendarWithRangePickExampleView: View {
             .builder
             .columnPadding(.zero)
             .dayView { dateInterval, day, _ in
-                RangeDay(dateInterval: dateInterval, day: day, range: $viewModel.range)
+                RangeDay(dateInterval: dateInterval, date: day, range: $viewModel.range)
             }
             .onSelected { date in
                 guard let date else {
@@ -77,34 +77,34 @@ struct RangeDay: CXCalendarDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let dateInterval: DateInterval
-    let day: Date
+    let date: CXIndexedDate
     @Binding var range: DateInterval?
 
     let isInRange = true
 
     var isStartDate: Bool {
-        calendar.isDate(day, inSameDayAs: startDate)
+        calendar.isDate(date.value, inSameDayAs: startDate)
     }
 
     var isSelected: Bool {
         guard let range else {
             return false
         }
-        return range.contains(day)
+        return range.contains(date.value)
     }
 
     var isLeadingDay: Bool {
         guard let range else {
             return false
         }
-        return calendar.isDate(day, inSameDayAs: range.start)
+        return calendar.isDate(date.value, inSameDayAs: range.start)
     }
 
     var isTrailingDay: Bool {
         guard let range else {
             return false
         }
-        return calendar.isDate(day, inSameDayAs: range.end)
+        return calendar.isDate(date.value, inSameDayAs: range.end)
     }
 
     var body: some View {
@@ -117,7 +117,7 @@ struct RangeDay: CXCalendarDayViewRepresentable {
             }
             .onTapGesture {
                 withAnimation {
-                    interaction.onSelected?(day)
+                    interaction.onSelected?(date.value)
                 }
             }
     }

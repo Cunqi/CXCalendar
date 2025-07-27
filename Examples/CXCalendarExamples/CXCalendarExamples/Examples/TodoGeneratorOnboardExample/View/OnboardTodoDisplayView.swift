@@ -22,7 +22,7 @@ struct OnboardTodoDisplayView: View {
             .startDate(startDate)
             .selectedDate(shouldSelect ? .now : startDate)
             .dayView { dateInterval, day, _ in
-                OnboardTodoDayView(dateInterval: dateInterval, day: day)
+                OnboardTodoDayView(dateInterval: dateInterval, date: day)
             }
             .accessoryView { date in
                 OnboardDailyTodoAccessoryView(date: date, showDetailButton: true)
@@ -74,16 +74,16 @@ struct OnboardTodoDayView: CXCalendarDayViewRepresentable {
 
     var dateInterval: DateInterval
 
-    var day: Date
+    var date: CXIndexedDate
 
     var isSelected: Bool {
-        calendar.isSameDay(day, selectedDate)
+        calendar.isSameDay(date.value, selectedDate)
     }
 
     var body: some View {
         Text(day, format: .dateTime.day())
             .overlay(alignment: .bottom) {
-                if viewModel.isInTodoList(day, calendar: Calendar.current) {
+                if viewModel.isInTodoList(date.value, calendar: Calendar.current) {
                     todoIndicator
                         .padding(.bottom, -CXSpacing.oneX)
                 }
@@ -102,12 +102,12 @@ struct OnboardTodoDayView: CXCalendarDayViewRepresentable {
             }
             .onTapGesture {
                 withAnimation {
-                    if calendar.isSameDay(day, selectedDate) {
+                    if calendar.isSameDay(date.value, selectedDate) {
                         manager.togglePresentAccessoryView()
                     } else {
                         manager.enablePresentAccessoryView(true)
                     }
-                    manager.selectedDate = day
+                    manager.selectedDate = date.value
                 }
             }
     }

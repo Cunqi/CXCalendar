@@ -16,19 +16,15 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
     @Environment(CXCalendarManager.self) var manager
 
     let dateInterval: DateInterval
-    let day: Date
+    let date: CXIndexedDate
     let namespace: Namespace.ID
 
-    var isInRange: Bool {
-        dateInterval.containsExceptEnd(day, calendar)
-    }
-
     var isStartDate: Bool {
-        calendar.isSameDay(startDate, day)
+        calendar.isSameDay(startDate, date.value)
     }
 
     var isSelected: Bool {
-        interaction.isSelected(day, manager.selectedDate, calendar)
+        interaction.isSelected(date.value, manager.selectedDate, calendar)
     }
 
     var body: some View {
@@ -65,16 +61,16 @@ struct CalendarDayView: CXCalendarDayViewRepresentable {
                     }
                 }
                 .onTapGesture {
-                    guard interaction.canSelect(dateInterval, day, calendar) else {
+                    guard interaction.canSelect(dateInterval, date.value, calendar) else {
                         return
                     }
                     withAnimation {
-                        if calendar.isSameDay(day, selectedDate) {
+                        if calendar.isSameDay(date.value, selectedDate) {
                             manager.togglePresentAccessoryView()
                         } else {
                             manager.enablePresentAccessoryView(true)
                         }
-                        manager.selectedDate = day
+                        manager.selectedDate = date.value
                     }
                 }
         }

@@ -18,7 +18,7 @@ struct OnboardDateRangePickerView: View {
             WeekdayOnlyHeaderView(month: month)
         }
         .dayView { dateInterval, day, _ in
-            OnboardDayView(dateInterval: dateInterval, day: day)
+            OnboardDayView(dateInterval: dateInterval, date: day)
         }
         .build()
 

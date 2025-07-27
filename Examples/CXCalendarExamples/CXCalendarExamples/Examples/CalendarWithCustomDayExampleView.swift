@@ -16,7 +16,7 @@ struct CalendarWithCustomDayExampleView: View {
         let context = CXCalendarContext.month(.page)
             .builder
             .dayView { dateInterval, day, _ in
-                CustomDayView(dateInterval: dateInterval, day: day)
+                CustomDayView(dateInterval: dateInterval, date: day)
             }
             .build()
 
@@ -33,15 +33,7 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
 
     let dateInterval: DateInterval
 
-    let day: Date
-
-    var isInRange: Bool {
-        dateInterval.containsExceptEnd(day, calendar)
-    }
-
-    var isStartDate: Bool {
-        calendar.isDate(day, inSameDayAs: startDate)
-    }
+    let date: CXIndexedDate
 
     var body: some View {
         Text(day.day)
@@ -53,11 +45,11 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
                     .fill(backgroundColor)
             )
             .onTapGesture {
-                guard interaction.canSelect(dateInterval, day, calendar) else {
+                guard interaction.canSelect(dateInterval, date.value, calendar) else {
                     return
                 }
                 withAnimation {
-                    manager.selectedDate = day
+                    manager.selectedDate = date.value
                 }
             }
     }
@@ -71,6 +63,6 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
     }
 
     var isSelected: Bool {
-        interaction.isSelected(day, selectedDate, calendar)
+        interaction.isSelected(date.value, selectedDate, calendar)
     }
 }

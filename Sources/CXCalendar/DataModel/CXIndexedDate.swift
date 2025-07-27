@@ -13,7 +13,8 @@ import Foundation
 ///
 /// This will significantly improve the performance of the calendar view since the
 /// `id` will help SwiftUI to manage the views more efficiently.
-struct IndexedDate: Identifiable {
-    let value: Date
-    let id: Int
+public struct CXIndexedDate: Identifiable, Sendable {
+    public let value: Date
+
+    public let id: Int
 }

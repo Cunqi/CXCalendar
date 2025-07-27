@@ -126,7 +126,7 @@ extension CXCalendarContext {
         }
 
         public private(set) var dayView: DayViewMaker = { dateInterval, day, namespace in
-            CalendarDayView(dateInterval: dateInterval, day: day, namespace: namespace)
+            CalendarDayView(dateInterval: dateInterval, date: day, namespace: namespace)
         }
 
         public private(set) var accessoryView: AccessoryViewMaker?
