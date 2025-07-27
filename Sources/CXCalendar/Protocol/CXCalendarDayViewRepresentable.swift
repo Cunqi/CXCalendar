@@ -13,22 +13,29 @@ public protocol CXCalendarDayViewRepresentable: CXCalendarViewRepresentable {
     var dateInterval: DateInterval { get }
 
     /// The date that represents the day being displayed in the view.
-    var day: Date { get }
+    var date: CXIndexedDate { get }
 
     /// Tell whether the `day` is in some sort of range, such as the current month or week.
     /// this can be calculated by leveraging the `dateInterval` property.
     var isInRange: Bool { get }
 
-    /// /// A Boolean value indicating whether the day is startDate.
+    /// A Boolean value indicating whether the day is startDate.
     var isStartDate: Bool { get }
+
+    /// The date value of the day being represented.
+    var day: Date { get }
 }
 
 public extension CXCalendarDayViewRepresentable {
     var isInRange: Bool {
-        dateInterval.containsExceptEnd(day, calendar)
+        dateInterval.containsExceptEnd(date.value, calendar)
     }
 
     var isStartDate: Bool {
-        calendar.isSameDay(day, startDate)
+        calendar.isSameDay(date.value, startDate)
+    }
+
+    var day: Date {
+        date.value
     }
 }

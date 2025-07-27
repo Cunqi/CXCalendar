@@ -19,7 +19,7 @@ struct OnboardTodoDetailDisplayView: View {
             .startDate(startDate)
             .selectedDate(shouldSelect ? .now : startDate)
             .dayView { dateInterval, day, _ in
-                OnboardTodoDayView(dateInterval: dateInterval, day: day)
+                OnboardTodoDayView(dateInterval: dateInterval, date: day)
             }
             .accessoryView { date in
                 CXCalendarWeeklyAccessoryWrapperView(date: date) { date, _ in

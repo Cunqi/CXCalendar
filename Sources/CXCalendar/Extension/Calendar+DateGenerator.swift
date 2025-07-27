@@ -41,7 +41,7 @@ extension Calendar {
 
         var result = [CXIndexedDate]()
         var current = weekInterval.start
-        var index = 0
+        var index = 1
 
         while current < monthInterval.end {
             result.append(CXIndexedDate(value: current, id: index))

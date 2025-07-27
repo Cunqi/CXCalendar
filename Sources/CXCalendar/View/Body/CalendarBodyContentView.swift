@@ -20,7 +20,7 @@ struct CalendarBodyContentView: CXCalendarBodyContentViewRepresentable {
     var body: some View {
         LazyVGrid(columns: manager.columns, spacing: layout.rowPadding) {
             ForEach(days) { day in
-                compose.dayView(dateInterval, day.value, namespace).erased
+                compose.dayView(dateInterval, day, namespace).erased
             }
         }
         .onChange(of: manager.currentPage) { oldValue, newValue in

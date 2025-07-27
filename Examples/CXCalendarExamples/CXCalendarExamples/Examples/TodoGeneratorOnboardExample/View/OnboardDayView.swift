@@ -17,7 +17,7 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
 
     var dateInterval: DateInterval
 
-    var day: Date
+    var date: CXIndexedDate
 
     var body: some View {
         if isInRange {
@@ -38,7 +38,7 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
             .background { background }
             .onTapGesture {
                 withAnimation {
-                    viewModel.pick(date: day)
+                    viewModel.pick(date: date.value)
                 }
             }
     }
@@ -71,37 +71,37 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
 
     private var isFirstDate: Bool {
         if let startDate = viewModel.interval?.start {
-            return calendar.isSameDay(day, startDate)
+            return calendar.isSameDay(date.value, startDate)
         }
         return false
     }
 
     private var isLastDate: Bool {
         if let endDate = viewModel.interval?.end {
-            return calendar.isSameDay(day, endDate)
+            return calendar.isSameDay(date.value, endDate)
         }
         return false
     }
 
     private var isSelected: Bool {
-        viewModel.isInRange(day)
+        viewModel.isInRange(date.value)
     }
 
     private var isSunday: Bool {
-        calendar.component(.weekday, from: day) == 1
+        calendar.component(.weekday, from: date.value) == 1
     }
 
     private var isSaturday: Bool {
-        calendar.component(.weekday, from: day) == 7
+        calendar.component(.weekday, from: date.value) == 7
     }
 
     private var isMonthStart: Bool {
-        let startOfMonth = calendar.startOfMonth(for: day)
-        return calendar.isSameDay(day, startOfMonth)
+        let startOfMonth = calendar.startOfMonth(for: date.value)
+        return calendar.isSameDay(date.value, startOfMonth)
     }
 
     private var isMonthEnd: Bool {
-        guard let nextMonth = calendar.date(byAdding: .month, value: 1, to: day) else {
+        guard let nextMonth = calendar.date(byAdding: .month, value: 1, to: date.value) else {
             return false
         }
         let startOfNextMonth = calendar.startOfMonth(for: nextMonth)
@@ -109,6 +109,6 @@ struct OnboardDayView: CXCalendarDayViewRepresentable {
         else {
             return false
         }
-        return calendar.isSameDay(day, endOfThisMonth)
+        return calendar.isSameDay(date.value, endOfThisMonth)
     }
 }
