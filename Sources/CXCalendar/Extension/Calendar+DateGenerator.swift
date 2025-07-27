@@ -13,18 +13,18 @@ extension Calendar {
     /// Generate month grid dates with leading and trailing dates in fix 42 cells.
     /// - Parameter monthInterval: month interval for current month
     /// - Returns: an array of `IndexedDate` representing the month grid with fixed 42 cells.
-    func makeFixedMonthGridDates(from monthInterval: DateInterval) -> [IndexedDate] {
+    func makeFixedMonthGridDates(from monthInterval: DateInterval) -> [CXIndexedDate] {
         let firstDay = monthInterval.start
         let lead = (component(.weekday, from: firstDay) - firstWeekday + 7) % 7
         let gridStart = date(byAdding: .day, value: -lead, to: firstDay)!
 
         var currentIndex = -lead + 1
-        var result = [IndexedDate]()
+        var result = [CXIndexedDate]()
         Calendar.gridRange.forEach { index in
             guard let indexedDate = date(byAdding: .day, value: index, to: gridStart) else {
                 return
             }
-            result.append(IndexedDate(value: indexedDate, id: currentIndex))
+            result.append(CXIndexedDate(value: indexedDate, id: currentIndex))
             currentIndex += 1
         }
         return result
@@ -34,17 +34,17 @@ extension Calendar {
     /// is determined by the number of weeks in the month, which can vary.
     /// - Parameter monthInterval: The date interval representing the month for which to generate the grid.
     /// - Returns: An array of `IndexedDate` representing the dates in the month grid.
-    func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [IndexedDate] {
+    func makeDynamicMonthGridDates(from monthInterval: DateInterval) -> [CXIndexedDate] {
         guard let weekInterval = dateInterval(of: .weekOfMonth, for: monthInterval.start) else {
             return []
         }
 
-        var result = [IndexedDate]()
+        var result = [CXIndexedDate]()
         var current = weekInterval.start
         var index = 0
 
         while current < monthInterval.end {
-            result.append(IndexedDate(value: current, id: index))
+            result.append(CXIndexedDate(value: current, id: index))
             guard let next = date(byAdding: .day, value: 1, to: current) else {
                 break
             }
@@ -58,12 +58,12 @@ extension Calendar {
     /// Generates a fixed week grid of dates based on the provided week interval.
     /// - Parameter weekInterval: The date interval representing the week for which to generate the grid.
     /// - Returns: An array of `IdentifiableDate` representing the dates in the week grid.
-    func makeFixedWeekGridDates(from weekInterval: DateInterval) -> [IndexedDate] {
+    func makeFixedWeekGridDates(from weekInterval: DateInterval) -> [CXIndexedDate] {
         var day = weekInterval.start
-        var result = [IndexedDate]()
+        var result = [CXIndexedDate]()
         var index = 0
         while day < weekInterval.end {
-            result.append(IndexedDate(value: day, id: index))
+            result.append(CXIndexedDate(value: day, id: index))
             guard let nextDay = date(byAdding: .day, value: 1, to: day) else {
                 break
             }

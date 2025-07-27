@@ -43,7 +43,7 @@ struct CalendarBodyContentView: CXCalendarBodyContentViewRepresentable {
         manager.makeDateInterval(for: date)
     }
 
-    var days: [IndexedDate] {
+    var days: [CXIndexedDate] {
         manager.makeDays(from: dateInterval)
     }
 

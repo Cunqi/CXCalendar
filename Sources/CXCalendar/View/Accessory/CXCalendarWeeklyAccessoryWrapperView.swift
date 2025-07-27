@@ -75,7 +75,7 @@ public struct CXCalendarWeeklyAccessoryWrapperView<AccessoryContent: View>:
 
     @State private var focusedDate: Date
 
-    private var days: [IndexedDate] {
+    private var days: [CXIndexedDate] {
         manager.makeDays(from: manager.makeDateInterval(for: date))
     }
 }
