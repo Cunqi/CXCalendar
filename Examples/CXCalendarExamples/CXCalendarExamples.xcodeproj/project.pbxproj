@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C447E8532E2475B000EFD019 /* CXCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = C447E8522E2475B000EFD019 /* CXCalendar */; };
+		C4360B852E4C51CD00675BE8 /* CXCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = C4360B842E4C51CD00675BE8 /* CXCalendar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C447E8532E2475B000EFD019 /* CXCalendar in Frameworks */,
+				C4360B852E4C51CD00675BE8 /* CXCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,12 +77,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C4360AEB2E4C50DC00675BE8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C447E81E2E24759700EFD019 = {
 			isa = PBXGroup;
 			children = (
 				C447E8292E24759700EFD019 /* CXCalendarExamples */,
 				C447E8372E24759900EFD019 /* CXCalendarExamplesTests */,
 				C447E8412E24759900EFD019 /* CXCalendarExamplesUITests */,
+				C4360AEB2E4C50DC00675BE8 /* Frameworks */,
 				C447E8282E24759700EFD019 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -118,7 +126,7 @@
 			);
 			name = CXCalendarExamples;
 			packageProductDependencies = (
-				C447E8522E2475B000EFD019 /* CXCalendar */,
+				C4360B842E4C51CD00675BE8 /* CXCalendar */,
 			);
 			productName = CXCalendarExamples;
 			productReference = C447E8272E24759700EFD019 /* CXCalendarExamples.app */;
@@ -203,7 +211,7 @@
 			mainGroup = C447E81E2E24759700EFD019;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C447E8512E2475B000EFD019 /* XCLocalSwiftPackageReference "../../../CXCalendar" */,
+				C4360B832E4C51CD00675BE8 /* XCLocalSwiftPackageReference "../../../CXCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C447E8282E24759700EFD019 /* Products */;
@@ -611,14 +619,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		C447E8512E2475B000EFD019 /* XCLocalSwiftPackageReference "../../../CXCalendar" */ = {
+		C4360B832E4C51CD00675BE8 /* XCLocalSwiftPackageReference "../../../CXCalendar" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../../CXCalendar;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C447E8522E2475B000EFD019 /* CXCalendar */ = {
+		C4360B842E4C51CD00675BE8 /* CXCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CXCalendar;
 		};
