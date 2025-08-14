@@ -98,11 +98,11 @@ struct CalendarMonthThumbnailDayView: CXCalendarItemViewRepresentable {
         Text(date.id.description)
             .font(.system(size: 8))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ifElse(core.calendarType.scrollBehavior == .page) {
-                $0.aspectRatio(1, contentMode: .fit)
-            } else: {
-                $0.frame(height: CXSpacing.twoX)
-            }
+//            .ifElse(core.calendarType.scrollBehavior == .page) {
+//                $0.aspectRatio(1, contentMode: .fit)
+//            } else: {
+//                $0.frame(height: CXSpacing.twoX)
+//            }
             .aspectRatio(1, contentMode: .fit)
             .foregroundStyle(foregroundColor)
             .background {

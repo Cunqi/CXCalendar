@@ -20,9 +20,6 @@ public struct CXCalendarContext {
 
     /// The compose configuration for the calendar.
     public let compose: CXCalendarComposeProtocol
-
-    /// The interaction configuration for the calendar.
-    public let interaction: CXCalendarInteractionProtocol
 }
 
 // MARK: CXCalendarContext.Builder
@@ -31,7 +28,6 @@ extension CXCalendarContext {
     public class Builder:
         CXCalendarLayoutProtocol,
         CXCalendarComposeProtocol,
-        CXCalendarInteractionProtocol,
         CXCalendarCoreProtocol {
         // MARK: Lifecycle
 
@@ -40,6 +36,13 @@ extension CXCalendarContext {
         init() { }
 
         init(from context: CXCalendarContext) {
+            // CXCalendarCoreProtocol
+            mode = context.core.mode
+            scrollStrategy = context.core.scrollStrategy
+            calendar = context.core.calendar
+            startDate = context.core.startDate
+            selectedDate = context.core.selectedDate
+
             // CXCalendarLayoutProtocol
             axis = context.layout.axis
             hPadding = context.layout.hPadding
@@ -49,27 +52,11 @@ extension CXCalendarContext {
             // CXCalendarComposeProtocol
             calendarHeader = context.compose.calendarHeader
             calendarItem = context.compose.calendarItem
-
-            // CXCalendarInteractionProtocol
-            canSelect = context.interaction.canSelect
-            isSelected = context.interaction.isSelected
-            onSelected = context.interaction.onSelected
-            onMonthChanged = context.interaction.onMonthChanged
-
-            // CXCalendarCoreProtocol
-            calendarType = context.core.calendarType
-            mode = context.core.mode
-            scrollStrategy = context.core.scrollStrategy
-            calendar = context.core.calendar
-            startDate = context.core.startDate
-            selectedDate = context.core.selectedDate
         }
 
         // MARK: Public
 
         // MARK: - CXCalendarCoreProtocol
-
-        public var calendarType = CXCalendarType.month(.page)
 
         public var mode = CXCalendarMode.month
 
@@ -103,67 +90,13 @@ extension CXCalendarContext {
             CXCalendarItem(dateInterval: dateInterval, date: date)
         }
 
-        // MARK: - CXCalendarInteractionProtocol
-
-        public var canSelect: CanSelectAction = { _, _, _ in true }
-
-        public var isSelected: IsSelectedAction = { day, selectedDate, calendar in
-            selectedDate.map { calendar.isDate(day, inSameDayAs: $0) } ?? false
+        public func build() -> CXCalendarContext {
+            CXCalendarContext(
+                core: makeCore(),
+                layout: makeLayout(),
+                compose: makeCompose()
+            )
         }
-
-        public var onSelected: OnSelectedAction?
-
-        public var onMonthChanged: OnMonthChangedAction?
-    }
-}
-
-// MARK: - Builder Methods
-
-extension CXCalendarContext.Builder {
-    // MARK: - CXCalendarInteractionProtocol
-
-    public func canSelect(_ canSelect: @escaping CanSelectAction) -> CXCalendarContext.Builder {
-        self.canSelect = canSelect
-        return self
-    }
-
-    public func isSelected(_ isSelected: @escaping IsSelectedAction) -> CXCalendarContext
-        .Builder {
-        self.isSelected = isSelected
-        return self
-    }
-
-    public func onSelected(_ onSelected: OnSelectedAction?) -> CXCalendarContext.Builder {
-        self.onSelected = onSelected
-        return self
-    }
-
-    public func onMonthChanged(_ onMonthChanged: OnMonthChangedAction?)
-        -> CXCalendarContext.Builder {
-        self.onMonthChanged = onMonthChanged
-        return self
-    }
-
-    public func build() -> CXCalendarContext {
-        let core = makeCore()
-
-        let layout = makeLayout()
-
-        let compose = makeCompose()
-
-        let interaction = CalendarInteraction(
-            canSelect: canSelect,
-            isSelected: isSelected,
-            onSelected: onSelected,
-            onMonthChanged: onMonthChanged
-        )
-
-        return CXCalendarContext(
-            core: core,
-            layout: layout,
-            compose: compose,
-            interaction: interaction
-        )
     }
 }
 
@@ -174,21 +107,22 @@ extension CXCalendarContext {
         CXCalendarContext.Builder(from: self)
     }
 
-    public static func year(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
+    public static func year(_ scrollStrategy: CXCalendarScrollStrategy = .page)
+        -> CXCalendarContext {
         CXCalendarContext.Builder()
-            .calendarType(.year(scrollBehavior))
+            .mode(.year)
+            .scrollStrategy(scrollStrategy)
             .calendarHeader(nil)
-//            .bodyHeader {
-//                YearHeaderView(year: $0)
-//            }
             .build()
     }
 
-    public static func month(_ scrollBehavior: CXCalendarScrollBehavior) -> CXCalendarContext {
+    public static func month(_ scrollStrategy: CXCalendarScrollStrategy = .page)
+        -> CXCalendarContext {
         var builder = CXCalendarContext.Builder()
-            .calendarType(.month(scrollBehavior))
+            .mode(.month)
+            .scrollStrategy(scrollStrategy)
 
-        if scrollBehavior == .scroll {
+        if scrollStrategy == .scroll {
 //            builder = builder
 //                .bodyHeader { month in
 //                    MonthHeaderView(month: month)
@@ -199,7 +133,8 @@ extension CXCalendarContext {
 
     public static func week() -> CXCalendarContext {
         CXCalendarContext.Builder()
-            .calendarType(.week)
+            .mode(.week)
+            .scrollStrategy(.page)
             .build()
     }
 }

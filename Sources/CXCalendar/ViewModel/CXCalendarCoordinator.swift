@@ -55,7 +55,7 @@ public class CXCalendarCoordinator: CXContextAccessible {
     public var isCalendarChanged: Bool {
         let isCurrentPageChanged = currentPage != 0
         let isSelectedDateChanged = core.calendar.isSameDay(selectedDate, core.startDate)
-        switch core.calendarType {
+        switch core.mode {
         case .year:
             return isCurrentPageChanged
         case .month, .week:
@@ -107,7 +107,7 @@ public class CXCalendarCoordinator: CXContextAccessible {
     }
 
     func dateInterval(for date: Date) -> DateInterval {
-        core.calendar.dateInterval(of: core.calendarType.component, for: date)!
+        core.calendar.dateInterval(of: core.mode.component, for: date)!
     }
 
     func items(for interval: DateInterval) -> [CXIndexedDate] {

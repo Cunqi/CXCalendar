@@ -11,9 +11,6 @@ import Foundation
 
 @MainActor
 public protocol CXCalendarCoreProtocol {
-    /// The calendar type of the calendar (month or week)
-    var calendarType: CXCalendarType { get }
-
     /// The calendar mode of the calendar (year, month or week)
     var mode: CXCalendarMode { get }
 
@@ -33,8 +30,6 @@ public protocol CXCalendarCoreProtocol {
 // MARK: - CalendarCore
 
 struct CalendarCore: CXCalendarCoreProtocol {
-    let calendarType: CXCalendarType
-
     let mode: CXCalendarMode
 
     let scrollStrategy: CXCalendarScrollStrategy

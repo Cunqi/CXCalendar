@@ -29,8 +29,4 @@ extension CXContextAccessible {
     public var compose: any CXCalendarComposeProtocol {
         context.compose
     }
-
-    public var interaction: any CXCalendarInteractionProtocol {
-        context.interaction
-    }
 }

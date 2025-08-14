@@ -7,11 +7,6 @@
 import SwiftUI
 
 extension CXCalendarContext.Builder {
-    public func calendarType(_ calendarType: CXCalendarType) -> CXCalendarContext.Builder {
-        self.calendarType = calendarType
-        return self
-    }
-
     public func mode(_ mode: CXCalendarMode) -> CXCalendarContext.Builder {
         self.mode = mode
         return self
@@ -40,7 +35,6 @@ extension CXCalendarContext.Builder {
 
     public func makeCore() -> any CXCalendarCoreProtocol {
         CalendarCore(
-            calendarType: calendarType,
             mode: mode,
             scrollStrategy: scrollStrategy,
             calendar: calendar,

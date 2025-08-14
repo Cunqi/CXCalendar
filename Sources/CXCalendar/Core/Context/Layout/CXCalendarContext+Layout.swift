@@ -29,13 +29,8 @@ extension CXCalendarContext.Builder {
     }
 
     public func makeLayout() -> any CXCalendarLayoutProtocol {
-        switch calendarType {
-        case .month(.scroll):
+        if scrollStrategy == .scroll || mode == .year {
             axis = .vertical
-        case .year:
-            axis = .vertical
-        default:
-            break
         }
 
         let columns = Array(repeating: GridItem(.flexible(), spacing: hPadding), count: 7)
