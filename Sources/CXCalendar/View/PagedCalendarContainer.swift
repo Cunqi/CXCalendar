@@ -38,6 +38,9 @@ struct PagedCalendarContainer: CXCalendarViewRepresentable {
                     coordinator.sizeCoordinator
                         .calculateHeightForPageStrategy(with: proxy.size)
                 }
+                .onChange(of: coordinator.currentAnchorDate) { _, newValue in
+                    interaction.onAnchorDateChange?(newValue)
+                }
             }
         }
         .environment(coordinator)

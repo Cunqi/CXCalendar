@@ -7,6 +7,8 @@
 import SwiftUI
 
 extension CXCalendarTemplate.Builder {
+    // MARK: Public
+
     public func mode(_ mode: CXCalendarMode) -> CXCalendarTemplate.Builder {
         self.mode = mode
         return self
@@ -33,7 +35,9 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-    public func makeCore() -> any CXCalendarCoreProtocol {
+    // MARK: Internal
+
+    func makeCore() -> any CXCalendarCoreProtocol {
         CalendarCore(
             mode: mode,
             scrollStrategy: scrollStrategy,

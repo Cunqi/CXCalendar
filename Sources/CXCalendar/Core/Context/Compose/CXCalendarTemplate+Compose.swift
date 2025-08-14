@@ -8,6 +8,8 @@
 import SwiftUI
 
 extension CXCalendarTemplate.Builder {
+    // MARK: Public
+
     public func calendarHeader(_ calendarHeader: ComposeCalendarHeader?) -> CXCalendarTemplate
         .Builder {
         self.calendarHeader = calendarHeader
@@ -42,7 +44,9 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-    public func makeCompose() -> any CXCalendarComposeProtocol {
+    // MARK: Internal
+
+    func makeCompose() -> any CXCalendarComposeProtocol {
         if mode == .year {
             calendarItem = { dateInterval, date in
                 CalendarMonthMiniItem(dateInterval: dateInterval, date: date)

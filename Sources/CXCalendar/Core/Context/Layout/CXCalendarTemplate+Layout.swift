@@ -7,6 +7,8 @@
 import SwiftUI
 
 extension CXCalendarTemplate.Builder {
+    // MARK: Public
+
     public func axis(_ axis: Axis) -> CXCalendarTemplate.Builder {
         self.axis = axis
         return self
@@ -28,7 +30,9 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-    public func makeLayout() -> any CXCalendarLayoutProtocol {
+    // MARK: Internal
+
+    func makeLayout() -> any CXCalendarLayoutProtocol {
         if scrollStrategy == .scroll {
             axis = .vertical
         }

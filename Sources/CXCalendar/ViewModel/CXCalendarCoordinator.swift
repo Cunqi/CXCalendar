@@ -12,7 +12,7 @@ import SwiftUI
 /// The `CXCalendarCoordinator` class is responsible for managing the calendar's state and behavior.
 @MainActor
 @Observable
-public class CXCalendarCoordinator: CXContextAccessible {
+public class CXCalendarCoordinator: CXTemplateDirectAccessible {
     // MARK: Lifecycle
 
     // MARK: - Initializer

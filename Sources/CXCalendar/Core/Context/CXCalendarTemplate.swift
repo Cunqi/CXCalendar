@@ -20,6 +20,9 @@ public struct CXCalendarTemplate {
 
     /// The compose configuration for the calendar.
     public let compose: CXCalendarComposeProtocol
+
+    /// The interaction configuration for the calendar.
+    public let interaction: CXCalendarInteractionProtocol
 }
 
 // MARK: CXCalendarTemplate.Builder
@@ -28,7 +31,8 @@ extension CXCalendarTemplate {
     public class Builder:
         CXCalendarLayoutProtocol,
         CXCalendarComposeProtocol,
-        CXCalendarCoreProtocol {
+        CXCalendarCoreProtocol,
+        CXCalendarInteractionProtocol {
         // MARK: Lifecycle
 
         // MARK: - Initializers
@@ -52,6 +56,10 @@ extension CXCalendarTemplate {
             // CXCalendarComposeProtocol
             calendarHeader = template.compose.calendarHeader
             calendarItem = template.compose.calendarItem
+
+            // CXCalendarInteractionProtocol
+            onCalendarItemSelect = template.interaction.onCalendarItemSelect
+            onAnchorDateChange = template.interaction.onAnchorDateChange
         }
 
         // MARK: Public
@@ -90,11 +98,18 @@ extension CXCalendarTemplate {
             CXCalendarItem(dateInterval: dateInterval, date: date)
         }
 
+        // MARK: - CXCalendarInteractionProtocol
+
+        public var onCalendarItemSelect: OnCalendarItemSelect?
+
+        public var onAnchorDateChange: OnAnchorDateChange?
+
         public func build() -> CXCalendarTemplate {
             CXCalendarTemplate(
                 core: makeCore(),
                 layout: makeLayout(),
-                compose: makeCompose()
+                compose: makeCompose(),
+                interaction: makeInteraction()
             )
         }
     }

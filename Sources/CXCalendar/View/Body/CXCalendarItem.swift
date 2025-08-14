@@ -34,6 +34,7 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
             .onTapGesture {
                 withAnimation(.interactiveSpring) {
                     coordinator.selectedDate = date.value
+                    interaction.onCalendarItemSelect?(date.value)
                 }
             }
     }
