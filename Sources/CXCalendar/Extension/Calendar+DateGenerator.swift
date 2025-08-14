@@ -10,6 +10,16 @@ import Foundation
 extension Calendar {
     // MARK: Internal
 
+    func makeFixedYearGridDates(from yearInterval: DateInterval) -> [CXIndexedDate] {
+        let firstDayOfYear = yearInterval.start
+        return (0 ..< 12).compactMap { index in
+            guard let month = date(byAdding: .month, value: index, to: firstDayOfYear) else {
+                return nil
+            }
+            return CXIndexedDate(value: month, id: index)
+        }
+    }
+
     /// Generate month grid dates with leading and trailing dates in fix 42 cells.
     /// - Parameter monthInterval: month interval for current month
     /// - Returns: an array of `IndexedDate` representing the month grid with fixed 42 cells.
@@ -20,9 +30,9 @@ extension Calendar {
 
         var currentIndex = -lead + 1
         var result = [CXIndexedDate]()
-        Calendar.gridRange.forEach { index in
+        for index in Calendar.gridRange {
             guard let indexedDate = date(byAdding: .day, value: index, to: gridStart) else {
-                return
+                continue
             }
             result.append(CXIndexedDate(value: indexedDate, id: currentIndex))
             currentIndex += 1

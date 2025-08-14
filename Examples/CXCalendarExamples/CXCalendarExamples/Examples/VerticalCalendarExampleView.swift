@@ -10,7 +10,7 @@ import SwiftUI
 
 struct VerticalCalendarExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.month(.page)
+        let context = CXCalendarCoordinator.month(.page)
             .builder
             .axis(.vertical)
             .build()

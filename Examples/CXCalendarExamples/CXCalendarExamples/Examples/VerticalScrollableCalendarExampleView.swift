@@ -10,7 +10,7 @@ import SwiftUI
 
 struct VerticalScrollableCalendarExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.month(.scroll)
+        let context = CXCalendarCoordinator.month(.scroll)
 
         CXCalendarView(context: context)
             .navigationTitle("Vertical Continuous Calendar")

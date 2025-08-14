@@ -11,6 +11,15 @@
       }
     },
     {
+      "identity" : "cxlazypage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cunqi/CXLazyPage.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "5c49ff4da579372be33439dffbf741282aa8d97e"
+      }
+    },
+    {
       "identity" : "cxuicore",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Cunqi/CXUICore.git",

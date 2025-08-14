@@ -16,7 +16,7 @@ struct CalendarWithRangePickExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.month(.page)
+        let context = CXCalendarCoordinator.month(.page)
             .builder
             .columnPadding(.zero)
             .dayView { dateInterval, day, _ in
@@ -74,7 +74,7 @@ struct CalendarWithRangePickExampleView: View {
 // MARK: - RangeDay
 
 struct RangeDay: CXCalendarDayViewRepresentable {
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var manager
 
     let dateInterval: DateInterval
     let date: CXIndexedDate

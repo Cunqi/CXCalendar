@@ -18,45 +18,25 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
     ///
     /// - Parameters:
     ///   - context: The context for the calendar, which includes configuration options like axis and header view.
-    ///   - backToStart: A binding that indicates whether the calendar should return to the start date when it changes.
-    /// This gives the ability to reset the calendar view to the start date externally.
-    public init(context: CXCalendarContext, backToStart: Binding<Bool> = .constant(false)) {
-        manager = CXCalendarManager(context: context)
-        _backToStart = backToStart
+    public init(context: CXCalendarContext) {
+        _coordinator = State(initialValue: CXCalendarCoordinator(context: context))
     }
 
     // MARK: Public
 
-    @State public var manager: CXCalendarManager
+    @State public var coordinator: CXCalendarCoordinator
 
     public var body: some View {
-        switch context.calendarType {
-        case .year(let scrollBehavior):
-            calendarView(for: scrollBehavior)
-                .environment(manager)
-        case .month(let scrollBehavior):
-            calendarView(for: scrollBehavior)
-                .environment(manager)
-
-        case .week:
-            PagedCalendarView(context: context, backToStart: $backToStart)
-                .environment(manager)
-        }
-    }
-
-    // MARK: Internal
-
-    @ViewBuilder
-    func calendarView(for scrollBehavior: CXCalendarScrollBehavior) -> some View {
-        switch scrollBehavior {
+        switch core.scrollStrategy {
         case .page:
-            PagedCalendarView(context: context, backToStart: $backToStart)
+            PagedCalendarContainer(coordinator: $coordinator)
         case .scroll:
-            ScrollableCalendarView(context: context, backToStart: $backToStart)
+            PagedCalendarContainer(coordinator: $coordinator)
         }
     }
+}
 
-    // MARK: Private
-
-    @Binding private var backToStart: Bool
+#Preview {
+    CXCalendarView(context: .month(.page))
+        .padding(.horizontal)
 }

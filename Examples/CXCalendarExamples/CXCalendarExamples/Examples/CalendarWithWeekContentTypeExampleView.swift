@@ -12,7 +12,7 @@ import SwiftUI
 
 struct CalendarWithWeekContentTypeExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.week()
+        let context = CXCalendarCoordinator.week()
             .builder
             .accessoryView { date in
                 CXCalendarWeeklyAccessoryWrapperView(date: date) { date, manager in

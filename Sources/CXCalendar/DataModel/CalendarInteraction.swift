@@ -19,6 +19,7 @@ public typealias OnMonthChangedAction = (Date) -> Void
 
 // MARK: - CXCalendarInteractionProtocol
 
+@MainActor
 public protocol CXCalendarInteractionProtocol {
     /// Closure to tell if given date can be selected
     var canSelect: CanSelectAction { get }

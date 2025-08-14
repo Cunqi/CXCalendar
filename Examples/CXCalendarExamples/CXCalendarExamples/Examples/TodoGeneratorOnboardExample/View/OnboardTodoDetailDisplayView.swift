@@ -14,7 +14,7 @@ struct OnboardTodoDetailDisplayView: View {
 
     init(startDate: Date) {
         let shouldSelect = Calendar.current.isSameMonthInYear(.now, startDate)
-        context = CXCalendarContext.week()
+        context = CXCalendarCoordinator.week()
             .builder
             .startDate(startDate)
             .selectedDate(shouldSelect ? .now : startDate)
@@ -33,7 +33,7 @@ struct OnboardTodoDetailDisplayView: View {
 
     @Environment(TodoGeneratorOnboardViewModel.self) var viewModel
 
-    let context: CXCalendarContext
+    let context: CXCalendarCoordinator
 
     var body: some View {
         CXCalendarView(context: context)

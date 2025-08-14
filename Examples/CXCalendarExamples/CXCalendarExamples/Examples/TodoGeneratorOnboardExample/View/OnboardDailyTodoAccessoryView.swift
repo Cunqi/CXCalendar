@@ -14,7 +14,7 @@ struct OnboardDailyTodoAccessoryView: CXCalendarViewRepresentable {
     // MARK: Internal
 
     @Environment(TodoGeneratorOnboardViewModel.self) var viewModel
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var manager
 
     let date: Date
     let showDetailButton: Bool

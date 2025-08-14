@@ -11,16 +11,16 @@ import SwiftUI
 // MARK: - CalendarYearlyBodyContentView
 
 struct CalendarYearlyBodyContentView: CXCalendarViewRepresentable {
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var coordinator
 
     let month: Date
 
     var body: some View {
         VStack(spacing: CXSpacing.halfX) {
             CalendarYearlyBodyHeaderView(month: month)
-            CalendarMonthThumbnailBodyView(
-                monthInterval: manager.makeDateInterval(for: month, component: .month)
-            )
+//            CalendarMonthThumbnailBodyView(
+//                monthInterval: coordinator.makeDateInterval(for: month, component: .month)
+//            )
         }
     }
 }
@@ -30,7 +30,7 @@ struct CalendarYearlyBodyContentView: CXCalendarViewRepresentable {
 struct CalendarYearlyBodyHeaderView: CXCalendarViewRepresentable {
     // MARK: Internal
 
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var coordinator
 
     let month: Date
 
@@ -46,7 +46,7 @@ struct CalendarYearlyBodyHeaderView: CXCalendarViewRepresentable {
     // MARK: Private
 
     private var foregroundColor: Color {
-        isSameMonth ? theme.accentColor : .primary
+        .primary
     }
 
     private var isSameMonth: Bool {
@@ -59,12 +59,12 @@ struct CalendarYearlyBodyHeaderView: CXCalendarViewRepresentable {
 struct CalendarMonthThumbnailBodyView: CXCalendarViewRepresentable {
     // MARK: Internal
 
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var coordinator
 
     let monthInterval: DateInterval
 
     var days: [CXIndexedDate] {
-        context.calendar.makeFixedMonthGridDates(from: monthInterval)
+        core.calendar.makeFixedMonthGridDates(from: monthInterval)
     }
 
     var body: some View {
@@ -85,10 +85,10 @@ struct CalendarMonthThumbnailBodyView: CXCalendarViewRepresentable {
 
 // MARK: - CalendarMonthThumbnailDayView
 
-struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
+struct CalendarMonthThumbnailDayView: CXCalendarItemViewRepresentable {
     // MARK: Internal
 
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var coordinator
 
     let date: CXIndexedDate
 
@@ -98,7 +98,7 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
         Text(date.id.description)
             .font(.system(size: 8))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ifElse(context.calendarType.scrollBehavior == .page) {
+            .ifElse(core.calendarType.scrollBehavior == .page) {
                 $0.aspectRatio(1, contentMode: .fit)
             } else: {
                 $0.frame(height: CXSpacing.twoX)
@@ -108,7 +108,6 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
             .background {
                 if isStartDate {
                     Circle()
-                        .fill(theme.accentColor)
                 }
             }
     }
@@ -123,7 +122,7 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
     }
 }
 
-//#Preview {
+// #Preview {
 //    HStack {
 //        CalendarYearlyBodyContentView(month: .now)
 //
@@ -134,5 +133,5 @@ struct CalendarMonthThumbnailDayView: CXCalendarDayViewRepresentable {
 //        )!)
 //    }
 //    .padding(.horizontal)
-//    .environment(CXCalendarManager(context: .month(.page)))
-//}
+//    .environment(CXCalendarCoordinator(context: .month(.page)))
+// }
