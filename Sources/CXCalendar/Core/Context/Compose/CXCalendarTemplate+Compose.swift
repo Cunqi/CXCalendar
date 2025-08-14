@@ -1,5 +1,5 @@
 //
-//  CXCalendarCoordinator+Compose.swift
+//  CXCalendarTemplate+Compose.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 8/13/25.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-extension CXCalendarContext.Builder {
-    public func calendarHeader(_ calendarHeader: ComposeCalendarHeader?) -> CXCalendarContext
+extension CXCalendarTemplate.Builder {
+    public func calendarHeader(_ calendarHeader: ComposeCalendarHeader?) -> CXCalendarTemplate
         .Builder {
         self.calendarHeader = calendarHeader
         return self
@@ -36,7 +36,7 @@ extension CXCalendarContext.Builder {
 //    }
 //
 
-    public func calendarItem(_ calendarItem: @escaping ComposeCalendarItem) -> CXCalendarContext
+    public func calendarItem(_ calendarItem: @escaping ComposeCalendarItem) -> CXCalendarTemplate
         .Builder {
         self.calendarItem = calendarItem
         return self

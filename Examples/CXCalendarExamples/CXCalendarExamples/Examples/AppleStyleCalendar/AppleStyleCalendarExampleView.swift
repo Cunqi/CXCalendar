@@ -9,12 +9,12 @@ import CXCalendar
 import SwiftUI
 
 struct AppleStyleCalendarExampleView: View {
-    let context = CXCalendarCoordinator.month(.scroll)
+    let template = CXCalendarTemplate.month(.scroll)
         .builder
         .build()
 
     var body: some View {
-        CXCalendarView(context: context)
+        CXCalendarView(template: template)
             .navigationBarTitleDisplayMode(.inline)
     }
 }

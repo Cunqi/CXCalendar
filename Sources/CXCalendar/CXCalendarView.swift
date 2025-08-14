@@ -13,13 +13,13 @@ import SwiftUI
 public struct CXCalendarView: CXCalendarViewRepresentable {
     // MARK: Lifecycle
 
-    /// Initializes a `CXCalendar` instance with the specified context and optional
+    /// Initializes a `CXCalendar` instance with the specified template and optional
     /// binding to control returning to the start date.
     ///
     /// - Parameters:
-    ///   - context: The context for the calendar, which includes configuration options like axis and header view.
-    public init(context: CXCalendarContext) {
-        _coordinator = State(initialValue: CXCalendarCoordinator(context: context))
+    ///   - template: The calendar template that defines the initial configuration of the calendar.
+    public init(template: CXCalendarTemplate) {
+        _coordinator = State(initialValue: CXCalendarCoordinator(template: template))
     }
 
     // MARK: Public
@@ -37,6 +37,6 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
 }
 
 #Preview {
-    CXCalendarView(context: .month(.page))
+    CXCalendarView(template: .month(.page))
         .padding(.horizontal)
 }

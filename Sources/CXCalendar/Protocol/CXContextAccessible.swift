@@ -9,24 +9,24 @@ import Foundation
 
 // MARK: - CXContextAccessible
 
-/// This protocol provides access to the calendar context, layout, compose,
-/// interaction components of the CXCalendarContext.
+/// This protocol provides access to the calendar template, layout, compose,
+/// interaction components of the CXCalendarTemplate.
 @MainActor
 public protocol CXContextAccessible {
-    /// The calendar context that contains the configuration and state of the calendar.
-    var context: CXCalendarContext { get }
+    /// The calendar template that contains the configuration and state of the calendar.
+    var template: CXCalendarTemplate { get }
 }
 
 extension CXContextAccessible {
     public var core: any CXCalendarCoreProtocol {
-        context.core
+        template.core
     }
 
     public var layout: any CXCalendarLayoutProtocol {
-        context.layout
+        template.layout
     }
 
     public var compose: any CXCalendarComposeProtocol {
-        context.compose
+        template.compose
     }
 }

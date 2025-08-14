@@ -51,15 +51,14 @@ public struct CXStandardCalendarHeader: CXCalendarViewRepresentable {
         }
     }
 
+    @ViewBuilder
     private var monthlyTitleHeader: some View {
         Text(date, format: .dateTime.month())
             .font(.title)
             .bold()
             .foregroundColor(.primary)
 
-            +
-
-            Text(date, format: .dateTime.year())
+        Text(date, format: .dateTime.year())
             .font(.subheadline)
             .foregroundColor(.secondary)
     }

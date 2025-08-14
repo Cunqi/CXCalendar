@@ -1,5 +1,5 @@
 //
-//  CXCalendarContext.swift
+//  CXCalendarTemplate.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 7/16/25.
@@ -8,10 +8,10 @@
 import CXUICore
 import SwiftUI
 
-// MARK: - CXCalendarContext
+// MARK: - CXCalendarTemplate
 
 @MainActor
-public struct CXCalendarContext {
+public struct CXCalendarTemplate {
     /// The core configuration for the calendar.
     public let core: CXCalendarCoreProtocol
 
@@ -22,9 +22,9 @@ public struct CXCalendarContext {
     public let compose: CXCalendarComposeProtocol
 }
 
-// MARK: CXCalendarContext.Builder
+// MARK: CXCalendarTemplate.Builder
 
-extension CXCalendarContext {
+extension CXCalendarTemplate {
     public class Builder:
         CXCalendarLayoutProtocol,
         CXCalendarComposeProtocol,
@@ -35,23 +35,23 @@ extension CXCalendarContext {
 
         init() { }
 
-        init(from context: CXCalendarContext) {
+        init(from template: CXCalendarTemplate) {
             // CXCalendarCoreProtocol
-            mode = context.core.mode
-            scrollStrategy = context.core.scrollStrategy
-            calendar = context.core.calendar
-            startDate = context.core.startDate
-            selectedDate = context.core.selectedDate
+            mode = template.core.mode
+            scrollStrategy = template.core.scrollStrategy
+            calendar = template.core.calendar
+            startDate = template.core.startDate
+            selectedDate = template.core.selectedDate
 
             // CXCalendarLayoutProtocol
-            axis = context.layout.axis
-            hPadding = context.layout.hPadding
-            vPadding = context.layout.vPadding
-            columns = context.layout.columns
+            axis = template.layout.axis
+            hPadding = template.layout.hPadding
+            vPadding = template.layout.vPadding
+            columns = template.layout.columns
 
             // CXCalendarComposeProtocol
-            calendarHeader = context.compose.calendarHeader
-            calendarItem = context.compose.calendarItem
+            calendarHeader = template.compose.calendarHeader
+            calendarItem = template.compose.calendarItem
         }
 
         // MARK: Public
@@ -90,8 +90,8 @@ extension CXCalendarContext {
             CXCalendarItem(dateInterval: dateInterval, date: date)
         }
 
-        public func build() -> CXCalendarContext {
-            CXCalendarContext(
+        public func build() -> CXCalendarTemplate {
+            CXCalendarTemplate(
                 core: makeCore(),
                 layout: makeLayout(),
                 compose: makeCompose()
@@ -102,15 +102,15 @@ extension CXCalendarContext {
 
 // MARK: - Convenience accessors
 
-extension CXCalendarContext {
-    public var builder: CXCalendarContext.Builder {
-        CXCalendarContext.Builder(from: self)
+extension CXCalendarTemplate {
+    public var builder: CXCalendarTemplate.Builder {
+        CXCalendarTemplate.Builder(from: self)
     }
 
     /// Not recommended to use, has performance issues since it will render ~400 items at once.
     public static func year(_ scrollStrategy: CXCalendarScrollStrategy = .page)
-        -> CXCalendarContext {
-        CXCalendarContext.Builder()
+        -> CXCalendarTemplate {
+        CXCalendarTemplate.Builder()
             .mode(.year)
             .scrollStrategy(scrollStrategy)
             .itemLayoutStrategy(.flexHeight)
@@ -118,8 +118,8 @@ extension CXCalendarContext {
     }
 
     public static func month(_ scrollStrategy: CXCalendarScrollStrategy = .page)
-        -> CXCalendarContext {
-        var builder = CXCalendarContext.Builder()
+        -> CXCalendarTemplate {
+        var builder = CXCalendarTemplate.Builder()
             .mode(.month)
             .scrollStrategy(scrollStrategy)
 
@@ -132,8 +132,8 @@ extension CXCalendarContext {
         return builder.build()
     }
 
-    public static func week() -> CXCalendarContext {
-        CXCalendarContext.Builder()
+    public static func week() -> CXCalendarTemplate {
+        CXCalendarTemplate.Builder()
             .mode(.week)
             .scrollStrategy(.page)
             .build()

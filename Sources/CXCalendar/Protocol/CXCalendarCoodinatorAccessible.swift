@@ -18,16 +18,16 @@ public protocol CXCalendarCoodinatorAccessible {
 
 /// Extension to provide default implementations for the `CXCalendarCoodinatorAccessible` protocol properties.
 extension CXCalendarCoodinatorAccessible {
-    public var context: CXCalendarContext {
-        coordinator.context
+    public var template: CXCalendarTemplate {
+        coordinator.template
     }
 
     public var calendar: Calendar {
-        context.core.calendar
+        template.core.calendar
     }
 
     public var startDate: Date {
-        context.core.startDate
+        template.core.startDate
     }
 
     public var currentAnchorDate: Date {

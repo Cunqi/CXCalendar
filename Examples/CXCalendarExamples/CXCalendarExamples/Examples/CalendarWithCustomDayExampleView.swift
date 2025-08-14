@@ -13,14 +13,14 @@ import SwiftUI
 
 struct CalendarWithCustomDayExampleView: View {
     var body: some View {
-        let context = CXCalendarCoordinator.month(.page)
+        let template = CXCalendarTemplate.month(.page)
             .builder
-            .dayView { dateInterval, day, _ in
+            .calendarItem { dateInterval, day in
                 CustomDayView(dateInterval: dateInterval, date: day)
             }
             .build()
 
-        CXCalendarView(context: context)
+        CXCalendarView(template: template)
             .navigationTitle("Custom Day View")
             .navigationBarTitleDisplayMode(.inline)
     }
@@ -28,7 +28,7 @@ struct CalendarWithCustomDayExampleView: View {
 
 // MARK: - CustomDayView
 
-struct CustomDayView: CXCalendarDayViewRepresentable {
+struct CustomDayView: CXCalendarItemViewRepresentable {
     @Environment(CXCalendarCoordinator.self) var coordinator
 
     let dateInterval: DateInterval
@@ -36,7 +36,7 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
     let date: CXIndexedDate
 
     var body: some View {
-        Text(day.day)
+        Text(date.value, format: .dateTime.day())
             .font(font)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .aspectRatio(1, contentMode: .fit)
@@ -45,9 +45,6 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
                     .fill(backgroundColor)
             )
             .onTapGesture {
-                guard interaction.canSelect(dateInterval, date.value, calendar) else {
-                    return
-                }
                 withAnimation {
                     coordinator.selectedDate = date.value
                 }
@@ -63,6 +60,6 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
     }
 
     var isSelected: Bool {
-        interaction.isSelected(date.value, selectedDate, calendar)
+        false
     }
 }

@@ -16,22 +16,15 @@ struct CalendarWithRangePickExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarCoordinator.month(.page)
+        let template = CXCalendarTemplate.month(.page)
             .builder
-            .columnPadding(.zero)
-            .dayView { dateInterval, day, _ in
+            .calendarItem { dateInterval, day in
                 RangeDay(dateInterval: dateInterval, date: day, range: $viewModel.range)
-            }
-            .onSelected { date in
-                guard let date else {
-                    return
-                }
-                viewModel.pick(date: date)
             }
             .build()
 
         VStack {
-            CXCalendarView(context: context)
+            CXCalendarView(template: template)
                 .navigationTitle("Calendar with Range Pick")
                 .navigationBarTitleDisplayMode(.inline)
 
@@ -73,8 +66,8 @@ struct CalendarWithRangePickExampleView: View {
 
 // MARK: - RangeDay
 
-struct RangeDay: CXCalendarDayViewRepresentable {
-    @Environment(CXCalendarCoordinator.self) var manager
+struct RangeDay: CXCalendarItemViewRepresentable {
+    @Environment(CXCalendarCoordinator.self) var coordinator
 
     let dateInterval: DateInterval
     let date: CXIndexedDate
@@ -108,17 +101,12 @@ struct RangeDay: CXCalendarDayViewRepresentable {
     }
 
     var body: some View {
-        Text(day.day)
+        Text(date.value, format: .dateTime.day())
             .font(isStartDate ? .body.bold() : .body)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .aspectRatio(1, contentMode: .fit)
             .background {
                 background
-            }
-            .onTapGesture {
-                withAnimation {
-                    interaction.onSelected?(date.value)
-                }
             }
     }
 

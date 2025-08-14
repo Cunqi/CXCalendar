@@ -15,17 +15,14 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarCoordinator.month(.page)
+        let template = CXCalendarTemplate.month(.page)
             .builder
-            .calendarHeader { month in
-                WeekdayOnlyHeaderView(month: month)
-            }
-            .onMonthChanged { month in
-                currentMonth = month
-            }
+//            .calendarHeader { month in
+//                WeekdayOnlyHeaderView(month: month)
+//            }
             .build()
 
-        CXCalendarView(context: context, backToStart: $resetToday)
+        CXCalendarView(template: template)
             .toolbar {
                 ToolbarItem(placement: .title) {
                     CustomNavHeaderView(month: $currentMonth)

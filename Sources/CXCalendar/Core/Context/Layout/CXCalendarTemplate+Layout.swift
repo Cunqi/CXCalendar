@@ -1,29 +1,29 @@
 //
-//  CXCalendarCoordinator+Layout.swift
+//  CXCalendarTemplate+Layout.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 8/13/25.
 //
 import SwiftUI
 
-extension CXCalendarContext.Builder {
-    public func axis(_ axis: Axis) -> CXCalendarContext.Builder {
+extension CXCalendarTemplate.Builder {
+    public func axis(_ axis: Axis) -> CXCalendarTemplate.Builder {
         self.axis = axis
         return self
     }
 
-    public func hPadding(_ hPadding: CGFloat) -> CXCalendarContext.Builder {
+    public func hPadding(_ hPadding: CGFloat) -> CXCalendarTemplate.Builder {
         self.hPadding = hPadding
         return self
     }
 
-    public func vPadding(_ vPadding: CGFloat) -> CXCalendarContext.Builder {
+    public func vPadding(_ vPadding: CGFloat) -> CXCalendarTemplate.Builder {
         self.vPadding = vPadding
         return self
     }
 
     public func itemLayoutStrategy(_ itemLayoutStrategy: CXCalendarItemLayoutStrategry)
-        -> CXCalendarContext.Builder {
+        -> CXCalendarTemplate.Builder {
         self.itemLayoutStrategy = itemLayoutStrategy
         return self
     }

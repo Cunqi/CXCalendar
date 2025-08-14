@@ -13,20 +13,11 @@ struct CalendarWithCustomSelectLogicExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarCoordinator.month(.page)
+        let template = CXCalendarTemplate.month(.page)
             .builder
-            .canSelect { dateInterval, day, _ in
-                dateInterval.contains(day)
-            }
-            .accessoryView { _ in
-                Text("""
-                    Only the date of current month can be selected.
-                    """)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
             .build()
 
-        CXCalendarView(context: context)
+        CXCalendarView(template: template)
             .navigationTitle("Custom Select Logic Calendar")
             .navigationBarTitleDisplayMode(.inline)
     }

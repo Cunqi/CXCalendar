@@ -17,15 +17,15 @@ public class CXCalendarCoordinator: CXContextAccessible {
 
     // MARK: - Initializer
 
-    init(context: CXCalendarContext) {
-        self.context = context
-        selectedDate = context.core.selectedDate
+    init(template: CXCalendarTemplate) {
+        self.template = template
+        selectedDate = template.core.selectedDate
 
         sizeCoordinator = CXCalendarSizeCoordinator(
-            calendarMode: context.core.mode,
-            itemLayoutStrategy: context.layout.itemLayoutStrategy,
-            hPadding: context.layout.hPadding,
-            vPadding: context.layout.vPadding
+            calendarMode: template.core.mode,
+            itemLayoutStrategy: template.layout.itemLayoutStrategy,
+            hPadding: template.layout.hPadding,
+            vPadding: template.layout.vPadding
         )
     }
 
@@ -33,8 +33,8 @@ public class CXCalendarCoordinator: CXContextAccessible {
 
     // MARK: - Public properties
 
-    /// The calendar context containing the configuration and state of the calendar.
-    public let context: CXCalendarContext
+    /// The calendar template containing the configuration and state of the calendar.
+    public let template: CXCalendarTemplate
 
     /// The size coordinator used to calculate the size of the calendar.
     public let sizeCoordinator: CXCalendarSizeCoordinator

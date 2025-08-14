@@ -16,20 +16,9 @@ struct CalendarWithAccessoryViewExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarCoordinator.month(.page)
-            .builder
-            .accessoryView { day in
-                AccessoryView(day: day, items: viewModel.items)
-                    .onAppear {
-                        viewModel.updateItems(for: day)
-                    }
-                    .onChange(of: day) { _, _ in
-                        viewModel.updateItems(for: day)
-                    }
-            }
-            .build()
+        let template = CXCalendarTemplate.month(.page)
 
-        CXCalendarView(context: context)
+        CXCalendarView(template: template)
             .navigationTitle("Calendar with Accessory View")
             .navigationBarTitleDisplayMode(.inline)
     }

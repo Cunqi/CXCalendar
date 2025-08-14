@@ -9,10 +9,14 @@ import CXCalendar
 import SwiftUI
 
 struct HorizontalCalendarExampleView: View {
+    @State private var selectedDate = Date.now
     var body: some View {
-        CXCalendarView(context: .month(.page))
-            .navigationTitle("Horizontal Calendar")
-            .navigationBarTitleDisplayMode(.inline)
+        VStack {
+            CXCalendarView(template: .month(.page))
+                .padding(.horizontal)
+                .navigationTitle("Horizontal Calendar")
+                .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
