@@ -9,4 +9,4 @@ import SwiftUI
 
 /// The `CXCalendarViewRepresentable` protocol defines a SwiftUI view that can represent
 /// a calendar component view
-public protocol CXCalendarViewRepresentable: View, CXCalendarAccessible, CXContextAccessible { }
+public protocol CXCalendarViewRepresentable: View, CXCalendarCoodinatorAccessible, CXContextAccessible { }

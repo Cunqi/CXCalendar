@@ -13,7 +13,7 @@ struct CalendarWithCustomSelectLogicExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.month(.page)
+        let context = CXCalendarCoordinator.month(.page)
             .builder
             .canSelect { dateInterval, day, _ in
                 dateInterval.contains(day)

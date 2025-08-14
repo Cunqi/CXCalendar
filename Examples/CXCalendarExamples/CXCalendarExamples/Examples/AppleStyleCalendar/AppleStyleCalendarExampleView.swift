@@ -9,7 +9,7 @@ import CXCalendar
 import SwiftUI
 
 struct AppleStyleCalendarExampleView: View {
-    let context = CXCalendarContext.month(.scroll)
+    let context = CXCalendarCoordinator.month(.scroll)
         .builder
         .build()
 

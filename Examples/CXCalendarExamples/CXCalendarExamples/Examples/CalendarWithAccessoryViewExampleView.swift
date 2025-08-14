@@ -16,7 +16,7 @@ struct CalendarWithAccessoryViewExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.month(.page)
+        let context = CXCalendarCoordinator.month(.page)
             .builder
             .accessoryView { day in
                 AccessoryView(day: day, items: viewModel.items)

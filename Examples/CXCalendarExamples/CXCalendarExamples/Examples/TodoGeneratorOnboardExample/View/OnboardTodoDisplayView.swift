@@ -17,7 +17,7 @@ struct OnboardTodoDisplayView: View {
     init(startDate: Date) {
         self.startDate = startDate
         let shouldSelect = Calendar.current.isSameMonthInYear(.now, startDate)
-        context = CXCalendarContext.month(.page)
+        context = CXCalendarCoordinator.month(.page)
             .builder
             .startDate(startDate)
             .selectedDate(shouldSelect ? .now : startDate)
@@ -35,8 +35,7 @@ struct OnboardTodoDisplayView: View {
     @Environment(TodoGeneratorOnboardViewModel.self) var viewModel
 
     let startDate: Date
-    let context: CXCalendarContext
-
+    let context: CXCalendarCoordinator
 
     var body: some View {
         CXCalendarView(context: context)
@@ -47,12 +46,12 @@ struct OnboardTodoDisplayView: View {
                 OnboardTodoDetailDisplayView(startDate: date)
                     .environment(viewModel)
             })
-            .onChange(of: viewModel.detailDate) { oldValue, newValue in
+            .onChange(of: viewModel.detailDate) { _, newValue in
                 if newValue != nil {
                     detailDate = newValue
                 }
             }
-            .onChange(of: detailDate) { oldValue, newValue in
+            .onChange(of: detailDate) { _, _ in
                 if detailDate == nil {
                     viewModel.detailDate = nil
                 }
@@ -70,7 +69,7 @@ struct OnboardTodoDayView: CXCalendarDayViewRepresentable {
     // MARK: Internal
 
     @Environment(TodoGeneratorOnboardViewModel.self) var viewModel
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var manager
 
     var dateInterval: DateInterval
 

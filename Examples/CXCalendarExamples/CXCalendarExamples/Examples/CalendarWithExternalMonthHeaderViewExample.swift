@@ -15,7 +15,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let context = CXCalendarContext.month(.page)
+        let context = CXCalendarCoordinator.month(.page)
             .builder
             .calendarHeader { month in
                 WeekdayOnlyHeaderView(month: month)
@@ -50,12 +50,12 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
 // MARK: - WeekdayOnlyHeaderView
 
 struct WeekdayOnlyHeaderView: CXCalendarViewRepresentable {
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var coordinator: CXCalendarCoordinator
 
-    let month: Date
+    let date: Date
 
     var body: some View {
-        HStack(spacing: layout.columnPadding) {
+        HStack(spacing: layout.hPadding) {
             let titles = calendar.veryShortWeekdaySymbols
             ForEach(titles.indices, id: \.self) { index in
                 Text(titles[index])

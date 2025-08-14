@@ -13,7 +13,7 @@ import SwiftUI
 
 struct CalendarWithCustomDayExampleView: View {
     var body: some View {
-        let context = CXCalendarContext.month(.page)
+        let context = CXCalendarCoordinator.month(.page)
             .builder
             .dayView { dateInterval, day, _ in
                 CustomDayView(dateInterval: dateInterval, date: day)
@@ -29,7 +29,7 @@ struct CalendarWithCustomDayExampleView: View {
 // MARK: - CustomDayView
 
 struct CustomDayView: CXCalendarDayViewRepresentable {
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var coordinator
 
     let dateInterval: DateInterval
 
@@ -49,7 +49,7 @@ struct CustomDayView: CXCalendarDayViewRepresentable {
                     return
                 }
                 withAnimation {
-                    manager.selectedDate = date.value
+                    coordinator.selectedDate = date.value
                 }
             }
     }

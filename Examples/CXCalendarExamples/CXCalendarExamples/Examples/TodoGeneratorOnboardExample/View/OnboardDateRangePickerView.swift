@@ -11,7 +11,7 @@ import SwiftUI
 struct OnboardDateRangePickerView: View {
     // MARK: Internal
 
-    let context = CXCalendarContext.month(.scroll)
+    let context = CXCalendarCoordinator.month(.scroll)
         .builder
         .columnPadding(.zero)
         .calendarHeader { month in

@@ -9,7 +9,7 @@ import CXUICore
 import SwiftUI
 
 struct YearHeaderView: CXCalendarViewRepresentable {
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var coordinator
     let year: Date
 
     var body: some View {
@@ -24,6 +24,6 @@ struct YearHeaderView: CXCalendarViewRepresentable {
 
     private var foregroundColor: Color {
         let isSameYear = calendar.isDate(year, equalTo: startDate, toGranularity: .year)
-        return isSameYear ? theme.accentColor : .primary
+        return .primary
     }
 }

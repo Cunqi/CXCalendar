@@ -1,0 +1,33 @@
+{
+  "originHash" : "5d991e121379b35df4a46c61b1c09bf04222b193121689a6084203f1ae381219",
+  "pins" : [
+    {
+      "identity" : "cxfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cunqi/CXFoundation.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "517b83687194c751bd9614f91882146907bf24d3"
+      }
+    },
+    {
+      "identity" : "cxlazypage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cunqi/CXLazyPage.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "62fda6693e5504d587d4107cb498f835bdea6c08"
+      }
+    },
+    {
+      "identity" : "cxuicore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Cunqi/CXUICore.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "26a019ad71f6412346eeaee42539a026f45f19e7"
+      }
+    }
+  ],
+  "version" : 3
+}

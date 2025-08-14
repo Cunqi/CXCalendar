@@ -12,7 +12,7 @@ import SwiftUI
 struct OnboardDayView: CXCalendarDayViewRepresentable {
     // MARK: Internal
 
-    @Environment(CXCalendarManager.self) var manager
+    @Environment(CXCalendarCoordinator.self) var manager
     @Environment(TodoGeneratorOnboardViewModel.self) var viewModel
 
     var dateInterval: DateInterval
