@@ -107,6 +107,7 @@ extension CXCalendarContext {
         CXCalendarContext.Builder(from: self)
     }
 
+    /// Not recommended to use, has performance issues since it will render ~400 items at once.
     public static func year(_ scrollStrategy: CXCalendarScrollStrategy = .page)
         -> CXCalendarContext {
         CXCalendarContext.Builder()
