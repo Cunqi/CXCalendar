@@ -43,7 +43,13 @@ extension CXCalendarContext.Builder {
     }
 
     public func makeCompose() -> any CXCalendarComposeProtocol {
-        CalendarCompose(
+        if mode == .year {
+            calendarItem = { dateInterval, date in
+                CalendarMonthMiniItem(dateInterval: dateInterval, date: date)
+            }
+        }
+
+        return CalendarCompose(
             calendarHeader: calendarHeader,
             calendarItem: calendarItem
         )

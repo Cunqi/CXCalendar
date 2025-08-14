@@ -102,20 +102,20 @@ public class CXCalendarCoordinator: CXContextAccessible {
         )!
     }
 
-    func dateInterval(at index: Int) -> DateInterval {
-        dateInterval(for: date(at: index))
+    func dateInterval(for date: Date, _ mode: CXCalendarMode) -> DateInterval {
+        core.calendar.dateInterval(of: mode.component, for: date)!
     }
 
-    func dateInterval(for date: Date) -> DateInterval {
-        core.calendar.dateInterval(of: core.mode.component, for: date)!
-    }
-
-    func items(for interval: DateInterval) -> [CXIndexedDate] {
-        switch core.mode {
+    func items(
+        for interval: DateInterval,
+        _ mode: CXCalendarMode,
+        _ scrollStrategy: CXCalendarScrollStrategy = .page
+    ) -> [CXIndexedDate] {
+        switch mode {
         case .year:
             yearlyItems(for: interval)
         case .month:
-            monthlyItems(for: interval)
+            monthlyItems(for: interval, scrollStrategy)
         case .week:
             weeklyItems(for: interval)
         }
@@ -127,8 +127,11 @@ public class CXCalendarCoordinator: CXContextAccessible {
         core.calendar.makeFixedYearGridDates(from: interval)
     }
 
-    private func monthlyItems(for interval: DateInterval) -> [CXIndexedDate] {
-        switch core.scrollStrategy {
+    private func monthlyItems(
+        for interval: DateInterval,
+        _ scrollStrategy: CXCalendarScrollStrategy
+    ) -> [CXIndexedDate] {
+        switch scrollStrategy {
         case .page:
             core.calendar.makeFixedMonthGridDates(from: interval)
         case .scroll:

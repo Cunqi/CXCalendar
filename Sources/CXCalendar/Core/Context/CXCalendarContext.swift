@@ -112,7 +112,7 @@ extension CXCalendarContext {
         CXCalendarContext.Builder()
             .mode(.year)
             .scrollStrategy(scrollStrategy)
-            .calendarHeader(nil)
+            .itemLayoutStrategy(.flexHeight)
             .build()
     }
 

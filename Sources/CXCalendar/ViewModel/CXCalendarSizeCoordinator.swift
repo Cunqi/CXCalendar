@@ -70,27 +70,3 @@ public class CXCalendarSizeCoordinator {
         return availableWidth / calendarMode.numOfCols
     }
 }
-
-extension CXCalendarMode {
-    var numOfCols: CGFloat {
-        switch self {
-        case .year:
-            3
-        case .month:
-            7
-        case .week:
-            7
-        }
-    }
-
-    var numOfRows: CGFloat {
-        switch self {
-        case .year:
-            4
-        case .month:
-            6
-        case .week:
-            1
-        }
-    }
-}

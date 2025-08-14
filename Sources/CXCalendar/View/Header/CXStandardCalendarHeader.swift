@@ -24,7 +24,10 @@ public struct CXStandardCalendarHeader: CXCalendarViewRepresentable {
     public var body: some View {
         VStack {
             headerTextBar
-            CXWeekOnlyCalendarHeader()
+
+            if core.mode != .year {
+                CXWeekOnlyCalendarHeader()
+            }
             Divider()
         }
     }
@@ -35,19 +38,37 @@ public struct CXStandardCalendarHeader: CXCalendarViewRepresentable {
 
     private var headerTextBar: some View {
         HStack(alignment: .firstTextBaseline, spacing: CXSpacing.halfX) {
-            Text(date, format: .dateTime.month())
-                .font(.title)
-                .bold()
-                .foregroundColor(.primary)
-
-            Text(date, format: .dateTime.year())
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+            switch core.mode {
+            case .month, .week:
+                monthlyTitleHeader
+            case .year:
+                yearlyTitleHeader
+            }
 
             Spacer()
 
             resetButton
         }
+    }
+
+    private var monthlyTitleHeader: some View {
+        Text(date, format: .dateTime.month())
+            .font(.title)
+            .bold()
+            .foregroundColor(.primary)
+
+            +
+
+            Text(date, format: .dateTime.year())
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+    }
+
+    private var yearlyTitleHeader: some View {
+        Text(date, format: .dateTime.year())
+            .font(.title)
+            .bold()
+            .foregroundColor(.primary)
     }
 
     @ViewBuilder

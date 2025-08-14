@@ -43,27 +43,3 @@ struct PagedCalendarContainer: CXCalendarViewRepresentable {
         .environment(coordinator)
     }
 }
-
-// MARK: - CalendarPage
-
-private struct CalendarPage: CXCalendarViewRepresentable {
-    @Environment(CXCalendarCoordinator.self) var coordinator: CXCalendarCoordinator
-
-    let date: Date
-
-    private var interval: DateInterval {
-        coordinator.dateInterval(for: date)
-    }
-
-    private var items: [CXIndexedDate] {
-        coordinator.items(for: interval)
-    }
-
-    var body: some View {
-        LazyVGrid(columns: layout.columns, spacing: layout.vPadding) {
-            ForEach(items) { item in
-                compose.calendarItem(interval, item).erased
-            }
-        }
-    }
-}

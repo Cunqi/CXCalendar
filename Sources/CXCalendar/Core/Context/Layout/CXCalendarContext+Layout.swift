@@ -29,11 +29,19 @@ extension CXCalendarContext.Builder {
     }
 
     public func makeLayout() -> any CXCalendarLayoutProtocol {
-        if scrollStrategy == .scroll || mode == .year {
+        if scrollStrategy == .scroll {
             axis = .vertical
         }
 
-        let columns = Array(repeating: GridItem(.flexible(), spacing: hPadding), count: 7)
+        if mode == .year {
+            axis = .vertical
+            itemLayoutStrategy = .flexHeight
+        }
+
+        let columns = Array(
+            repeating: GridItem(.flexible(), spacing: hPadding),
+            count: Int(mode.numOfCols)
+        )
         return CalendarLayout(
             axis: axis,
             hPadding: hPadding,

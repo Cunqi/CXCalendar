@@ -10,8 +10,12 @@ import CXCalendar
 
 struct ContentView: View {
     var body: some View {
+        let context = CXCalendarContext.year()
+            .builder
+            .itemLayoutStrategy(.flexHeight)
+            .build()
         VStack {
-            CXCalendarView(context: .month(.page))
+            CXCalendarView(context: context)
         }
         .padding()
     }
