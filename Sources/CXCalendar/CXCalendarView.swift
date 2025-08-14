@@ -29,9 +29,9 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
     public var body: some View {
         switch core.scrollStrategy {
         case .page:
-            PagedCalendarContainer(coordinator: $coordinator)
+            InfinityPageContainer(coordinator: $coordinator)
         case .scroll:
-            PagedCalendarContainer(coordinator: $coordinator)
+            ScrollCalendarContainer(coordinator: $coordinator)
         }
     }
 }

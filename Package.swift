@@ -18,7 +18,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/Cunqi/CXLazyPage.git", branch: "master"),
+        .package(path: "../CXLazyPage"),
         .package(url: "https://github.com/Cunqi/CXUICore.git", branch: "master")
     ],
     targets: [
