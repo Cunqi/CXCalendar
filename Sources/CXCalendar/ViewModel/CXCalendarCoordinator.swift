@@ -97,6 +97,17 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
         core.calendar.isSameDay(date, selectedDate)
     }
 
+    public func select(date: Date) {
+        let toggleAccessoryViewOnly = core.calendar.isSameDay(date, selectedDate)
+        selectedDate = date
+
+        if toggleAccessoryViewOnly {
+            presentAccessoryView.toggle()
+        } else {
+            enablePresentAccessoryView(true)
+        }
+    }
+
     // MARK: Internal
 
     /// Determines whether the calendar is scrollable.
@@ -104,6 +115,19 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
 
     /// The current page offset in the calendar, used to determine which dates are displayed.
     var currentPage = Int.zero
+
+    var presentAccessoryView = true
+
+    func shouldShowAccessoryView(for date: Date) -> Bool {
+        let isPageScroll = core.scrollStrategy == .page
+        let hasFiniteHeight = layout.itemLayoutStrategy != .flexHeight
+        let isOnCurrentPage = core.calendar.isSameDay(date, anchorDate)
+        return presentAccessoryView && isPageScroll && hasFiniteHeight && isOnCurrentPage
+    }
+
+    func enablePresentAccessoryView(_ enable: Bool) {
+        presentAccessoryView = enable
+    }
 
     func date(at index: Int) -> Date {
         core.calendar.date(

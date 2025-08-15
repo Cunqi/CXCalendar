@@ -16,6 +16,7 @@ struct InfinityPageContainer: CXCalendarViewRepresentable {
     @Binding var coordinator: CXCalendarCoordinator
 
     var body: some View {
+        let _ = Self._printChanges()
         VStack(spacing: layout.vPadding) {
             if let calendarHeader = compose.calendarHeader {
                 calendarHeader(anchorDate).erased

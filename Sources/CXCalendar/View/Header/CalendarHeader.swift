@@ -88,7 +88,7 @@ struct CalendarHeader: CXCalendarViewRepresentable {
             resetButtonImage(for: compareResult, isPageScroll: isPageScroll)
         case .orderedSame:
             let inMonthCompareResult = calendar.compare(
-                selectedDate,
+                coordinator.selectedDate,
                 to: startDate,
                 toGranularity: .day
             )

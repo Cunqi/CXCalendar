@@ -7,9 +7,10 @@
 
 import CXCalendar
 import SwiftUI
+import CXLazyPage
 
 struct HorizontalCalendarExampleView: View {
-    @State private var selectedDate = Date.now
+    @State private var selectedDate: Date? = Date.now
 
     var template: CXCalendarTemplate {
         CXCalendarTemplate.month()
@@ -29,10 +30,12 @@ struct HorizontalCalendarExampleView: View {
 
             Spacer()
 
-            Text("Selected Date: \(selectedDate.formatted(date: .abbreviated, time: .omitted))")
-                .padding()
-                .foregroundColor(.primary)
-                .font(.title)
+            if let selectedDate {
+                Text("Selected Date: \(selectedDate.formatted(date: .abbreviated, time: .omitted))")
+                    .padding()
+                    .foregroundColor(.primary)
+                    .font(.title)
+            }
         }
     }
 }

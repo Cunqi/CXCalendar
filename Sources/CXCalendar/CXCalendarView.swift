@@ -26,13 +26,12 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
     // MARK: Public
 
     @State public var coordinator: CXCalendarCoordinator
-    @OptionalBinding var anchorDate: Date
 
     public var body: some View {
         Group {
             switch core.scrollStrategy {
             case .page:
-                InfinityPageContainer(coordinator: $coordinator)
+                LazyPageContainer(coordinator: $coordinator)
             case .scroll:
                 ScrollCalendarContainer(coordinator: $coordinator)
             }
@@ -40,15 +39,19 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
         .onChange(of: coordinator.anchorDate) { _, newValue in
             anchorDate = newValue
         }
-        .onChange(of: anchorDate) { old, newValue in
+        .onChange(of: anchorDate) { _, _ in
             withAnimation {
                 coordinator.scroll(to: anchorDate)
             }
         }
-        .onChange(of: coordinator.selectedDate) {_, newValue in
+        .onChange(of: coordinator.selectedDate) { _, newValue in
             interaction.onCalendarItemSelect?(newValue)
         }
     }
+
+    // MARK: Internal
+
+    @OptionalBinding var anchorDate: Date
 }
 
 #Preview {

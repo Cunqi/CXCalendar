@@ -35,8 +35,8 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
                 guard canSelect else {
                     return
                 }
-                withAnimation(.interactiveSpring) {
-                    coordinator.selectedDate = date.value
+                withAnimation {
+                    coordinator.select(date: date.value)
                 }
             }
     }

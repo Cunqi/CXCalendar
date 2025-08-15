@@ -33,8 +33,4 @@ extension CXCalendarCoodinatorAccessible {
     public var anchorDate: Date {
         coordinator.anchorDate
     }
-
-    public var selectedDate: Date {
-        coordinator.selectedDate
-    }
 }

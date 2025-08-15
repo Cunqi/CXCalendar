@@ -34,6 +34,9 @@ struct LazyPageContainer: CXCalendarViewRepresentable {
                     coordinator.sizeProvider
                         .calculateHeightForPageStrategy(with: proxy.size)
                 }
+                .onChange(of: coordinator.currentPage) { _, _ in
+                    coordinator.enablePresentAccessoryView(false)
+                }
             }
         }
         .environment(coordinator)

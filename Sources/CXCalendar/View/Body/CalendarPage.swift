@@ -27,14 +27,13 @@ struct CalendarPage: CXCalendarViewRepresentable {
             }
 
             if let accessoryView = compose.accessoryView,
-               core.scrollStrategy == .page,
-               layout.itemLayoutStrategy != .flexHeight {
-                accessoryView(selectedDate, interval)
+               coordinator.shouldShowAccessoryView(for: date) {
+                accessoryView(coordinator.selectedDate, interval)
                     .erased
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                Spacer()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 
     // MARK: Private
