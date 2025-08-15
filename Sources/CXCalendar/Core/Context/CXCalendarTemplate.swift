@@ -55,6 +55,7 @@ extension CXCalendarTemplate {
 
             // CXCalendarComposeProtocol
             calendarHeader = template.compose.calendarHeader
+            calendarPageHeader = template.compose.calendarPageHeader
             calendarItem = template.compose.calendarItem
 
             // CXCalendarInteractionProtocol
@@ -91,7 +92,11 @@ extension CXCalendarTemplate {
         // MARK: - CXCalendarComposeProtocol
 
         public var calendarHeader: ComposeCalendarHeader? = {
-            CXStandardCalendarHeader(date: $0)
+            CalendarHeader(date: $0)
+        }
+
+        public var calendarPageHeader: ComposeCalendarHeader = { date in
+            CalendarPageHeader(date: date)
         }
 
         public var calendarItem: ComposeCalendarItem = { dateInterval, date in
@@ -127,24 +132,17 @@ extension CXCalendarTemplate {
         -> CXCalendarTemplate {
         CXCalendarTemplate.Builder()
             .mode(.year)
-            .scrollStrategy(scrollStrategy)
             .itemLayoutStrategy(.flexHeight)
+            .scrollStrategy(scrollStrategy)
             .build()
     }
 
     public static func month(_ scrollStrategy: CXCalendarScrollStrategy = .page)
         -> CXCalendarTemplate {
-        var builder = CXCalendarTemplate.Builder()
+        CXCalendarTemplate.Builder()
             .mode(.month)
             .scrollStrategy(scrollStrategy)
-
-        if scrollStrategy == .scroll {
-//            builder = builder
-//                .bodyHeader { month in
-//                    MonthHeaderView(month: month)
-//                }
-        }
-        return builder.build()
+            .build()
     }
 
     public static func week() -> CXCalendarTemplate {

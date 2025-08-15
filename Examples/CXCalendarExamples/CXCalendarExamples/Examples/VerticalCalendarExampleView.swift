@@ -17,6 +17,7 @@ struct VerticalCalendarExampleView: View {
         CXCalendarView(template: template)
             .navigationTitle("Vertical Calendar")
             .navigationBarTitleDisplayMode(.inline)
+            .padding(.horizontal)
     }
 }
 

@@ -21,6 +21,9 @@ public protocol CXCalendarComposeProtocol {
     /// Closure returning a SwiftUI View for the calendar header, given the current month date.
     var calendarHeader: ComposeCalendarHeader? { get }
 
+    /// Closure returning a SwiftUI View for the calendar page header, given the current month date.
+    var calendarPageHeader: ComposeCalendarHeader { get }
+
     /// Closure returning a SwiftUI View for individual items, given the date interval and day dates.
     var calendarItem: ComposeCalendarItem { get }
 }
@@ -29,6 +32,8 @@ public protocol CXCalendarComposeProtocol {
 
 struct CalendarCompose: CXCalendarComposeProtocol {
     let calendarHeader: ComposeCalendarHeader?
+
+    let calendarPageHeader: ComposeCalendarHeader
 
     let calendarItem: ComposeCalendarItem
 }

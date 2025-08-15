@@ -23,6 +23,7 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
 
         sizeProvider = CXCalendarSizeProvider(
             calendarMode: template.core.mode,
+            scrollStrategy: template.core.scrollStrategy,
             itemLayoutStrategy: template.layout.itemLayoutStrategy,
             hPadding: template.layout.hPadding,
             vPadding: template.layout.vPadding

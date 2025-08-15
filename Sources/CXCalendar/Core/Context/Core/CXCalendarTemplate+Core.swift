@@ -14,12 +14,6 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-    public func scrollStrategy(_ scrollStrategy: CXCalendarScrollStrategy) -> CXCalendarTemplate
-        .Builder {
-        self.scrollStrategy = scrollStrategy
-        return self
-    }
-
     public func calendar(_ calendar: Calendar) -> CXCalendarTemplate.Builder {
         self.calendar = calendar
         return self
@@ -36,6 +30,12 @@ extension CXCalendarTemplate.Builder {
     }
 
     // MARK: Internal
+
+    func scrollStrategy(_ scrollStrategy: CXCalendarScrollStrategy) -> CXCalendarTemplate
+        .Builder {
+        self.scrollStrategy = scrollStrategy
+        return self
+    }
 
     func makeCore() -> any CXCalendarCoreProtocol {
         CalendarCore(

@@ -17,11 +17,13 @@ public class CXCalendarSizeProvider {
 
     init(
         calendarMode: CXCalendarMode,
+        scrollStrategy: CXCalendarScrollStrategy,
         itemLayoutStrategy: CXCalendarItemLayoutStrategry,
         hPadding: CGFloat,
         vPadding: CGFloat
     ) {
         self.calendarMode = calendarMode
+        self.scrollStrategy = scrollStrategy
         self.itemLayoutStrategy = itemLayoutStrategy
         self.hPadding = hPadding
         self.vPadding = vPadding
@@ -30,18 +32,17 @@ public class CXCalendarSizeProvider {
     // MARK: Internal
 
     let calendarMode: CXCalendarMode
+    let scrollStrategy: CXCalendarScrollStrategy
     let itemLayoutStrategy: CXCalendarItemLayoutStrategry
     let hPadding: CGFloat
     let vPadding: CGFloat
 
+    var itemWidth = CGFloat.zero
     var itemHeight = CGFloat.zero
     var calendarHeight = CGFloat.zero
 
-    @ObservationIgnored
-    private lazy var cachedPageHeight: [Int: CGFloat] = [:]
-
     func calculateHeightForPageStrategy(with maxSize: CGSize) {
-        let itemWidth = calculateItemWidth(maxWidth: maxSize.width)
+        itemWidth = calculateItemWidth(maxWidth: maxSize.width)
 
         let idealItemHeight = switch itemLayoutStrategy {
         case .square:
@@ -68,7 +69,7 @@ public class CXCalendarSizeProvider {
     func calculateHeightForScrollStrategy(with maxSize: CGSize) {
         calendarHeight = maxSize.height
 
-        let itemWidth = calculateItemWidth(maxWidth: maxSize.width)
+        itemWidth = calculateItemWidth(maxWidth: maxSize.width)
         switch itemLayoutStrategy {
         case .square, .flexHeight:
             itemHeight = itemWidth
@@ -90,11 +91,27 @@ public class CXCalendarSizeProvider {
         let totalItemHeight = itemHeight * CGFloat(numOfRows)
         pageHeight += totalItemHeight
 
+        let calendarPageHeaderHeight = scrollStrategy == .scroll ? itemHeight : 0
+        pageHeight += calendarPageHeaderHeight
+
         cachedPageHeight[index] = pageHeight
         return pageHeight
     }
 
+    func calculateLeadingSpace(numOfLeadingItems: Int) -> CGFloat {
+        let numOfLeadingItems = CGFloat(numOfLeadingItems)
+        guard numOfLeadingItems >= 2 else {
+            return numOfLeadingItems * itemWidth
+        }
+        let totalPadding = hPadding * (numOfLeadingItems - 1)
+        let totalItemWidth = itemWidth * numOfLeadingItems
+
+        return totalItemWidth + totalPadding
+    }
+
     // MARK: Private
+
+    @ObservationIgnored private lazy var cachedPageHeight: [Int: CGFloat] = [:]
 
     private func calculateItemWidth(maxWidth: CGFloat) -> CGFloat {
         let totalPaddingWidth = hPadding * (calendarMode.numOfCols - 1)

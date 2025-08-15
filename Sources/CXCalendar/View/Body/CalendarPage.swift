@@ -15,6 +15,9 @@ struct CalendarPage: CXCalendarViewRepresentable {
     let date: Date
 
     var body: some View {
+        if core.scrollStrategy == .scroll {
+            compose.calendarPageHeader(date).erased
+        }
         LazyVGrid(columns: layout.columns, spacing: layout.vPadding) {
             ForEach(items) { item in
                 compose.calendarItem(interval, item).erased

@@ -1,5 +1,5 @@
 //
-//  CXStandardCalendarHeader.swift
+//  CalendarHeader.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 8/13/25.
@@ -8,20 +8,16 @@
 import CXUICore
 import SwiftUI
 
-/// The `CXStandardCalendarHeader` is a SwiftUI view that displays the header of a calendar,
+/// The `CalendarHeader` is a SwiftUI view that displays the header of a calendar,
 /// including the month and year,
-public struct CXStandardCalendarHeader: CXCalendarViewRepresentable {
-    // MARK: Lifecycle
+struct CalendarHeader: CXCalendarViewRepresentable {
+    // MARK: Internal
 
-    public init(date: Date) {
-        self.date = date
-    }
+    @Environment(CXCalendarCoordinator.self) var coordinator
 
-    // MARK: Public
+    let date: Date
 
-    @Environment(CXCalendarCoordinator.self) public var coordinator
-
-    public var body: some View {
+    var body: some View {
         VStack {
             headerTextBar
 
@@ -33,8 +29,6 @@ public struct CXStandardCalendarHeader: CXCalendarViewRepresentable {
     }
 
     // MARK: Private
-
-    private let date: Date
 
     private var headerTextBar: some View {
         HStack(alignment: .firstTextBaseline, spacing: CXSpacing.halfX) {

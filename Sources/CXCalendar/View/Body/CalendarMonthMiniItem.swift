@@ -27,7 +27,7 @@ struct CalendarMonthMiniItem: CXCalendarItemViewRepresentable {
                 .drawingGroup()
         }
         .frame(maxWidth: .infinity)
-        .frame(height: coordinator.sizeCoordinator.itemHeight)
+        .frame(height: coordinator.sizeProvider.itemHeight)
     }
 }
 

@@ -16,27 +16,12 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-//    public func body(_ body: @escaping ComposeBody) -> CXCalendarCoordinator.Builder {
-//        self.body = body
-//        return self
-//    }
-//
-//    public func bodyHeader(_ bodyHeader: ComposeBodyHeader?) -> CXCalendarCoordinator.Builder {
-//        self.bodyHeader = bodyHeader
-//        return self
-//    }
-//
-//    public func bodyContent(_ bodyContent: @escaping BodyContentMaker) -> CXCalendarCoordinator
-//        .Builder {
-//        self.bodyContent = bodyContent
-//        return self
-//    }
-//
-//    public func weekHeader(_ weekHeader: @escaping WeekHeaderMaker) -> CXCalendarCoordinator.Builder {
-//        self.weekHeader = weekHeader
-//        return self
-//    }
-//
+    public func calendarPageHeader(_ calendarPageHeader: @escaping ComposeCalendarHeader)
+        -> CXCalendarTemplate
+        .Builder {
+        self.calendarPageHeader = calendarPageHeader
+        return self
+    }
 
     public func calendarItem(_ calendarItem: @escaping ComposeCalendarItem) -> CXCalendarTemplate
         .Builder {
@@ -55,6 +40,7 @@ extension CXCalendarTemplate.Builder {
 
         return CalendarCompose(
             calendarHeader: calendarHeader,
+            calendarPageHeader: calendarPageHeader,
             calendarItem: calendarItem
         )
     }
