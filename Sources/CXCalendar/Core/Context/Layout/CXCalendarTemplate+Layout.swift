@@ -33,12 +33,11 @@ extension CXCalendarTemplate.Builder {
     // MARK: Internal
 
     func makeLayout() -> any CXCalendarLayoutProtocol {
-        if scrollStrategy == .scroll {
+        if scrollStrategy == .scroll || mode == .year {
             axis = .vertical
         }
 
         if mode == .year {
-            axis = .vertical
             itemLayoutStrategy = .flexHeight
         }
 

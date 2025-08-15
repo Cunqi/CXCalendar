@@ -21,7 +21,7 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
         self.template = template
         selectedDate = template.core.selectedDate
 
-        sizeCoordinator = CXCalendarSizeCoordinator(
+        sizeProvider = CXCalendarSizeProvider(
             calendarMode: template.core.mode,
             itemLayoutStrategy: template.layout.itemLayoutStrategy,
             hPadding: template.layout.hPadding,
@@ -36,8 +36,8 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
     /// The calendar template containing the configuration and state of the calendar.
     public let template: CXCalendarTemplate
 
-    /// The size coordinator used to calculate the size of the calendar.
-    public let sizeCoordinator: CXCalendarSizeCoordinator
+    /// The size provider used to calculate the size of the calendar.
+    public let sizeProvider: CXCalendarSizeProvider
 
     /// The selected date of the calendar, which is the date currently highlighted or focused.
     public var selectedDate: Date
@@ -104,6 +104,17 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
 
     func dateInterval(for date: Date, _ mode: CXCalendarMode) -> DateInterval {
         core.calendar.dateInterval(of: mode.component, for: date)!
+    }
+
+    func numOfRows(at index: Int) -> Int {
+        switch core.mode {
+        case .month:
+            core.calendar.numberOfWeeks(inMonthOf: date(at: index))
+        case .week:
+            0
+        case .year:
+            4
+        }
     }
 
     func items(

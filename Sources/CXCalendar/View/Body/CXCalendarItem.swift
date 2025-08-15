@@ -22,7 +22,7 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
             .fontWeight(fontWeight)
             .foregroundColor(foregroundColor)
             .frame(maxWidth: .infinity)
-            .frame(height: coordinator.sizeCoordinator.itemHeight)
+            .frame(height: coordinator.sizeProvider.itemHeight)
             .background {
                 if isSelected {
                     Circle()
@@ -50,6 +50,6 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
     }
 
     private var foregroundColor: Color {
-        isInRange ? .primary : .secondary
+        isInRange ? .primary : core.scrollStrategy == .page ? .secondary : .clear
     }
 }

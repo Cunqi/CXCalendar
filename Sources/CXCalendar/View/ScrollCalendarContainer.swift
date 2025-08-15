@@ -12,18 +12,41 @@ import SwiftUI
 struct ScrollCalendarContainer: CXCalendarViewRepresentable {
     @Binding var coordinator: CXCalendarCoordinator
 
+    let viewportTrackerContext = ViewportTrackerContext.default
+        .builder
+        .showDetectArea(true)
+        .detectAreaRatio(0.5)
+        .build()
+
     var body: some View {
-        VStack {
+        VStack(spacing: layout.vPadding) {
             if let calendarHeader = compose.calendarHeader {
-                calendarHeader(currentAnchorDate)
-                    .erased
+                calendarHeader(currentAnchorDate).erased
             }
 
-            CXLazyList(currentPage: $coordinator.currentPage) { _ in
-                // compose.body(manager.makeDate(for: index))
-                //     .erased
-            } heightOf: { index in
-                0
+            GeometryReader { proxy in
+                CXLazyList(
+                    viewportTrackerContext: viewportTrackerContext,
+                    currentPage: $coordinator.currentPage,
+                    content: { index in
+                        CalendarPage(date: coordinator.date(at: index))
+                    }, heightOfPage: { index in
+                        coordinator.sizeProvider.calculatePageHeight(
+                            at: index,
+                            numOfRows: coordinator.numOfRows(at: index)
+                        )
+                    }
+                )
+                .frame(
+                    width: proxy.size.width,
+                    height: coordinator.sizeProvider.calendarHeight
+                )
+                .onAppear {
+                    coordinator.sizeProvider.calculateHeightForScrollStrategy(with: proxy.size)
+                }
+                .onChange(of: coordinator.currentAnchorDate) { _, newValue in
+                    interaction.onAnchorDateChange?(newValue)
+                }
             }
         }
         .environment(coordinator)

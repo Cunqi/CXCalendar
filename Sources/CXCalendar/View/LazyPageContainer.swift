@@ -21,8 +21,6 @@ struct LazyPageContainer: CXCalendarViewRepresentable {
             GeometryReader { proxy in
                 CXLazyPage(
                     axis: layout.axis,
-                    isPagingEnabled: true,
-                    itemHeight: nil,
                     currentPage: $coordinator.currentPage,
                     content: { index in
                         CalendarPage(date: coordinator.date(at: index))
@@ -30,10 +28,10 @@ struct LazyPageContainer: CXCalendarViewRepresentable {
                 )
                 .frame(
                     width: proxy.size.width,
-                    height: coordinator.sizeCoordinator.calendarHeight
+                    height: coordinator.sizeProvider.calendarHeight
                 )
                 .onAppear {
-                    coordinator.sizeCoordinator
+                    coordinator.sizeProvider
                         .calculateHeightForPageStrategy(with: proxy.size)
                 }
                 .onChange(of: coordinator.currentAnchorDate) { _, newValue in

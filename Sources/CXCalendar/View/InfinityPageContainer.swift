@@ -31,10 +31,10 @@ struct InfinityPageContainer: CXCalendarViewRepresentable {
                 }
                 .frame(
                     width: proxy.size.width,
-                    height: coordinator.sizeCoordinator.calendarHeight
+                    height: coordinator.sizeProvider.calendarHeight
                 )
                 .onAppear {
-                    coordinator.sizeCoordinator
+                    coordinator.sizeProvider
                         .calculateHeightForPageStrategy(with: proxy.size)
                 }
                 .onChange(of: coordinator.currentAnchorDate) { _, newValue in
