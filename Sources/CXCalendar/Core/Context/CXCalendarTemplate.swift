@@ -28,11 +28,8 @@ public struct CXCalendarTemplate {
 // MARK: CXCalendarTemplate.Builder
 
 extension CXCalendarTemplate {
-    public class Builder:
-        CXCalendarLayoutProtocol,
-        CXCalendarComposeProtocol,
-        CXCalendarCoreProtocol,
-        CXCalendarInteractionProtocol {
+    @MainActor
+    public class Builder {
         // MARK: Lifecycle
 
         // MARK: - Initializers
@@ -65,44 +62,6 @@ extension CXCalendarTemplate {
 
         // MARK: Public
 
-        // MARK: - CXCalendarCoreProtocol
-
-        public var mode = CXCalendarMode.month
-
-        public var scrollStrategy = CXCalendarScrollStrategy.page
-
-        public var calendar = Calendar.current
-
-        public var startDate = Date.now
-
-        public var selectedDate = Date.now
-
-        // MARK: - CXCalendarLayoutProtocol
-
-        public var axis = Axis.horizontal
-
-        public var hPadding: CGFloat = CXSpacing.oneX
-
-        public var vPadding: CGFloat = CXSpacing.oneX
-
-        public var columns: [GridItem] = []
-
-        public var itemLayoutStrategy = CXCalendarItemLayoutStrategry.square
-
-        // MARK: - CXCalendarComposeProtocol
-
-        public var calendarHeader: ComposeCalendarHeader? = {
-            CalendarHeader(date: $0)
-        }
-
-        public var calendarPageHeader: ComposeCalendarHeader = { date in
-            CalendarPageHeader(date: date)
-        }
-
-        public var calendarItem: ComposeCalendarItem = { dateInterval, date in
-            CXCalendarItem(dateInterval: dateInterval, date: date)
-        }
-
         // MARK: - CXCalendarInteractionProtocol
 
         public var onCalendarItemSelect: OnCalendarItemSelect?
@@ -116,6 +75,46 @@ extension CXCalendarTemplate {
                 compose: makeCompose(),
                 interaction: makeInteraction()
             )
+        }
+
+        // MARK: Internal
+
+        // MARK: - CXCalendarCoreProtocol
+
+        var mode = CXCalendarMode.month
+
+        var scrollStrategy = CXCalendarScrollStrategy.page
+
+        var calendar = Calendar.current
+
+        var startDate = Date.now
+
+        var selectedDate = Date.now
+
+        // MARK: - CXCalendarLayoutProtocol
+
+        var axis = Axis.horizontal
+
+        var hPadding: CGFloat = CXSpacing.oneX
+
+        var vPadding: CGFloat = CXSpacing.oneX
+
+        var columns: [GridItem] = []
+
+        var itemLayoutStrategy = CXCalendarItemLayoutStrategry.square
+
+        // MARK: - CXCalendarComposeProtocol
+
+        var calendarHeader: ComposeCalendarHeader? = {
+            CalendarHeader(date: $0)
+        }
+
+        var calendarPageHeader: ComposeCalendarHeader = { date in
+            CalendarPageHeader(date: date)
+        }
+
+        var calendarItem: ComposeCalendarItem = { dateInterval, date in
+            CXCalendarItem(dateInterval: dateInterval, date: date)
         }
     }
 }

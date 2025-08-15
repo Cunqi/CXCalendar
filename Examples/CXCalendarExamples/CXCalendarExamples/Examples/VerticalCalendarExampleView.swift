@@ -10,8 +10,9 @@ import SwiftUI
 
 struct VerticalCalendarExampleView: View {
     var body: some View {
-        let template = CXCalendarTemplate.month(.scroll)
+        let template = CXCalendarTemplate.month(.page)
             .builder
+            .axis(.vertical)
             .build()
 
         CXCalendarView(template: template)

@@ -14,7 +14,6 @@ struct ScrollCalendarContainer: CXCalendarViewRepresentable {
 
     let viewportTrackerContext = ViewportTrackerContext.default
         .builder
-        .showDetectArea(true)
         .detectAreaRatio(0.6)
         .build()
 
