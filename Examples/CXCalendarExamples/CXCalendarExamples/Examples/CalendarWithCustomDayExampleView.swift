@@ -60,6 +60,6 @@ struct CustomDayView: CXCalendarItemViewRepresentable {
     }
 
     var isSelected: Bool {
-        false
+        coordinator.isDateSelected(date.value)
     }
 }

@@ -37,7 +37,6 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
                 }
                 withAnimation(.interactiveSpring) {
                     coordinator.selectedDate = date.value
-                    interaction.onCalendarItemSelect?(date.value)
                 }
             }
     }
@@ -49,7 +48,7 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
     }
 
     private var isSelected: Bool {
-        calendar.isSameDay(date.value, coordinator.selectedDate)
+        coordinator.isDateSelected(date.value)
     }
 
     private var fontWeight: Font.Weight {

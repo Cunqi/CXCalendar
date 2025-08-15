@@ -19,15 +19,13 @@ struct CalendarWithRangePickExampleView: View {
         let template = CXCalendarTemplate.month(.page)
             .builder
             .calendarItem { dateInterval, day in
-                RangeDay(dateInterval: dateInterval, date: day, range: $viewModel.range)
+                RangeDay(dateInterval: dateInterval, date: day)
             }
             .build()
 
         VStack {
             CXCalendarView(template: template)
-                .navigationTitle("Calendar with Range Pick")
-                .navigationBarTitleDisplayMode(.inline)
-
+                .environment(viewModel)
             HStack {
                 DateDisplayCardView(label: "From", date: viewModel.range?.start)
 
@@ -37,6 +35,8 @@ struct CalendarWithRangePickExampleView: View {
 
             Spacer()
         }
+        .navigationTitle("Calendar with Range Pick")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     @ViewBuilder
@@ -67,13 +67,17 @@ struct CalendarWithRangePickExampleView: View {
 // MARK: - RangeDay
 
 struct RangeDay: CXCalendarItemViewRepresentable {
+    // MARK: Internal
+
     @Environment(CXCalendarCoordinator.self) var coordinator
+    @Environment(CalendarWithRangePickExampleView.ViewModel.self) var viewModel
 
     let dateInterval: DateInterval
     let date: CXIndexedDate
-    @Binding var range: DateInterval?
 
-    let isInRange = true
+    var range: DateInterval? {
+        viewModel.range
+    }
 
     var isStartDate: Bool {
         calendar.isDate(date.value, inSameDayAs: startDate)
@@ -86,47 +90,29 @@ struct RangeDay: CXCalendarItemViewRepresentable {
         return range.contains(date.value)
     }
 
-    var isLeadingDay: Bool {
-        guard let range else {
-            return false
-        }
-        return calendar.isDate(date.value, inSameDayAs: range.start)
-    }
-
-    var isTrailingDay: Bool {
-        guard let range else {
-            return false
-        }
-        return calendar.isDate(date.value, inSameDayAs: range.end)
-    }
-
     var body: some View {
         Text(date.value, format: .dateTime.day())
             .font(isStartDate ? .body.bold() : .body)
+            .foregroundStyle(foregroundColor)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .aspectRatio(1, contentMode: .fit)
             .background {
                 background
             }
+            .onTapGesture {
+                viewModel.pick(date: date.value)
+            }
     }
 
-    var background: some View {
-        if isLeadingDay, isTrailingDay {
-            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX)
-                .fill(Color.accentColor.opacity(0.5))
-        } else if isLeadingDay {
-            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topLeft, .bottomLeft])
-                .fill(Color.accentColor.opacity(0.5))
-        } else if isTrailingDay {
-            MaskedRoundedRectangle(cornerRadius: CXSpacing.oneX, corners: [.topRight, .bottomRight])
-                .fill(Color.accentColor.opacity(0.5))
-        } else if isSelected {
-            MaskedRoundedRectangle(cornerRadius: .zero)
-                .fill(Color.accentColor.opacity(0.5))
-        } else {
-            MaskedRoundedRectangle(cornerRadius: .zero)
-                .fill(Color.clear)
-        }
+    // MARK: Private
+
+    private var foregroundColor: Color {
+        isInRange ? .primary : .secondary
+    }
+
+    private var background: some View {
+        RoundedRectangle(cornerRadius: 10.0)
+            .fill(isSelected ? Color.accentColor.opacity(0.5) : .clear)
     }
 }
 

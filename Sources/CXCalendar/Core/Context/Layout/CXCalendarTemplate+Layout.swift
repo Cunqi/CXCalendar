@@ -24,7 +24,13 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-    public func itemLayoutStrategy(_ itemLayoutStrategy: CXCalendarItemLayoutStrategry)
+    public func layoutStrategy(_ layoutStrategy: CXCalendarLayoutStrategy)
+        -> CXCalendarTemplate.Builder {
+        self.layoutStrategy = layoutStrategy
+        return self
+    }
+
+    public func itemLayoutStrategy(_ itemLayoutStrategy: CXCalendarItemLayoutStrategy)
         -> CXCalendarTemplate.Builder {
         self.itemLayoutStrategy = itemLayoutStrategy
         return self
@@ -50,6 +56,7 @@ extension CXCalendarTemplate.Builder {
             hPadding: hPadding,
             vPadding: vPadding,
             columns: columns,
+            layoutStrategy: layoutStrategy,
             itemLayoutStrategy: itemLayoutStrategy
         )
     }

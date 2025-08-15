@@ -49,11 +49,14 @@ extension CXCalendarTemplate {
             hPadding = template.layout.hPadding
             vPadding = template.layout.vPadding
             columns = template.layout.columns
+            layoutStrategy = template.layout.layoutStrategy
+            itemLayoutStrategy = template.layout.itemLayoutStrategy
 
             // CXCalendarComposeProtocol
             calendarHeader = template.compose.calendarHeader
             calendarPageHeader = template.compose.calendarPageHeader
             calendarItem = template.compose.calendarItem
+            accessoryView = template.compose.accessoryView
 
             // CXCalendarInteractionProtocol
             onCalendarItemSelect = template.interaction.onCalendarItemSelect
@@ -98,7 +101,9 @@ extension CXCalendarTemplate {
 
         var columns: [GridItem] = []
 
-        var itemLayoutStrategy = CXCalendarItemLayoutStrategry.square
+        var layoutStrategy = CXCalendarLayoutStrategy.wrap
+
+        var itemLayoutStrategy = CXCalendarItemLayoutStrategy.square
 
         // MARK: - CXCalendarComposeProtocol
 
@@ -113,6 +118,8 @@ extension CXCalendarTemplate {
         var calendarItem: ComposeCalendarItem = { dateInterval, date in
             CXCalendarItem(dateInterval: dateInterval, date: date)
         }
+
+        var accessoryView: ComposeCalendarAccessoryView?
     }
 }
 

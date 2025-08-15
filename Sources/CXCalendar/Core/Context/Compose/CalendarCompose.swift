@@ -14,6 +14,9 @@ public typealias ComposeCalendarHeader = (Date) -> any CXCalendarViewRepresentab
 public typealias ComposeCalendarItem = (DateInterval, CXIndexedDate)
     -> any CXCalendarItemViewRepresentable
 
+public typealias ComposeCalendarAccessoryView = (Date, DateInterval)
+    -> any View
+
 // MARK: - CXCalendarComposeProtocol
 
 @MainActor
@@ -26,6 +29,9 @@ public protocol CXCalendarComposeProtocol {
 
     /// Closure returning a SwiftUI View for individual items, given the date interval and day dates.
     var calendarItem: ComposeCalendarItem { get }
+
+    /// Closure returning a SwiftUI View for accessory items, given the date.
+    var accessoryView: ComposeCalendarAccessoryView? { get }
 }
 
 // MARK: - CalendarCompose
@@ -36,4 +42,6 @@ struct CalendarCompose: CXCalendarComposeProtocol {
     let calendarPageHeader: ComposeCalendarHeader
 
     let calendarItem: ComposeCalendarItem
+
+    let accessoryView: ComposeCalendarAccessoryView?
 }

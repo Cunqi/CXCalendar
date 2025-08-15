@@ -29,6 +29,12 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
+    public func accessoryView(_ accessoryView: ComposeCalendarAccessoryView?) -> CXCalendarTemplate
+        .Builder {
+        self.accessoryView = accessoryView
+        return self
+    }
+
     // MARK: Internal
 
     func makeCompose() -> any CXCalendarComposeProtocol {
@@ -41,7 +47,8 @@ extension CXCalendarTemplate.Builder {
         return CalendarCompose(
             calendarHeader: calendarHeader,
             calendarPageHeader: calendarPageHeader,
-            calendarItem: calendarItem
+            calendarItem: calendarItem,
+            accessoryView: accessoryView
         )
     }
 }

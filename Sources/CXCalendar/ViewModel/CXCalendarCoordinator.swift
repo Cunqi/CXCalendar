@@ -24,6 +24,7 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
         sizeProvider = CXCalendarSizeProvider(
             calendarMode: template.core.mode,
             scrollStrategy: template.core.scrollStrategy,
+            layoutStrategy: template.layout.layoutStrategy,
             itemLayoutStrategy: template.layout.itemLayoutStrategy,
             hPadding: template.layout.hPadding,
             vPadding: template.layout.vPadding
@@ -78,6 +79,8 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
         scrollEnabled = enabled
     }
 
+    /// Scrolls the calendar to the specified date.
+    /// - Parameter date: The date to which the calendar should scroll.
     public func scroll(to date: Date) {
         let distance = core.calendar.dateComponents(
             [core.mode.component],
@@ -85,6 +88,13 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
             to: date
         )
         currentPage = distance.value(for: core.mode.component) ?? .zero
+    }
+
+    /// /// Checks if the given date is selected in the calendar.
+    /// - Parameter date: The date to check for selection.
+    /// - Returns: A Boolean value indicating whether the date is selected.
+    public func isDateSelected(_ date: Date) -> Bool {
+        core.calendar.isSameDay(date, selectedDate)
     }
 
     // MARK: Internal

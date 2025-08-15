@@ -16,11 +16,24 @@ struct CalendarWithAccessoryViewExampleView: View {
     // MARK: Internal
 
     var body: some View {
-        let template = CXCalendarTemplate.month(.page)
+        var template: CXCalendarTemplate {
+            CXCalendarTemplate.month(.page)
+                .builder
+                .hPadding(.zero)
+                .layoutStrategy(.flex)
+                .itemLayoutStrategy(.fixedHeight(24))
+                .accessoryView { date, _ in
+                    AccessoryView(date: date)
+                }
+                .build()
+        }
 
-        CXCalendarView(template: template)
-            .navigationTitle("Calendar with Accessory View")
-            .navigationBarTitleDisplayMode(.inline)
+        VStack {
+            CXCalendarView(template: template)
+                .navigationTitle("Calendar with Accessory View")
+                .navigationBarTitleDisplayMode(.inline)
+                .environment(viewModel)
+        }
     }
 
     // MARK: Private
@@ -31,35 +44,42 @@ struct CalendarWithAccessoryViewExampleView: View {
 // MARK: - AccessoryView
 
 struct AccessoryView: View {
-    let day: Date
-    let items: [ActionItem]
+    @Environment(CalendarWithAccessoryViewExampleView.ViewModel.self) var viewModel
+
+    let date: Date
+
+    var items: [ActionItem] {
+        viewModel.makeItems(for: date)
+    }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: CXSpacing.halfX) {
-                Text("Actions for \(day.formatted(.dateTime.month().day().year()))")
-                    .font(.headline)
+        VStack {
+            Text(date, format: .dateTime.day().month(.wide))
+                .font(.body)
+                .bold()
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, CXSpacing.oneX)
+                .background {
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .fill(Color.secondarySystemGroupedBackground)
+                }
+                .padding(.horizontal)
+                .padding(.top)
+            List {
                 ForEach(items) { item in
-                    HStack {
-                        Text(item.title)
-                            .font(.headline)
-                            .foregroundColor(.primary)
-
-                        Spacer()
-
-                        Text(item.time)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding()
-                    .background(item.backgroundColor)
-                    .cornerRadius(CXSpacing.halfX)
+                    Text(item.title)
+                        .font(.body)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .listRowInsets(EdgeInsets())
                 }
             }
+            .cornerRadius(10.0)
+            .listStyle(.plain)
+            .scrollIndicators(.hidden)
+            .padding()
         }
-        .onAppear {
-            print("Accessory view appeared for \(day.formatted(.dateTime.month().day().year()))")
-        }
+        .background(Color.systemGroupedBackground)
     }
 }
 
@@ -68,19 +88,23 @@ struct AccessoryView: View {
 extension CalendarWithAccessoryViewExampleView {
     @Observable
     class ViewModel {
+        static let titles = [
+            "Design System",
+            "Accessibility",
+            "Performance",
+            "Animations",
+            "Testing",
+            "Documentation",
+            "User Experience",
+            "Code Review",
+            "Deployment"
+        ]
+
         var items: [ActionItem] = []
 
-        func updateItems(for date: Date) {
-            items = (0 ..< 10).map { index in
-                ActionItem(
-                    title: "Action \(Int.random(in: 0 ..< abs(date.hashValue) % 100))",
-                    time: "\(index + 1) hour(s) ago",
-                    backgroundColor: Color(
-                        hue: Double(index) / 10.0,
-                        saturation: 0.8,
-                        brightness: 0.8
-                    )
-                )
+        func makeItems(for _: Date) -> [ActionItem] {
+            ViewModel.titles.shuffled().map {
+                ActionItem(title: $0)
             }
         }
     }
@@ -92,6 +116,4 @@ struct ActionItem: Identifiable {
     let id = UUID()
 
     let title: String
-    let time: String
-    let backgroundColor: Color
 }

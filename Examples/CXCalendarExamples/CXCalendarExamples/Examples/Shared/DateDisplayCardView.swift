@@ -35,7 +35,7 @@ struct DateDisplayCardView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: CXSpacing.halfX)
+            RoundedRectangle(cornerRadius: CXCornerRadius.medium)
                 .fill(Color.secondary.opacity(0.1))
         )
     }

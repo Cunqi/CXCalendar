@@ -1,13 +1,13 @@
 //
-//  CXCalendarItemLayoutStrategry.swift
+//  CXCalendarItemLayoutStrategy.swift
 //  CXCalendar
 //
 //  Created by Cunqi Xiao on 8/13/25.
 //
 import Foundation
 
-/// The `CXCalendarItemLayoutStrategry` enum defines the layout strategy of the calendar item.
-public enum CXCalendarItemLayoutStrategry {
+/// The `CXCalendarItemLayoutStrategy` enum defines the layout strategy of the calendar item.
+public enum CXCalendarItemLayoutStrategy: Equatable {
     /// The calendar item layout strategy is trying to make the width and height of the calendar item equal.
     /// If the height is not enough, the calendar item will be compressed to fit the height.
     case square

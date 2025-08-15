@@ -18,12 +18,14 @@ public class CXCalendarSizeProvider {
     init(
         calendarMode: CXCalendarMode,
         scrollStrategy: CXCalendarScrollStrategy,
-        itemLayoutStrategy: CXCalendarItemLayoutStrategry,
+        layoutStrategy: CXCalendarLayoutStrategy,
+        itemLayoutStrategy: CXCalendarItemLayoutStrategy,
         hPadding: CGFloat,
         vPadding: CGFloat
     ) {
         self.calendarMode = calendarMode
         self.scrollStrategy = scrollStrategy
+        self.layoutStrategy = layoutStrategy
         self.itemLayoutStrategy = itemLayoutStrategy
         self.hPadding = hPadding
         self.vPadding = vPadding
@@ -33,7 +35,8 @@ public class CXCalendarSizeProvider {
 
     let calendarMode: CXCalendarMode
     let scrollStrategy: CXCalendarScrollStrategy
-    let itemLayoutStrategy: CXCalendarItemLayoutStrategry
+    let layoutStrategy: CXCalendarLayoutStrategy
+    let itemLayoutStrategy: CXCalendarItemLayoutStrategy
     let hPadding: CGFloat
     let vPadding: CGFloat
 
@@ -63,6 +66,10 @@ public class CXCalendarSizeProvider {
         } else {
             calendarHeight = totalExpectedHeight
             itemHeight = idealItemHeight
+        }
+
+        if layoutStrategy == .flex {
+            calendarHeight = maxSize.height
         }
     }
 

@@ -23,8 +23,11 @@ public protocol CXCalendarLayoutProtocol {
     /// The columns of the calendar grid.
     var columns: [GridItem] { get }
 
+    /// The layout strategy of the calendar.
+    var layoutStrategy: CXCalendarLayoutStrategy { get }
+
     /// The layout strategy of the calendar item.
-    var itemLayoutStrategy: CXCalendarItemLayoutStrategry { get }
+    var itemLayoutStrategy: CXCalendarItemLayoutStrategy { get }
 }
 
 // MARK: - CalendarLayout
@@ -38,5 +41,7 @@ struct CalendarLayout: CXCalendarLayoutProtocol {
 
     let columns: [GridItem]
 
-    let itemLayoutStrategy: CXCalendarItemLayoutStrategry
+    let layoutStrategy: CXCalendarLayoutStrategy
+
+    let itemLayoutStrategy: CXCalendarItemLayoutStrategy
 }

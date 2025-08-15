@@ -18,15 +18,15 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
     ///
     /// - Parameters:
     ///   - template: The calendar template that defines the initial configuration of the calendar.
-    public init(template: CXCalendarTemplate, anchorDate: Binding<Date> = .constant(.now)) {
+    public init(template: CXCalendarTemplate, anchorDate: Binding<Date>? = nil) {
         _coordinator = State(initialValue: CXCalendarCoordinator(template: template))
-        _anchorDate = anchorDate
+        _anchorDate = OptionalBinding(.now, anchorDate)
     }
 
     // MARK: Public
 
     @State public var coordinator: CXCalendarCoordinator
-    @Binding public var anchorDate: Date
+    @OptionalBinding var anchorDate: Date
 
     public var body: some View {
         Group {
@@ -40,10 +40,13 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
         .onChange(of: coordinator.anchorDate) { _, newValue in
             anchorDate = newValue
         }
-        .onChange(of: anchorDate) { _ in
+        .onChange(of: anchorDate) { old, newValue in
             withAnimation {
                 coordinator.scroll(to: anchorDate)
             }
+        }
+        .onChange(of: coordinator.selectedDate) {_, newValue in
+            interaction.onCalendarItemSelect?(newValue)
         }
     }
 }
