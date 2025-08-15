@@ -12,7 +12,7 @@ struct HorizontalCalendarExampleView: View {
     @State private var selectedDate = Date.now
 
     var template: CXCalendarTemplate {
-        CXCalendarTemplate.week()
+        CXCalendarTemplate.month()
         .builder
         .onCalendarItemSelect { date in
             self.selectedDate = date
@@ -34,7 +34,6 @@ struct HorizontalCalendarExampleView: View {
                 .foregroundColor(.primary)
                 .font(.title)
         }
-        .background(.red)
     }
 }
 

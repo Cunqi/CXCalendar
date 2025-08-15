@@ -12,6 +12,12 @@ import SwiftUI
 struct ScrollCalendarContainer: CXCalendarViewRepresentable {
     @Binding var coordinator: CXCalendarCoordinator
 
+    let viewportTrackerContext = ViewportTrackerContext.default
+        .builder
+        .showDetectArea(true)
+        .detectAreaRatio(0.6)
+        .build()
+
     var body: some View {
         VStack(spacing: layout.vPadding) {
             if let calendarHeader = compose.calendarHeader {
@@ -20,6 +26,7 @@ struct ScrollCalendarContainer: CXCalendarViewRepresentable {
 
             GeometryReader { proxy in
                 CXLazyList(
+                    viewportTrackerContext: viewportTrackerContext,
                     currentPage: $coordinator.currentPage,
                     content: { index in
                         CalendarPage(date: coordinator.date(at: index))

@@ -72,10 +72,43 @@ struct CalendarHeader: CXCalendarViewRepresentable {
                     coordinator.reset()
                 }
             } label: {
-                Image(systemName: "arrow.clockwise")
+                makeResetButtonImage()
                     .font(.body)
-                    .foregroundColor(.primary)
+                    .foregroundColor(.accentColor)
             }
+        }
+    }
+
+    @ViewBuilder
+    private func makeResetButtonImage() -> some View {
+        let isPageScroll = core.scrollStrategy == .page
+        let compareResult = calendar.compare(date, to: startDate, toGranularity: .day)
+        switch compareResult {
+        case .orderedAscending, .orderedDescending:
+            resetButtonImage(for: compareResult, isPageScroll: isPageScroll)
+        case .orderedSame:
+            let inMonthCompareResult = calendar.compare(
+                selectedDate,
+                to: startDate,
+                toGranularity: .day
+            )
+            resetButtonImage(for: inMonthCompareResult, isPageScroll: isPageScroll)
+        }
+    }
+
+    @ViewBuilder
+    private func resetButtonImage(
+        for compareResult: ComparisonResult,
+        isPageScroll: Bool
+    ) -> some View {
+        switch compareResult {
+        case .orderedSame:
+            EmptyView()
+        case .orderedAscending:
+            Image(systemName: isPageScroll ? "arrow.right.to.line" : "arrow.down.to.line")
+
+        case .orderedDescending:
+            Image(systemName: isPageScroll ? "arrow.left.to.line" : "arrow.up.to.line")
         }
     }
 }

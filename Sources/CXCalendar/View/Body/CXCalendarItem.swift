@@ -24,14 +24,17 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
             .frame(maxWidth: .infinity)
             .frame(height: coordinator.sizeProvider.itemHeight)
             .background {
-                if isSelected {
+                if isSelected, canSelect {
                     Circle()
-                        .stroke(.primary, lineWidth: 2)
+                        .stroke(Color.accentColor, lineWidth: 2)
                         .padding(1.0)
                 }
             }
             .contentShape(.circle)
             .onTapGesture {
+                guard canSelect else {
+                    return
+                }
                 withAnimation(.interactiveSpring) {
                     coordinator.selectedDate = date.value
                     interaction.onCalendarItemSelect?(date.value)
@@ -40,6 +43,10 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
     }
 
     // MARK: Private
+
+    private var canSelect: Bool {
+        isInRange || core.scrollStrategy != .scroll
+    }
 
     private var isSelected: Bool {
         calendar.isSameDay(date.value, coordinator.selectedDate)
