@@ -18,25 +18,37 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
     ///
     /// - Parameters:
     ///   - template: The calendar template that defines the initial configuration of the calendar.
-    public init(template: CXCalendarTemplate) {
+    public init(template: CXCalendarTemplate, anchorDate: Binding<Date> = .constant(.now)) {
         _coordinator = State(initialValue: CXCalendarCoordinator(template: template))
+        _anchorDate = anchorDate
     }
 
     // MARK: Public
 
     @State public var coordinator: CXCalendarCoordinator
+    @Binding public var anchorDate: Date
 
     public var body: some View {
-        switch core.scrollStrategy {
-        case .page:
-            InfinityPageContainer(coordinator: $coordinator)
-        case .scroll:
-            ScrollCalendarContainer(coordinator: $coordinator)
+        Group {
+            switch core.scrollStrategy {
+            case .page:
+                InfinityPageContainer(coordinator: $coordinator)
+            case .scroll:
+                ScrollCalendarContainer(coordinator: $coordinator)
+            }
+        }
+        .onChange(of: coordinator.anchorDate) { _, newValue in
+            anchorDate = newValue
+        }
+        .onChange(of: anchorDate) { _ in
+            withAnimation {
+                coordinator.scroll(to: anchorDate)
+            }
         }
     }
 }
 
 #Preview {
-    CXCalendarView(template: .month(.page))
+    CXCalendarView(template: .month(.page), anchorDate: .constant(Date()))
         .padding(.horizontal)
 }

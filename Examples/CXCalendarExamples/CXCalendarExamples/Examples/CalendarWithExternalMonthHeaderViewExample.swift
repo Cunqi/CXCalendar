@@ -17,20 +17,20 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
     var body: some View {
         let template = CXCalendarTemplate.month(.page)
             .builder
-//            .calendarHeader { month in
-//                WeekdayOnlyHeaderView(month: month)
-//            }
+            .calendarHeader { month in
+                CXWeekOnlyCalendarHeader()
+            }
             .build()
 
-        CXCalendarView(template: template)
+        CXCalendarView(template: template, anchorDate: $anchorDate)
             .toolbar {
                 ToolbarItem(placement: .title) {
-                    CustomNavHeaderView(month: $currentMonth)
+                    CustomNavHeaderView(month: $anchorDate)
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        resetToday.toggle()
+                        anchorDate = .now
                     } label: {
                         Text("Reset")
                     }
@@ -40,28 +40,7 @@ struct CalendarWithExternalMonthHeaderViewExampleView: View {
 
     // MARK: Private
 
-    @State private var currentMonth = Date()
-    @State private var resetToday = false
-}
-
-// MARK: - WeekdayOnlyHeaderView
-
-struct WeekdayOnlyHeaderView: CXCalendarViewRepresentable {
-    @Environment(CXCalendarCoordinator.self) var coordinator: CXCalendarCoordinator
-
-    let date: Date
-
-    var body: some View {
-        HStack(spacing: layout.hPadding) {
-            let titles = calendar.veryShortWeekdaySymbols
-            ForEach(titles.indices, id: \.self) { index in
-                Text(titles[index])
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity)
-            }
-        }
-    }
+    @State private var anchorDate = Date()
 }
 
 // MARK: - CustomNavHeaderView

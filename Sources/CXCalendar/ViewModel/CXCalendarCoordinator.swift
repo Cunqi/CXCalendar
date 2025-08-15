@@ -43,8 +43,8 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
     /// The selected date of the calendar, which is the date currently highlighted or focused.
     public var selectedDate: Date
 
-    /// The current anchor date displayed in the calendar, calculated based on the current page offset.
-    public var currentAnchorDate: Date {
+    /// The date repsents the current calendar page, can be used to determine the date interval.
+    public var anchorDate: Date {
         date(at: currentPage)
     }
 

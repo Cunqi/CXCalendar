@@ -15,7 +15,7 @@ struct LazyPageContainer: CXCalendarViewRepresentable {
     var body: some View {
         VStack(spacing: layout.vPadding) {
             if let calendarHeader = compose.calendarHeader {
-                calendarHeader(currentAnchorDate).erased
+                calendarHeader(anchorDate).erased
             }
 
             GeometryReader { proxy in
@@ -33,9 +33,6 @@ struct LazyPageContainer: CXCalendarViewRepresentable {
                 .onAppear {
                     coordinator.sizeProvider
                         .calculateHeightForPageStrategy(with: proxy.size)
-                }
-                .onChange(of: coordinator.currentAnchorDate) { _, newValue in
-                    interaction.onAnchorDateChange?(newValue)
                 }
             }
         }

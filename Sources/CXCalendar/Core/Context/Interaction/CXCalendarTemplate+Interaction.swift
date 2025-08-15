@@ -14,16 +14,9 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-    public func onAnchorDateChange(_ onAnchorDateChange: OnAnchorDateChange?) -> CXCalendarTemplate
-        .Builder {
-        self.onAnchorDateChange = onAnchorDateChange
-        return self
-    }
-
     func makeInteraction() -> any CXCalendarInteractionProtocol {
         CalendarInteraction(
             onCalendarItemSelect: onCalendarItemSelect,
-            onAnchorDateChange: onAnchorDateChange
         )
     }
 }

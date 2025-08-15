@@ -30,8 +30,8 @@ extension CXCalendarCoodinatorAccessible {
         template.core.startDate
     }
 
-    public var currentAnchorDate: Date {
-        coordinator.currentAnchorDate
+    public var anchorDate: Date {
+        coordinator.anchorDate
     }
 
     public var selectedDate: Date {

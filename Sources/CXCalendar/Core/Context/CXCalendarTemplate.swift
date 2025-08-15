@@ -57,7 +57,6 @@ extension CXCalendarTemplate {
 
             // CXCalendarInteractionProtocol
             onCalendarItemSelect = template.interaction.onCalendarItemSelect
-            onAnchorDateChange = template.interaction.onAnchorDateChange
         }
 
         // MARK: Public
@@ -65,8 +64,6 @@ extension CXCalendarTemplate {
         // MARK: - CXCalendarInteractionProtocol
 
         public var onCalendarItemSelect: OnCalendarItemSelect?
-
-        public var onAnchorDateChange: OnAnchorDateChange?
 
         public func build() -> CXCalendarTemplate {
             CXCalendarTemplate(

@@ -10,12 +10,16 @@ import SwiftUI
 /// The `CXWeekOnlyCalendarHeader` is a view that displays the header of a calendar week.
 /// It shows the abbreviated names of the weekdays in a grid layout.
 /// This is the default header view used in the calendar.
-struct CXWeekOnlyCalendarHeader: CXCalendarViewRepresentable {
-    // MARK: Internal
+public struct CXWeekOnlyCalendarHeader: CXCalendarViewRepresentable {
+    // MARK: Lifecycle
 
-    @Environment(CXCalendarCoordinator.self) var coordinator: CXCalendarCoordinator
+    public init() { }
 
-    var body: some View {
+    // MARK: Public
+
+    @Environment(CXCalendarCoordinator.self) public var coordinator: CXCalendarCoordinator
+
+    public var body: some View {
         LazyVGrid(columns: layout.columns, spacing: coordinator.layout.hPadding) {
             ForEach(weekSymbols.indices, id: \.self) { index in
                 makeItemView(weekSymbols[index], at: index)
