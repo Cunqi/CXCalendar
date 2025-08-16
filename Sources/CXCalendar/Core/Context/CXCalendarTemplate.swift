@@ -50,7 +50,6 @@ extension CXCalendarTemplate {
             vPadding = template.layout.vPadding
             columns = template.layout.columns
             layoutStrategy = template.layout.layoutStrategy
-            itemLayoutStrategy = template.layout.itemLayoutStrategy
 
             // CXCalendarComposeProtocol
             calendarHeader = template.compose.calendarHeader
@@ -101,9 +100,7 @@ extension CXCalendarTemplate {
 
         var columns: [GridItem] = []
 
-        var layoutStrategy = CXCalendarLayoutStrategy.wrap
-
-        var itemLayoutStrategy = CXCalendarItemLayoutStrategy.square
+        var layoutStrategy = CXCalendarLayoutStrategy.square
 
         // MARK: - CXCalendarComposeProtocol
 
@@ -135,7 +132,7 @@ extension CXCalendarTemplate {
         -> CXCalendarTemplate {
         CXCalendarTemplate.Builder()
             .mode(.year)
-            .itemLayoutStrategy(.flexHeight)
+            .layoutStrategy(.flexHeight)
             .scrollStrategy(scrollStrategy)
             .build()
     }

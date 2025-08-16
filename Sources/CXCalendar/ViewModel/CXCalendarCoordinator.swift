@@ -25,7 +25,6 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
             calendarMode: template.core.mode,
             scrollStrategy: template.core.scrollStrategy,
             layoutStrategy: template.layout.layoutStrategy,
-            itemLayoutStrategy: template.layout.itemLayoutStrategy,
             hPadding: template.layout.hPadding,
             vPadding: template.layout.vPadding
         )
@@ -98,13 +97,13 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
     }
 
     public func select(date: Date) {
-        let toggleAccessoryViewOnly = core.calendar.isSameDay(date, selectedDate)
+        let isSelectedDateChanged = !core.calendar.isSameDay(date, selectedDate)
         selectedDate = date
 
-        if toggleAccessoryViewOnly {
-            presentAccessoryView.toggle()
+        if isSelectedDateChanged {
+            setAllowPresentingAccessoryView(true)
         } else {
-            enablePresentAccessoryView(true)
+            allowPresentingAccessoryView.toggle()
         }
     }
 
@@ -116,17 +115,21 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
     /// The current page offset in the calendar, used to determine which dates are displayed.
     var currentPage = Int.zero
 
-    var presentAccessoryView = true
+    /// Determines whether the accessory view is allowed to be presented.
+    var allowPresentingAccessoryView = true
 
-    func shouldShowAccessoryView(for date: Date) -> Bool {
+    /// Determines whether the accessory view can be presented.
+    /// - Parameter date: The date to check for presentation.
+    /// - Returns: A Boolean value indicating whether the accessory view can be presented.
+    func canPresentAccessoryView(for date: Date) -> Bool {
         let isPageScroll = core.scrollStrategy == .page
-        let hasFiniteHeight = layout.itemLayoutStrategy != .flexHeight
+        let hasFiniteHeight = layout.layoutStrategy != .flexHeight
         let isOnCurrentPage = core.calendar.isSameDay(date, anchorDate)
-        return presentAccessoryView && isPageScroll && hasFiniteHeight && isOnCurrentPage
+        return allowPresentingAccessoryView && isPageScroll && hasFiniteHeight && isOnCurrentPage
     }
 
-    func enablePresentAccessoryView(_ enable: Bool) {
-        presentAccessoryView = enable
+    func setAllowPresentingAccessoryView(_ allow: Bool) {
+        allowPresentingAccessoryView = allow
     }
 
     func date(at index: Int) -> Date {

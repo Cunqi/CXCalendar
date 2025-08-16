@@ -10,15 +10,16 @@ import SwiftUI
 import CXLazyPage
 
 struct HorizontalCalendarExampleView: View {
-    @State private var selectedDate: Date? = Date.now
+    @State private var selectedDate: Date = Date.now
 
     var template: CXCalendarTemplate {
         CXCalendarTemplate.month()
-        .builder
-        .onCalendarItemSelect { date in
-            self.selectedDate = date
-        }
-        .build()
+            .builder
+            .layoutStrategy(.flexHeight)
+            .onCalendarItemSelect { date in
+                self.selectedDate = date
+            }
+            .build()
     }
 
     var body: some View {
@@ -28,14 +29,10 @@ struct HorizontalCalendarExampleView: View {
                 .navigationTitle("Horizontal Calendar")
                 .navigationBarTitleDisplayMode(.inline)
 
-            Spacer()
-
-            if let selectedDate {
-                Text("Selected Date: \(selectedDate.formatted(date: .abbreviated, time: .omitted))")
-                    .padding()
-                    .foregroundColor(.primary)
-                    .font(.title)
-            }
+            Text("Selected Date: \(selectedDate.formatted(date: .abbreviated, time: .omitted))")
+                .padding()
+                .foregroundColor(.primary)
+                .font(.title)
         }
     }
 }

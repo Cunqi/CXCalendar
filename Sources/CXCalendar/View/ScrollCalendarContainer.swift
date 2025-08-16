@@ -36,12 +36,8 @@ struct ScrollCalendarContainer: CXCalendarViewRepresentable {
                         )
                     }
                 )
-                .frame(
-                    width: proxy.size.width,
-                    height: coordinator.sizeProvider.calendarHeight
-                )
                 .onAppear {
-                    coordinator.sizeProvider.calculateHeightForScrollStrategy(with: proxy.size)
+                    coordinator.sizeProvider.calculateHeightForScrollStrategy(with: proxy)
                 }
             }
         }

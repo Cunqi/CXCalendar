@@ -30,12 +30,6 @@ extension CXCalendarTemplate.Builder {
         return self
     }
 
-    public func itemLayoutStrategy(_ itemLayoutStrategy: CXCalendarItemLayoutStrategy)
-        -> CXCalendarTemplate.Builder {
-        self.itemLayoutStrategy = itemLayoutStrategy
-        return self
-    }
-
     // MARK: Internal
 
     func makeLayout() -> any CXCalendarLayoutProtocol {
@@ -44,7 +38,7 @@ extension CXCalendarTemplate.Builder {
         }
 
         if mode == .year {
-            itemLayoutStrategy = .flexHeight
+            layoutStrategy = .flexHeight
         }
 
         let columns = Array(
@@ -56,8 +50,7 @@ extension CXCalendarTemplate.Builder {
             hPadding: hPadding,
             vPadding: vPadding,
             columns: columns,
-            layoutStrategy: layoutStrategy,
-            itemLayoutStrategy: itemLayoutStrategy
+            layoutStrategy: layoutStrategy
         )
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import SwiftUI
 
 // MARK: - CXCalendarSizeCoordinator
 
@@ -19,14 +20,12 @@ public class CXCalendarSizeProvider {
         calendarMode: CXCalendarMode,
         scrollStrategy: CXCalendarScrollStrategy,
         layoutStrategy: CXCalendarLayoutStrategy,
-        itemLayoutStrategy: CXCalendarItemLayoutStrategy,
         hPadding: CGFloat,
         vPadding: CGFloat
     ) {
         self.calendarMode = calendarMode
         self.scrollStrategy = scrollStrategy
         self.layoutStrategy = layoutStrategy
-        self.itemLayoutStrategy = itemLayoutStrategy
         self.hPadding = hPadding
         self.vPadding = vPadding
     }
@@ -36,48 +35,35 @@ public class CXCalendarSizeProvider {
     let calendarMode: CXCalendarMode
     let scrollStrategy: CXCalendarScrollStrategy
     let layoutStrategy: CXCalendarLayoutStrategy
-    let itemLayoutStrategy: CXCalendarItemLayoutStrategy
     let hPadding: CGFloat
     let vPadding: CGFloat
 
     var itemWidth = CGFloat.zero
     var itemHeight = CGFloat.zero
-    var calendarHeight = CGFloat.zero
 
-    func calculateHeightForPageStrategy(with maxSize: CGSize) {
-        itemWidth = calculateItemWidth(maxWidth: maxSize.width)
+    func calculateHeightForPageStrategy(with proxy: GeometryProxy) {
+        let maxHeight = proxy.size.height - proxy.safeAreaInsets.top - proxy.safeAreaInsets.bottom
+        itemWidth = calculateItemWidth(with: proxy)
 
-        let idealItemHeight = switch itemLayoutStrategy {
+        let totalPaddingHeight = vPadding * (calendarMode.numOfRows - 1)
+        let remainingHeight = maxHeight - totalPaddingHeight
+        let maxItemHeight = remainingHeight / calendarMode.numOfRows
+
+        let expectedItemHeight = switch layoutStrategy {
         case .square:
             itemWidth
         case .fixedHeight(let height):
             height
         case .flexHeight:
-            maxSize.height
+            maxHeight
         }
 
-        let totalPaddingHeight = vPadding * (calendarMode.numOfRows - 1)
-        let totalIdealItemHeight = idealItemHeight * calendarMode.numOfRows
-        let totalExpectedHeight = totalIdealItemHeight + totalPaddingHeight
-
-        if totalExpectedHeight > maxSize.height {
-            calendarHeight = maxSize.height
-            itemHeight = (maxSize.height - totalPaddingHeight) / calendarMode.numOfRows
-        } else {
-            calendarHeight = totalExpectedHeight
-            itemHeight = idealItemHeight
-        }
-
-        if layoutStrategy == .flex {
-            calendarHeight = maxSize.height
-        }
+        itemHeight = min(expectedItemHeight, maxItemHeight)
     }
 
-    func calculateHeightForScrollStrategy(with maxSize: CGSize) {
-        calendarHeight = maxSize.height
-
-        itemWidth = calculateItemWidth(maxWidth: maxSize.width)
-        switch itemLayoutStrategy {
+    func calculateHeightForScrollStrategy(with proxy: GeometryProxy) {
+        itemWidth = calculateItemWidth(with: proxy)
+        switch layoutStrategy {
         case .square, .flexHeight:
             itemHeight = itemWidth
         case .fixedHeight(let height):
@@ -120,7 +106,9 @@ public class CXCalendarSizeProvider {
 
     @ObservationIgnored private lazy var cachedPageHeight: [Int: CGFloat] = [:]
 
-    private func calculateItemWidth(maxWidth: CGFloat) -> CGFloat {
+    private func calculateItemWidth(with proxy: GeometryProxy) -> CGFloat {
+        let maxWidth = proxy.size.width - proxy.safeAreaInsets.leading - proxy.safeAreaInsets
+            .trailing
         let totalPaddingWidth = hPadding * (calendarMode.numOfCols - 1)
         let availableWidth = maxWidth - totalPaddingWidth
         return availableWidth / calendarMode.numOfCols

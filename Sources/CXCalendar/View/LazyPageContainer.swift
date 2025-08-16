@@ -13,29 +13,21 @@ struct LazyPageContainer: CXCalendarViewRepresentable {
     @Binding var coordinator: CXCalendarCoordinator
 
     var body: some View {
-        VStack(spacing: layout.vPadding) {
+        VStack(spacing: .zero) {
             if let calendarHeader = compose.calendarHeader {
                 calendarHeader(anchorDate).erased
             }
 
             GeometryReader { proxy in
+                let _ = coordinator.sizeProvider.calculateHeightForPageStrategy(with: proxy)
                 CXLazyPage(
                     axis: layout.axis,
-                    currentPage: $coordinator.currentPage,
-                    content: { index in
-                        CalendarPage(date: coordinator.date(at: index))
-                    }
-                )
-                .frame(
-                    width: proxy.size.width,
-                    height: coordinator.sizeProvider.calendarHeight
-                )
-                .onAppear {
-                    coordinator.sizeProvider
-                        .calculateHeightForPageStrategy(with: proxy.size)
+                    currentPage: $coordinator.currentPage
+                ) { index in
+                    CalendarPage(date: coordinator.date(at: index))
                 }
                 .onChange(of: coordinator.currentPage) { _, _ in
-                    coordinator.enablePresentAccessoryView(false)
+                    coordinator.setAllowPresentingAccessoryView(false)
                 }
             }
         }

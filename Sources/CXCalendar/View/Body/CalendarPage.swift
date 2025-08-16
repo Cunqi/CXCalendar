@@ -15,25 +15,24 @@ struct CalendarPage: CXCalendarViewRepresentable {
     let date: Date
 
     var body: some View {
-        VStack(spacing: layout.vPadding) {
-            if core.scrollStrategy == .scroll {
-                compose.calendarPageHeader(date).erased
-            }
+        if core.scrollStrategy == .scroll {
+            compose.calendarPageHeader(date).erased
+        }
 
-            LazyVGrid(columns: layout.columns, spacing: layout.vPadding) {
-                ForEach(items) { item in
-                    compose.calendarItem(interval, item).erased
-                }
-            }
-
-            if let accessoryView = compose.accessoryView,
-               coordinator.shouldShowAccessoryView(for: date) {
-                accessoryView(coordinator.selectedDate, interval)
-                    .erased
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
+        LazyVGrid(columns: layout.columns, spacing: layout.vPadding) {
+            ForEach(items) { item in
+                compose.calendarItem(interval, item).erased
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+
+        if let accessoryView = compose.accessoryView,
+           coordinator.canPresentAccessoryView(for: date) {
+            accessoryView(coordinator.selectedDate, interval)
+                .erased
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+
+        Spacer()
     }
 
     // MARK: Private
