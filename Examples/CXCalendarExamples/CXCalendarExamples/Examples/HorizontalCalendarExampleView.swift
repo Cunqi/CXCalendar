@@ -6,18 +6,18 @@
 //
 
 import CXCalendar
-import SwiftUI
 import CXLazyPage
+import SwiftUI
 
 struct HorizontalCalendarExampleView: View {
-    @State private var selectedDate: Date = Date.now
+    // MARK: Internal
 
     var template: CXCalendarTemplate {
         CXCalendarTemplate.month()
             .builder
-            .layoutStrategy(.flexHeight)
+            .layoutStrategy(.square)
             .onCalendarItemSelect { date in
-                self.selectedDate = date
+                selectedDate = date
             }
             .build()
     }
@@ -35,6 +35,10 @@ struct HorizontalCalendarExampleView: View {
                 .font(.title)
         }
     }
+
+    // MARK: Private
+
+    @State private var selectedDate = Date.now
 }
 
 #Preview {

@@ -10,6 +10,8 @@ import CXUICore
 import SwiftUI
 
 struct LazyPageContainer: CXCalendarViewRepresentable {
+    // MARK: Internal
+
     @Binding var coordinator: CXCalendarCoordinator
 
     var body: some View {
@@ -26,11 +28,11 @@ struct LazyPageContainer: CXCalendarViewRepresentable {
                 ) { index in
                     CalendarPage(date: coordinator.date(at: index))
                 }
-                .onChange(of: coordinator.currentPage) { _, _ in
-                    coordinator.setAllowPresentingAccessoryView(false)
-                }
             }
         }
         .environment(coordinator)
+        .onChange(of: coordinator.currentPage) { _, _ in
+            coordinator.setAllowPresentingAccessoryView(false)
+        }
     }
 }

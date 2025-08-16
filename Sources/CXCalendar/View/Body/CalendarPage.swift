@@ -22,6 +22,8 @@ struct CalendarPage: CXCalendarViewRepresentable {
         LazyVGrid(columns: layout.columns, spacing: layout.vPadding) {
             ForEach(items) { item in
                 compose.calendarItem(interval, item).erased
+                    .frame(maxWidth: .infinity)
+                    .frame(height: coordinator.sizeProvider.itemHeight)
             }
         }
 
@@ -31,7 +33,6 @@ struct CalendarPage: CXCalendarViewRepresentable {
                 .erased
                 .transition(.move(edge: .bottom).combined(with: .opacity))
         }
-
         Spacer()
     }
 

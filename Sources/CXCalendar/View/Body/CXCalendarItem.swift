@@ -21,8 +21,6 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
             .font(.body)
             .fontWeight(fontWeight)
             .foregroundColor(foregroundColor)
-            .frame(maxWidth: .infinity)
-            .frame(height: coordinator.sizeProvider.itemHeight)
             .background {
                 if isSelected, canSelect {
                     Circle()
