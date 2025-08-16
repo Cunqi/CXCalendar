@@ -31,7 +31,7 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
         Group {
             switch core.scrollStrategy {
             case .page:
-                LazyPageContainer(coordinator: $coordinator)
+                InfinityPageContainer(coordinator: $coordinator)
             case .scroll:
                 ScrollCalendarContainer(coordinator: $coordinator)
             }

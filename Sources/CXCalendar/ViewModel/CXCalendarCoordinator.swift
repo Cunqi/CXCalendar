@@ -119,13 +119,11 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
     var allowPresentingAccessoryView = true
 
     /// Determines whether the accessory view can be presented.
-    /// - Parameter date: The date to check for presentation.
     /// - Returns: A Boolean value indicating whether the accessory view can be presented.
-    func canPresentAccessoryView(for date: Date) -> Bool {
+    var canPresentAccessoryView: Bool {
         let isPageScroll = core.scrollStrategy == .page
         let hasFiniteHeight = layout.layoutStrategy != .flexHeight
-        let isOnCurrentPage = core.calendar.isSameDay(date, anchorDate)
-        return allowPresentingAccessoryView && isPageScroll && hasFiniteHeight && isOnCurrentPage
+        return allowPresentingAccessoryView && isPageScroll && hasFiniteHeight
     }
 
     func setAllowPresentingAccessoryView(_ allow: Bool) {

@@ -40,9 +40,10 @@ public class CXCalendarSizeProvider {
 
     var itemWidth = CGFloat.zero
     var itemHeight = CGFloat.zero
+    var calendarHeight = CGFloat.zero
 
-    func calculateHeightForPageStrategy(with proxy: GeometryProxy) {
-        let maxHeight = proxy.size.height - proxy.safeAreaInsets.top - proxy.safeAreaInsets.bottom
+    func calculateHeightForPageStrategy(with proxy: GeometryProxy, titleHeight: CGFloat = .zero) {
+        let maxHeight = proxy.size.height - titleHeight
         itemWidth = calculateItemWidth(with: proxy)
 
         let totalPaddingHeight = vPadding * (calendarMode.numOfRows - 1)
@@ -59,6 +60,7 @@ public class CXCalendarSizeProvider {
         }
 
         itemHeight = min(expectedItemHeight, maxItemHeight)
+        calendarHeight = itemHeight * calendarMode.numOfRows + totalPaddingHeight
     }
 
     func calculateHeightForScrollStrategy(with proxy: GeometryProxy) {
