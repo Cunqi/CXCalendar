@@ -13,36 +13,23 @@ import SwiftUI
 // MARK: - ActivityTrackerView
 
 struct ActivityTrackerView: View {
+    @State private var selectedDate = Date.now
     // MARK: Internal
 
     var body: some View {
         VStack {
-            calendarView
+            CXCalendarMonthViewer(selectedDate: $selectedDate, selectFirstDayByDefault: true)
+                .frame(width: 320)
                 .padding()
                 .background {
                     RoundedRectangle(cornerRadius: 10.0)
-                        .fill(.red)
+                        .fill(Color.secondarySystemGroupedBackground)
                 }
             Spacer()
+            ActivityView(date: selectedDate)
         }
-        .padding(.horizontal)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.systemGroupedBackground)
-    }
-
-    // MARK: Private
-
-    @State private var viewModel = ViewModel()
-
-    @ViewBuilder
-    private var calendarView: some View {
-        let template = CXCalendarTemplate.month()
-            .builder
-            .calendarHeader { date in
-                ATCalendarHeader(date: date)
-            }
-            .build()
-
-        CXCalendarView(template: template)
     }
 }
 
@@ -60,5 +47,43 @@ extension ActivityTrackerView {
         // MARK: Internal
 
         var activities: [Activity] = []
+
+        func items(for date: Date) -> [Activity] {
+            return activities.filter {
+                Calendar.current.isDate($0.createdAt, inSameDayAs: date)
+            }
+        }
+    }
+}
+
+extension ActivityTrackerView {
+    struct ActivityView: View {
+        @State private var viewModel = ViewModel()
+
+        let date: Date
+
+        var items: [Activity] {
+            viewModel.items(for: date)
+        }
+
+        var body: some View {
+            List {
+                ForEach(items) { item in
+                    Text(item.name)
+                        .font(.body)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .listRowInsets(EdgeInsets())
+                }
+            }
+            .cornerRadius(10.0)
+            .listStyle(.plain)
+            .scrollIndicators(.hidden)
+            .background {
+                RoundedRectangle(cornerRadius: 10.0)
+                    .fill(Color.secondarySystemGroupedBackground)
+            }
+            .padding(.top)
+        }
     }
 }

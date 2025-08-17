@@ -9,7 +9,8 @@ import Foundation
 
 // MARK: - Activity
 
-struct Activity {
+struct Activity: Identifiable {
+    let id = UUID()
     let name: String
     let isCompleted: Bool
     let createdAt: Date

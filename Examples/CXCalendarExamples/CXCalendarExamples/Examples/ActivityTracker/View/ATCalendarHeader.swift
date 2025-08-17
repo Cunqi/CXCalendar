@@ -38,20 +38,28 @@ struct ATCalendarHeader: CXCalendarViewRepresentable {
                     .padding(CXSpacing.halfX)
             }
         }
-        .padding(.horizontal, CXSpacing.oneX)
+        .padding(CXSpacing.oneX)
+        .background {
+            Rectangle()
+                .fill(Color.secondarySystemGroupedBackground)
+        }
     }
 
     // MARK: Private
 
     private func moveToPreviousMonth() {
         if let previousMonth = calendar.date(byAdding: .month, value: -1, to: date) {
-            coordinator.scroll(to: previousMonth)
+            withAnimation {
+                coordinator.scroll(to: previousMonth)
+            }
         }
     }
 
     private func moveToNextMonth() {
         if let nextMonth = calendar.date(byAdding: .month, value: 1, to: date) {
-            coordinator.scroll(to: nextMonth)
+            withAnimation {
+                coordinator.scroll(to: nextMonth)
+            }
         }
     }
 }
