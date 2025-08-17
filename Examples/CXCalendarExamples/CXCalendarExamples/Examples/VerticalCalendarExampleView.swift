@@ -12,6 +12,7 @@ struct VerticalCalendarExampleView: View {
     var body: some View {
         let template = CXCalendarTemplate.month(.page)
             .builder
+            .layoutStrategy(.flexHeight)
             .axis(.vertical)
             .build()
 

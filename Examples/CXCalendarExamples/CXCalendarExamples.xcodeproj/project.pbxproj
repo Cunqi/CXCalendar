@@ -112,7 +112,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C447E8482E24759900EFD019 /* Build configuration list for PBXNativeTarget "CXCalendarExamples" */;
 			buildPhases = (
-				C4D13FCE2E2B640E0040AF0D /* Run Script */,
 				C447E8232E24759700EFD019 /* Sources */,
 				C447E8242E24759700EFD019 /* Frameworks */,
 				C447E8252E24759700EFD019 /* Resources */,
@@ -248,27 +247,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C4D13FCE2E2B640E0040AF0D /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat > /dev/null; then\n  swiftformat \"${SRCROOT}\" --config ~/.swiftformat\nelse\n  echo \"warning: SwiftFormat not installed. Run 'brew install swiftformat'\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C447E8232E24759700EFD019 /* Sources */ = {

@@ -22,7 +22,6 @@ struct InfinityPageContainer: CXCalendarViewRepresentable {
             VStack(spacing: .zero) {
                 calendarHeader(proxy: proxy)
                 calendarBody(proxy: proxy)
-                Spacer()
                 accessoryView
             }
         }
