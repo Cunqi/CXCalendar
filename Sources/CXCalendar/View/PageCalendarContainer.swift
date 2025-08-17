@@ -52,7 +52,7 @@ struct PageCalendarContainer: CXCalendarViewRepresentable {
             axis: layout.axis,
             currentPage: $coordinator.currentPage,
             scrollEnabled: $coordinator.scrollEnabled
-        ) { } page: {
+        ) {
             CalendarPage(date: coordinator.date(at: $0))
         }
     }
