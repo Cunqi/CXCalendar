@@ -14,7 +14,7 @@ public typealias ComposeCalendarHeader = (Date) -> any CXCalendarViewRepresentab
 public typealias ComposeCalendarItem = (DateInterval, CXIndexedDate)
     -> any CXCalendarItemViewRepresentable
 
-public typealias ComposeCalendarAccessoryView = (Date, DateInterval)
+public typealias ComposeCalendarAccessoryView = (Date)
     -> any View
 
 // MARK: - CXCalendarComposeProtocol

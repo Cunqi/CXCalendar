@@ -24,21 +24,19 @@ struct ScrollCalendarContainer: CXCalendarViewRepresentable {
             }
 
             GeometryReader { proxy in
+                let _ = coordinator.sizeProvider.calculateHeightForScrollStrategy(with: proxy)
                 CXLazyList(
                     viewportTrackerContext: viewportTrackerContext,
                     currentPage: $coordinator.currentPage,
                     content: { index in
                         CalendarPage(date: coordinator.date(at: index))
-                    }, heightOfPage: { index in
+                    }, heightOfPage: { index, width in
                         coordinator.sizeProvider.calculatePageHeight(
                             at: index,
                             numOfRows: coordinator.numOfRows(at: index)
                         )
                     }
                 )
-                .onAppear {
-                    coordinator.sizeProvider.calculateHeightForScrollStrategy(with: proxy)
-                }
             }
         }
         .environment(coordinator)

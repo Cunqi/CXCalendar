@@ -37,7 +37,7 @@ public struct CXCalendarWeeklyAccessoryViewWrapper<AccessoryView: CXCalendarView
     public var body: some View {
         TabView(selection: $focusedDate) {
             ForEach(items) { item in
-                content(item.value, interval).erased
+                content(item.value).erased
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))

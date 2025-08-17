@@ -21,22 +21,19 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
             .font(.body)
             .fontWeight(fontWeight)
             .foregroundColor(foregroundColor)
-            .frame(maxWidth: .infinity)
-            .frame(height: coordinator.sizeProvider.itemHeight)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
                 if isSelected, canSelect {
                     Circle()
-                        .stroke(Color.accentColor, lineWidth: 2)
-                        .padding(1.0)
+                        .fill(Color.accentColor.opacity(0.2))
                 }
             }
-            .contentShape(.circle)
             .onTapGesture {
                 guard canSelect else {
                     return
                 }
                 withAnimation {
-                    coordinator.select(date: date.value)
+                    coordinator.selectedDate = date.value
                 }
             }
     }

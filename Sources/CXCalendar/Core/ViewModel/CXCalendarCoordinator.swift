@@ -9,6 +9,8 @@ import CXUICore
 import Observation
 import SwiftUI
 
+// MARK: - CXCalendarCoordinator
+
 /// The `CXCalendarCoordinator` class is responsible for managing the calendar's state and behavior.
 @MainActor
 @Observable
@@ -96,15 +98,17 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
         core.calendar.isSameDay(date, selectedDate)
     }
 
-    public func select(date: Date) {
-        let isSelectedDateChanged = !core.calendar.isSameDay(date, selectedDate)
-        selectedDate = date
-
-        if isSelectedDateChanged {
-            setAllowPresentingAccessoryView(true)
-        } else {
-            allowPresentingAccessoryView.toggle()
+    public func selectFirstDateAfterAnchorDateChange() {
+        let components: Set<Calendar.Component> = switch core.mode {
+        case .year:
+            [.year]
+        case .month:
+            [.year, .month]
+        case .week:
+            [.yearForWeekOfYear, .weekOfYear]
         }
+        let dateComponents = core.calendar.dateComponents(components, from: anchorDate)
+        selectedDate = core.calendar.date(from: dateComponents) ?? selectedDate
     }
 
     // MARK: Internal
@@ -114,23 +118,6 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
 
     /// The current page offset in the calendar, used to determine which dates are displayed.
     var currentPage = Int.zero
-
-    /// Determines whether the accessory view is allowed to be presented.
-    var allowPresentingAccessoryView = true
-
-    /// Determines whether the accessory view can be presented.
-    /// - Parameter date: The date to check for presentation.
-    /// - Returns: A Boolean value indicating whether the accessory view can be presented.
-    func canPresentAccessoryView(for date: Date) -> Bool {
-        let isPageScroll = core.scrollStrategy == .page
-        let hasFiniteHeight = layout.layoutStrategy != .flexHeight
-        let isOnCurrentPage = core.calendar.isSameDay(date, anchorDate)
-        return allowPresentingAccessoryView && isPageScroll && hasFiniteHeight && isOnCurrentPage
-    }
-
-    func setAllowPresentingAccessoryView(_ allow: Bool) {
-        allowPresentingAccessoryView = allow
-    }
 
     func date(at index: Int) -> Date {
         core.calendar.date(

@@ -20,8 +20,10 @@ struct CalendarWithAccessoryViewExampleView: View {
             CXCalendarTemplate.month(.page)
                 .builder
                 .hPadding(.zero)
-                .layoutStrategy(.fixedHeight(32))
-                .accessoryView { date, _ in
+                .layoutStrategy(.equalWidth)
+                .hPadding(CXSpacing.oneX)
+                .vPadding(.zero)
+                .accessoryView { date in
                     AccessoryView(date: date)
                 }
                 .build()
@@ -32,57 +34,64 @@ struct CalendarWithAccessoryViewExampleView: View {
                 .navigationTitle("Calendar with Accessory View")
                 .navigationBarTitleDisplayMode(.inline)
                 .environment(viewModel)
+                .padding(.horizontal)
         }
+        .background(Color.systemGroupedBackground)
     }
 
     // MARK: Private
 
-    @State private var viewModel = ViewModel()
+    @State private var viewModel = CalendarWithAccessoryViewExampleView.ViewModel()
 }
 
-// MARK: - AccessoryView
+// MARK: CalendarWithAccessoryViewExampleView.AccessoryView
 
-struct AccessoryView: View {
-    @Environment(CalendarWithAccessoryViewExampleView.ViewModel.self) var viewModel
+extension CalendarWithAccessoryViewExampleView {
+    struct AccessoryView: View {
+        @Environment(CalendarWithAccessoryViewExampleView.ViewModel.self) var viewModel
 
-    let date: Date
+        let date: Date
 
-    var items: [ActionItem] {
-        viewModel.makeItems(for: date)
-    }
-
-    var body: some View {
-        VStack {
-            Text(date, format: .dateTime.day().month(.wide))
-                .font(.body)
-                .bold()
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, CXSpacing.oneX)
-                .background {
-                    RoundedRectangle(cornerRadius: 10.0)
-                        .fill(Color.secondarySystemGroupedBackground)
-                }
-                .padding(.horizontal)
-                .padding(.top)
-            List {
-                ForEach(items) { item in
-                    Text(item.title)
-                        .font(.body)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .listRowInsets(EdgeInsets())
-                }
-            }
-            .cornerRadius(10.0)
-            .listStyle(.plain)
-            .scrollIndicators(.hidden)
-            .padding()
+        var items: [ActionItem] {
+            viewModel.makeItems(for: date)
         }
-        .background(Color.systemGroupedBackground)
+
+        var body: some View {
+            VStack {
+                Text(date, format: .dateTime.day().month(.wide))
+                    .font(.body)
+                    .bold()
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, CXSpacing.oneX)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10.0)
+                            .fill(Color.secondarySystemGroupedBackground)
+                    }
+                    .padding(.horizontal)
+                    .padding(.top)
+                List {
+                    ForEach(items) { item in
+                        Text(item.title)
+                            .font(.body)
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .listRowInsets(EdgeInsets())
+                    }
+                }
+                .cornerRadius(10.0)
+                .listStyle(.plain)
+                .scrollIndicators(.hidden)
+            }
+            .background {
+                RoundedRectangle(cornerRadius: 10.0)
+                    .fill(Color.secondarySystemGroupedBackground)
+            }
+            .padding(.top)
+        }
     }
 }
 
-// MARK: - CalendarWithAccessoryViewExampleView.ViewModel
+// MARK: CalendarWithAccessoryViewExampleView.ViewModel
 
 extension CalendarWithAccessoryViewExampleView {
     @Observable
