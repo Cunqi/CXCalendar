@@ -25,6 +25,7 @@ struct CalendarHeader: CXCalendarViewRepresentable {
                 CXWeekOnlyCalendarHeader()
             }
             Divider()
+                .padding(.bottom, CXSpacing.oneX)
         }
     }
 

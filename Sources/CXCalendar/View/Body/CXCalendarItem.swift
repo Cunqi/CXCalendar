@@ -24,11 +24,10 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
                 if isSelected, canSelect {
-                    RoundedRectangle(cornerRadius: 8)
+                    Circle()
                         .fill(Color.accentColor.opacity(0.2))
                 }
             }
-            .contentShape(.circle)
             .onTapGesture {
                 guard canSelect else {
                     return

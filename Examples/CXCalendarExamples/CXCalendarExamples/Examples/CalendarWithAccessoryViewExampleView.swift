@@ -20,7 +20,9 @@ struct CalendarWithAccessoryViewExampleView: View {
             CXCalendarTemplate.month(.page)
                 .builder
                 .hPadding(.zero)
-                .layoutStrategy(.fixedHeight(32))
+                .layoutStrategy(.square)
+                .hPadding(CXSpacing.oneX)
+                .vPadding(.zero)
                 .accessoryView { date in
                     AccessoryView(date: date)
                 }
@@ -32,7 +34,9 @@ struct CalendarWithAccessoryViewExampleView: View {
                 .navigationTitle("Calendar with Accessory View")
                 .navigationBarTitleDisplayMode(.inline)
                 .environment(viewModel)
+                .padding(.horizontal)
         }
+        .background(Color.systemGroupedBackground)
     }
 
     // MARK: Private
@@ -78,7 +82,11 @@ extension CalendarWithAccessoryViewExampleView {
                 .listStyle(.plain)
                 .scrollIndicators(.hidden)
             }
-            .background(Color.systemGroupedBackground)
+            .background {
+                RoundedRectangle(cornerRadius: 10.0)
+                    .fill(Color.secondarySystemGroupedBackground)
+            }
+            .padding(.top)
         }
     }
 }

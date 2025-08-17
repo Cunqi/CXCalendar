@@ -28,7 +28,7 @@ struct HorizontalCalendarExampleView: View {
                 .padding(.horizontal)
                 .navigationTitle("Horizontal Calendar")
                 .navigationBarTitleDisplayMode(.inline)
-
+            Spacer()
             Text("Selected Date: \(selectedDate.formatted(date: .abbreviated, time: .omitted))")
                 .padding()
                 .foregroundColor(.primary)
