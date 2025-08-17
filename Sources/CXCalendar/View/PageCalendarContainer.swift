@@ -10,7 +10,7 @@ struct PageCalendarContainer: CXCalendarViewRepresentable {
 
     var body: some View {
         switch layout.layoutStrategy {
-        case .square, .fixedHeight:
+        case .equalWidth, .fixedHeight:
             fixedHeightContainer
         case .flexHeight:
             flexHeightContainer
@@ -79,9 +79,9 @@ struct PageCalendarContainer: CXCalendarViewRepresentable {
             VStack(spacing: .zero) {
                 calendarHeader
                     .onDimensionChange {
-                        coordinator.sizeProvider.calculateHeightForPageStrategy(
+                        coordinator.sizeProvider.calculateHeightForFlexHeightItem(
                             with: proxy,
-                            titleHeight: $0.size.height
+                            usedHeight: $0.size.height
                         )
                     }
                 calendarBody

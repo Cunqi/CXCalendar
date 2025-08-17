@@ -15,7 +15,7 @@ struct HorizontalCalendarExampleView: View {
     var template: CXCalendarTemplate {
         CXCalendarTemplate.month()
             .builder
-            .layoutStrategy(.square)
+            .layoutStrategy(.equalWidth)
             .onCalendarItemSelect { date in
                 selectedDate = date
             }

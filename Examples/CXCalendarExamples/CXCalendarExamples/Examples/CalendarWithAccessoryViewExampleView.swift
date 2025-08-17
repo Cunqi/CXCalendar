@@ -20,7 +20,7 @@ struct CalendarWithAccessoryViewExampleView: View {
             CXCalendarTemplate.month(.page)
                 .builder
                 .hPadding(.zero)
-                .layoutStrategy(.square)
+                .layoutStrategy(.equalWidth)
                 .hPadding(CXSpacing.oneX)
                 .vPadding(.zero)
                 .accessoryView { date in

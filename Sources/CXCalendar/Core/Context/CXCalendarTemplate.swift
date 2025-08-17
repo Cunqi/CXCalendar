@@ -100,7 +100,7 @@ extension CXCalendarTemplate {
 
         var columns: [GridItem] = []
 
-        var layoutStrategy = CXCalendarLayoutStrategy.square
+        var layoutStrategy = CXCalendarLayoutStrategy.equalWidth
 
         // MARK: - CXCalendarComposeProtocol
 
