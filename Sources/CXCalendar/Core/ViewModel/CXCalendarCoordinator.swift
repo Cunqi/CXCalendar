@@ -9,6 +9,8 @@ import CXUICore
 import Observation
 import SwiftUI
 
+// MARK: - CXCalendarCoordinator
+
 /// The `CXCalendarCoordinator` class is responsible for managing the calendar's state and behavior.
 @MainActor
 @Observable
@@ -188,5 +190,13 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
 
     private func weeklyItems(for interval: DateInterval) -> [CXIndexedDate] {
         core.calendar.makeFixedWeekGridDates(from: interval)
+    }
+}
+
+extension Array {
+    fileprivate func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
     }
 }

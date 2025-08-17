@@ -28,11 +28,15 @@ struct HorizontalCalendarExampleView: View {
                 .padding(.horizontal)
                 .navigationTitle("Horizontal Calendar")
                 .navigationBarTitleDisplayMode(.inline)
+                .background {
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .fill(Color.red)
+                }
             Spacer()
-            Text("Selected Date: \(selectedDate.formatted(date: .abbreviated, time: .omitted))")
-                .padding()
-                .foregroundColor(.primary)
-                .font(.title)
+//            Text("Selected Date: \(selectedDate.formatted(date: .abbreviated, time: .omitted))")
+//                .padding()
+//                .foregroundColor(.primary)
+//                .font(.title)
         }
     }
 

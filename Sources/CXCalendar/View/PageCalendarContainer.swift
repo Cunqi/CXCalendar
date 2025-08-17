@@ -6,13 +6,19 @@ import SwiftUI
 struct PageCalendarContainer: CXCalendarViewRepresentable {
     // MARK: Internal
 
+    @Environment(\.orientation) var orientation
     @Binding var coordinator: CXCalendarCoordinator
 
     var body: some View {
         switch layout.layoutStrategy {
         case .equalWidth, .fixedHeight:
-            fixedHeightContainer
-        case .flexHeight:
+            if orientation.isLandscape {
+                flexHeightContainer
+            } else {
+                fixedHeightContainer
+            }
+
+        default:
             flexHeightContainer
         }
     }
@@ -80,7 +86,7 @@ struct PageCalendarContainer: CXCalendarViewRepresentable {
                 calendarHeader
                     .onDimensionChange {
                         coordinator.sizeProvider.calculateHeightForFlexHeightItem(
-                            with: proxy,
+                            with: proxy.size,
                             usedHeight: $0.size.height
                         )
                     }
@@ -89,7 +95,6 @@ struct PageCalendarContainer: CXCalendarViewRepresentable {
                         width: proxy.size.width,
                         height: coordinator.sizeProvider.calendarHeight
                     )
-                accessoryView
             }
         }
         .environment(coordinator)

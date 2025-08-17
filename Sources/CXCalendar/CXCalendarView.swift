@@ -36,6 +36,7 @@ public struct CXCalendarView: CXCalendarViewRepresentable {
                 ScrollCalendarContainer(coordinator: $coordinator)
             }
         }
+        .withOrientation()
         .onChange(of: coordinator.anchorDate) { _, newValue in
             anchorDate = newValue
         }

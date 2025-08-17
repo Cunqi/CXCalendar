@@ -34,13 +34,17 @@ public class CXCalendarSizeProvider {
 
     let calendarMode: CXCalendarMode
     let scrollStrategy: CXCalendarScrollStrategy
-    let layoutStrategy: CXCalendarLayoutStrategy
+    private(set) var layoutStrategy: CXCalendarLayoutStrategy
     let hPadding: CGFloat
     let vPadding: CGFloat
 
     var itemWidth = CGFloat.zero
     var itemHeight = CGFloat.zero
     var calendarHeight = CGFloat.zero
+
+    var isLandscape: Bool {
+        UIScreen.main.bounds.width > UIScreen.main.bounds.height
+    }
 
     func calculateHeightForFixedHeightItem(with dimension: Dimension) {
         itemWidth = calculateItemWidth(dimension.size.width)
@@ -55,13 +59,25 @@ public class CXCalendarSizeProvider {
         calendarHeight = totalItemHeight + totalPaddingHeight
     }
 
-    func calculateHeightForFlexHeightItem(with proxy: GeometryProxy, usedHeight: CGFloat = .zero) {
-        let availableHeight = proxy.size.height - usedHeight
-        itemWidth = calculateItemWidth(proxy.size.width)
+    func calculateHeightForFlexHeightItem(with size: CGSize, usedHeight: CGFloat = .zero) {
+        let availableHeight = size.height - usedHeight
+        itemWidth = calculateItemWidth(size.width)
         let totalPaddingHeight = vPadding * (calendarMode.numOfRows - 1)
         let remainingHeight = availableHeight - totalPaddingHeight
-        itemHeight = remainingHeight / calendarMode.numOfRows
-        calendarHeight = availableHeight
+        let maxItemHeight = remainingHeight / calendarMode.numOfRows
+        switch layoutStrategy {
+        case .equalWidth:
+            itemHeight = min(itemWidth, maxItemHeight)
+            calendarHeight = itemHeight * calendarMode.numOfRows + totalPaddingHeight
+
+        case .fixedHeight(let height):
+            itemHeight = min(height, maxItemHeight)
+            calendarHeight = itemHeight * calendarMode.numOfRows + totalPaddingHeight
+
+        case .flexHeight:
+            itemHeight = maxItemHeight
+            calendarHeight = availableHeight
+        }
     }
 
     func calculateHeightForScrollStrategy(with proxy: GeometryProxy) {
