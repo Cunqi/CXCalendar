@@ -98,15 +98,17 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
         core.calendar.isSameDay(date, selectedDate)
     }
 
-    public func select(date: Date) {
-        let isSelectedDateChanged = !core.calendar.isSameDay(date, selectedDate)
-        selectedDate = date
-
-        if isSelectedDateChanged {
-            setAllowPresentingAccessoryView(true)
-        } else {
-            allowPresentingAccessoryView.toggle()
+    public func selectFirstDateAfterAnchorDateChange() {
+        let components: Set<Calendar.Component> = switch core.mode {
+        case .year:
+            [.year]
+        case .month:
+            [.year, .month]
+        case .week:
+            [.yearForWeekOfYear, .weekOfYear]
         }
+        let dateComponents = core.calendar.dateComponents(components, from: anchorDate)
+        selectedDate = core.calendar.date(from: dateComponents) ?? selectedDate
     }
 
     // MARK: Internal
@@ -116,21 +118,6 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
 
     /// The current page offset in the calendar, used to determine which dates are displayed.
     var currentPage = Int.zero
-
-    /// Determines whether the accessory view is allowed to be presented.
-    var allowPresentingAccessoryView = true
-
-    /// Determines whether the accessory view can be presented.
-    /// - Returns: A Boolean value indicating whether the accessory view can be presented.
-    var canPresentAccessoryView: Bool {
-        let isPageScroll = core.scrollStrategy == .page
-        let hasFiniteHeight = layout.layoutStrategy != .flexHeight
-        return allowPresentingAccessoryView && isPageScroll && hasFiniteHeight
-    }
-
-    func setAllowPresentingAccessoryView(_ allow: Bool) {
-        allowPresentingAccessoryView = allow
-    }
 
     func date(at index: Int) -> Date {
         core.calendar.date(
@@ -190,13 +177,5 @@ public class CXCalendarCoordinator: CXTemplateDirectAccessible {
 
     private func weeklyItems(for interval: DateInterval) -> [CXIndexedDate] {
         core.calendar.makeFixedWeekGridDates(from: interval)
-    }
-}
-
-extension Array {
-    fileprivate func chunked(into size: Int) -> [[Element]] {
-        stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
-        }
     }
 }

@@ -33,7 +33,7 @@ public struct CXCalendarItem: CXCalendarItemViewRepresentable {
                     return
                 }
                 withAnimation {
-                    coordinator.select(date: date.value)
+                    coordinator.selectedDate = date.value
                 }
             }
     }

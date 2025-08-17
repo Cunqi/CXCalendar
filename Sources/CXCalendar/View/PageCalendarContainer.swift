@@ -27,11 +27,12 @@ struct PageCalendarContainer: CXCalendarViewRepresentable {
 
     @ViewBuilder
     private var accessoryView: some View {
-        if let accessoryView = compose.accessoryView,
-           coordinator.canPresentAccessoryView {
+        if let accessoryView = compose.accessoryView {
             accessoryView(coordinator.selectedDate)
                 .erased
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .onChange(of: coordinator.anchorDate) { _, _ in
+                    coordinator.selectFirstDateAfterAnchorDateChange()
+                }
         }
     }
 
@@ -51,11 +52,7 @@ struct PageCalendarContainer: CXCalendarViewRepresentable {
             axis: layout.axis,
             currentPage: $coordinator.currentPage,
             scrollEnabled: $coordinator.scrollEnabled
-        ) {
-            withAnimation {
-                coordinator.setAllowPresentingAccessoryView(false)
-            }
-        } page: {
+        ) { } page: {
             CalendarPage(date: coordinator.date(at: $0))
         }
     }
